@@ -10,6 +10,7 @@ public class InternalUser extends User {
 	private String name;
 	private String firstname;
 	private Date birthdate;
+	private Address address;
 	
 	InternalUser() {
 		throw new RuntimeException("implement me");
@@ -70,6 +71,15 @@ public class InternalUser extends User {
 
 	public String getSessionID() {
 		return sessionID;
+	}
+	
+	public void setAddress(Address address) {
+		this.address = address;
+		throw new RuntimeException("implement me");
+	}
+	
+	public Address getAddress() {
+		return this.address;
 	}
 	
 }

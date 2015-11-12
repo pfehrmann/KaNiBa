@@ -1,9 +1,11 @@
 package de.kaniba.cucumber;
 
+/*
 import cucumber.api.PendingException;
 import cucumber.api.java.en.*;
-
+*/
 public class StepDefs {
+	/*
 	@Given("^I am logged in as \"(.*?)\"$")
 	public void i_am_logged_in_as(String arg1) throws Throwable {
 	    // Write code here that turns the phrase above into concrete actions
@@ -69,4 +71,5 @@ public class StepDefs {
 	    // Write code here that turns the phrase above into concrete actions
 	    throw new PendingException();
 	}
+	*/
 }

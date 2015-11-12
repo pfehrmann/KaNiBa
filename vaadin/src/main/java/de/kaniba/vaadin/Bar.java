@@ -11,6 +11,7 @@ public class Bar {
 	private Admin barOwner;
 	private Pinboard pinboard;
 	private Rating avgRating;
+	private Address address;
 	private List<Special> specials;
 	
 	public Admin getBarOwner() {
