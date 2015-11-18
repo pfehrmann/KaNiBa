@@ -3,6 +3,7 @@ de\kaniba\vaadin\Bar.class
 de\kaniba\vaadin\MyUI.class
 de\kaniba\vaadin\Message.class
 de\kaniba\cucumber\StepDefs.class
+de\kaniba\vaadin\Database.class
 de\kaniba\vaadin\MyUI$1.class
 de\kaniba\vaadin\User.class
 de\kaniba\vaadin\Address.class
@@ -11,4 +12,5 @@ de\kaniba\vaadin\Rating.class
 de\kaniba\vaadin\SystemAdmin.class
 de\kaniba\vaadin\Admin.class
 de\kaniba\vaadin\Pinboard.class
+de\kaniba\vaadin\MyUIServlet.class
 de\kaniba\vaadin\Email.class
