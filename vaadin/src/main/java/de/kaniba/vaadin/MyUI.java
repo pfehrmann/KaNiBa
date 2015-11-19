@@ -18,6 +18,9 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import de.kaniba.view.BarView;
+import de.kaniba.view.BarViewImpl;
+
 /**
  *
  */
@@ -30,29 +33,10 @@ public class MyUI extends UI {
 		final VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		setContent(layout);
-		//Star test Panel
-		Panel mainPanel = new Panel();
-	    mainPanel.setWidth("750px");
-	    
-	    RatingStars ratingStars = new RatingStars();
-	    ratingStars.setMaxValue(5);
-	    ratingStars.setCaption("Bar Rating");
-	    ratingStars.setValue(4.0 + 1.3);
-        
-	    mainPanel.setContent(ratingStars);
-	    
-	    
-	    
-	    
-		Button button = new Button("Click Me");
-		button.addClickListener(new Button.ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				layout.addComponent(new Label("Thank you for clicking"));
-			}
-		});
-		layout.addComponent(button);
-		layout.addComponent(mainPanel);
+		
+	    BarViewImpl bvi = new BarViewImpl();
+	 
+		layout.addComponent(bvi);
 
 	}
 
