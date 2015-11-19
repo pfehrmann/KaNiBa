@@ -27,7 +27,7 @@ public class BarViewImpl extends CustomComponent implements BarView, ClickListen
 			    ratingStars.setValue(4.0 + 1.3);
 			    ratingStars.setImmediate(true);
 			    
-			    ratingStars.addValueChangeListener(ratingStars.valueChange
+			    
 		        
 			    mainPanel.setContent(ratingStars);
 			    
