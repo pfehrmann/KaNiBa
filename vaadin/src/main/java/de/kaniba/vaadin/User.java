@@ -3,10 +3,10 @@ package de.kaniba.vaadin;
 public class User {
 	
 	public User login(String username, String password) {
-		throw new RuntimeException("implement me");
+		return Database.logUserIn(username, password);
 	}
 	
 	public String getType() {
-		throw new RuntimeException("implement me");
+		return this.getClass().getSimpleName();
 	}
 }

@@ -33,10 +33,11 @@ public class MyUI extends UI {
 		final VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		setContent(layout);
-		
+<<<<<<< HEAD		
 	    BarViewImpl bvi = new BarViewImpl();
 	 
 		layout.addComponent(bvi);
+
 
 	}
 
