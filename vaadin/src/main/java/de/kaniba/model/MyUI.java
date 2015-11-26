@@ -20,6 +20,7 @@ import com.vaadin.ui.VerticalLayout;
 
 import de.kaniba.view.BarView;
 import de.kaniba.view.BarViewImpl;
+import de.kaniba.view.LoginViewImpl;
 
 /**
  *
@@ -34,10 +35,9 @@ public class MyUI extends UI {
 		layout.setMargin(true);
 		setContent(layout);
 
+		LoginViewImpl lvi = new LoginViewImpl();
 		
-	   	 BarViewImpl bvi = new BarViewImpl();
-	 
-		layout.addComponent(bvi);
+		layout.addComponent(lvi);
 
 
 	}
