@@ -18,6 +18,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import de.kaniba.presenter.LoginPresenter;
 import de.kaniba.view.BarView;
 import de.kaniba.view.BarViewImpl;
 import de.kaniba.view.LoginViewImpl;
@@ -35,9 +36,9 @@ public class MyUI extends UI {
 		layout.setMargin(true);
 		setContent(layout);
 
-		LoginViewImpl lvi = new LoginViewImpl();
+		LoginPresenter lp = new LoginPresenter(new User(), new LoginViewImpl());
 		
-		layout.addComponent(lvi);
+		layout.addComponent(lp.getView());
 
 
 	}

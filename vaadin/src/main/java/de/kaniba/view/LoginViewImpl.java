@@ -1,13 +1,13 @@
 package de.kaniba.view;
 
-import org.vaadin.teemu.ratingstars.RatingStars;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.vaadin.event.MouseEvents.ClickEvent;
-import com.vaadin.event.MouseEvents.ClickListener;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
@@ -23,8 +23,11 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 	private TextField usernameText;
 	private PasswordField passwordText;
 	private Button submit;
+	private List<LoginViewListener> listeners;
 	
 	public LoginViewImpl() {			
+			listeners = new ArrayList<LoginViewListener>();
+		
 			Panel mainPanel = new Panel();
 			mainPanel.setWidth("550px");
 			
@@ -39,29 +42,32 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 		    cont.addComponent(passwordText);
 		    
 		    submit = new Button("Einloggen");
+		    submit.addClickListener(this);
 		    cont.addComponent(submit);
 		    
 		    mainPanel.setContent(cont);
-		    
 		    setCompositionRoot(mainPanel);
 	}
 	
-	@Override
-	public void click(ClickEvent event) {
-		// TODO Auto-generated method stub
-		
+	public TextField getUsernameText() {
+		return usernameText;
 	}
 
-	@Override
-	public void setDisplay(double value) {
-		// TODO Auto-generated method stub
-		
+	public PasswordField getPasswordText() {
+		return passwordText;
 	}
 
 	@Override
 	public void addListener(LoginViewListener listener) {
-		// TODO Auto-generated method stub
+		listeners.add(listener);
 		
 	}
 
+	@Override
+	public void buttonClick(ClickEvent event) {
+		for(LoginViewListener listener : listeners) {
+			listener.click(event);
+		}
+		
+	}
 }

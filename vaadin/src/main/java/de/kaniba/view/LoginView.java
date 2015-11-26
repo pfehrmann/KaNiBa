@@ -1,14 +1,19 @@
 package de.kaniba.view;
 
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.PasswordField;
+import com.vaadin.ui.TextField;
+
 import de.kaniba.view.LoginView.LoginViewListener;
 
 public interface LoginView {
-	public void setDisplay(double value);
+	public TextField getUsernameText();
+	public PasswordField getPasswordText();
 
 	interface LoginViewListener {
-		void buttonClick(char operation);
+		void click(ClickEvent event);
 	}
 
 	public void addListener(LoginViewListener listener);
-	public void login(String username, String password);
 }
