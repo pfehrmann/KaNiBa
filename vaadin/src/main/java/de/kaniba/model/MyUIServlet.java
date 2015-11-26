@@ -1,4 +1,4 @@
-package de.kaniba.vaadin;
+package de.kaniba.model;
 
 import javax.servlet.annotation.WebServlet;
 

@@ -1,4 +1,4 @@
-package de.kaniba.vaadin;
+package de.kaniba.model;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
