@@ -18,14 +18,8 @@ public class BarViewImpl extends CustomComponent implements BarView, ClickListen
 
 	public BarViewImpl() {
 		
-				Panel mainPanel = new Panel();
-			    mainPanel.setWidth("550px");
-			    mainPanel.setHeight("500px");
-			    RatingStars ratingStars = new RatingStars();
-			    ratingStars.setMaxValue(5);
-			    ratingStars.setCaption("Bar Rating");
-			    ratingStars.setValue(4.0 + 1.3);
-			    ratingStars.setImmediate(true);
+				Panel mainPanel = createMainPanel();
+			    RatingStars ratingStars = createRatingStars();
 			    
 			    
 		        
@@ -33,6 +27,32 @@ public class BarViewImpl extends CustomComponent implements BarView, ClickListen
 			    
 			    setCompositionRoot(mainPanel);
 			   
+	}
+
+	private Panel createMainPanel() {
+		Panel mainPanel = new Panel();
+		mainPanel.setWidth("550px");
+		mainPanel.setHeight("500px");
+		return mainPanel;
+	}
+
+	private RatingStars createRatingStars() {
+		//Diese Methode legt die Anzeigeelemente für die Sterne an
+		
+		RatingStars ratinggeneral = new RatingStars();
+		RatingStars ratingatmo = new RatingStars();
+		RatingStars ratingmusic = new RatingStars();
+		RatingStars ratingppr = new RatingStars();
+		
+		ratinggeneral.setMaxValue(5);
+		ratingatmo.setMaxValue(5);
+		ratingmusic.setMaxValue(5);
+		ratingppr.setMaxValue(5);
+		
+		
+		ratinggeneral.setCaption("Bar Rating");
+		ratinggeneral.setImmediate(true);
+		return ratinggeneral;
 	}
 	
 	@Override
