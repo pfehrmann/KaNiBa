@@ -1,4 +1,4 @@
-package de.kaniba.vaadin;
+package de.kaniba.model;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -33,8 +33,10 @@ public class MyUI extends UI {
 		final VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		setContent(layout);
+
 	
-	    BarViewImpl bvi = new BarViewImpl();
+	    	BarViewImpl bvi = new BarViewImpl();
+
 	 
 		layout.addComponent(bvi);
 
