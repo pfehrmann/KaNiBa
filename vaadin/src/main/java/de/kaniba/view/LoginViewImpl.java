@@ -8,6 +8,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
@@ -24,25 +25,37 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 	private PasswordField passwordText;
 	private Button submit;
 	private List<LoginViewListener> listeners;
+	private String width = "100%";
 	
 	public LoginViewImpl() {			
 			listeners = new ArrayList<LoginViewListener>();
-		
+			
 			Panel mainPanel = new Panel();
 			mainPanel.setWidth("550px");
 			
 			VerticalLayout cont = new VerticalLayout();
 			cont.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 			cont.setSpacing(true);
+			cont.addStyleName("login");
+			cont.setWidth("95%");
+			cont.setHeight("95%");
+			
+			//cont.addComponent(new Label("Login"));
 			
 			usernameText = new TextField("Benutzername");
+			usernameText.addStyleName("login");
+			usernameText.setWidth(width);
 			cont.addComponent(usernameText);
 
 		    passwordText = new PasswordField("Passwort");
+		    passwordText.addStyleName("login");
+		    passwordText.setWidth(width);
 		    cont.addComponent(passwordText);
 		    
 		    submit = new Button("Einloggen");
 		    submit.addClickListener(this);
+		    submit.addStyleName("login");
+		    submit.setWidth(width);
 		    cont.addComponent(submit);
 		    
 		    mainPanel.setContent(cont);
