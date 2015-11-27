@@ -4,6 +4,7 @@ import org.vaadin.teemu.ratingstars.RatingStars;
 
 import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.event.MouseEvents.ClickListener;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Panel;
 
@@ -49,6 +50,12 @@ public class BarViewImpl extends CustomComponent implements BarView, ClickListen
 
 	@Override
 	public void click(ClickEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
 		// TODO Auto-generated method stub
 		
 	}

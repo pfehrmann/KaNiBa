@@ -1,5 +1,6 @@
 package de.kaniba.presenter;
 
+import com.vaadin.navigator.View;
 import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickEvent;
@@ -23,8 +24,8 @@ public class LoginPresenter implements LoginView.LoginViewListener {
 		view.addListener(this);
 	}
 
-	public CustomComponent getView() {
-		return (CustomComponent) view;
+	public View getView() {
+		return view;
 	}
 
 	/**

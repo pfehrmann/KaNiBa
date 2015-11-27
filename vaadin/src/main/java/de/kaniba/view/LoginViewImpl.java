@@ -3,6 +3,7 @@ package de.kaniba.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Alignment;
@@ -88,5 +89,11 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 	@Override
 	public String getFormWidth() {
 		return width;
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 }

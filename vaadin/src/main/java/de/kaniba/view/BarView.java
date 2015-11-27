@@ -1,6 +1,8 @@
 package de.kaniba.view;
 
-public interface BarView {
+import com.vaadin.navigator.View;
+
+public interface BarView extends View{
 
 	public void setDisplay(double value);
 	interface BarViewListener {
