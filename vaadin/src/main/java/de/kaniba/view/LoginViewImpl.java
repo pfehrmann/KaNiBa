@@ -8,7 +8,6 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
@@ -25,37 +24,33 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 	private PasswordField passwordText;
 	private Button submit;
 	private List<LoginViewListener> listeners;
-	private String width = "90%";
-	
+	private String relativeWidth = "100%";
+	private String width = "300px";
+	private Panel mainPanel;
 	public LoginViewImpl() {			
 			listeners = new ArrayList<LoginViewListener>();
 			
-			Panel mainPanel = new Panel();
-			mainPanel.setWidth("550px");
+			mainPanel = new Panel();
+			mainPanel.setWidth(width);
 			
 			VerticalLayout cont = new VerticalLayout();
 			cont.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 			cont.setSpacing(true);
-			cont.addStyleName("login");
-			cont.setWidth("95%");
-			cont.setHeight("95%");
-			
-			//cont.addComponent(new Label("Login"));
+			cont.addStyleName("login-panel");
 			
 			usernameText = new TextField("Benutzername");
-			usernameText.addStyleName("login");
-			usernameText.setWidth(width);
+			usernameText.setInputPrompt("Benutzername");
+			usernameText.setWidth(relativeWidth);
 			cont.addComponent(usernameText);
 
 		    passwordText = new PasswordField("Passwort");
-		    passwordText.addStyleName("login");
-		    passwordText.setWidth(width);
+		    passwordText.setInputPrompt("Passwort");
+		    passwordText.setWidth(relativeWidth);
 		    cont.addComponent(passwordText);
 		    
 		    submit = new Button("Einloggen");
 		    submit.addClickListener(this);
-		    submit.addStyleName("login");
-		    submit.setWidth(width);
+		    submit.setWidth(relativeWidth);
 		    cont.addComponent(submit);
 		    
 		    mainPanel.setContent(cont);
@@ -82,5 +77,16 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 			listener.click(event);
 		}
 		
+	}
+
+	@Override
+	public void setFormWidth(String width) {
+		this.width = width;
+		mainPanel.setWidth(width);
+	}
+
+	@Override
+	public String getFormWidth() {
+		return width;
 	}
 }

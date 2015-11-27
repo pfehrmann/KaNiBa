@@ -1,5 +1,6 @@
 package de.kaniba.presenter;
 
+import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomComponent;
@@ -36,10 +37,13 @@ public class LoginPresenter implements LoginView.LoginViewListener {
 		// Session holen
 		VaadinSession session = ((MyUI) UI.getCurrent()).getSession();
 
+		// Passwort und Benutzernamen auslesen
+		String username = view.getUsernameText().getValue();
+		String password = view.getPasswordText().getValue();
+
 		// Versuchen einzuloggen
 		try {
-			model = model.login(view.getUsernameText().getValue(), view
-					.getPasswordText().getValue());
+			model = model.login(username, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 			model = null;
@@ -54,10 +58,17 @@ public class LoginPresenter implements LoginView.LoginViewListener {
 			}
 		}
 
+		// Im Fehlerfall eine Warnung ausgeben
 		if (!loggedIn) {
 			Notification
 					.show("Fehler beim Anmelden. Benutzername oder Passwort sind falsch.",
 							Notification.Type.WARNING_MESSAGE);
+			view.getUsernameText().setComponentError(
+					new UserError("Falscher Benutzername"));
+			view.getPasswordText().setComponentError(
+					new UserError("Falsches Passwort"));
+		} else {
+			view.getPasswordText().setComponentError(null);
 		}
 
 		// Werte in die Session schreiben

@@ -10,7 +10,9 @@ import de.kaniba.view.LoginView.LoginViewListener;
 public interface LoginView {
 	public TextField getUsernameText();
 	public PasswordField getPasswordText();
-
+	public void setFormWidth(String width);
+	public String getFormWidth();
+	
 	interface LoginViewListener {
 		void click(ClickEvent event);
 	}
