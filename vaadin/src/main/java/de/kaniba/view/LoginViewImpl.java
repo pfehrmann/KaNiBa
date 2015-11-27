@@ -25,7 +25,7 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 	private PasswordField passwordText;
 	private Button submit;
 	private List<LoginViewListener> listeners;
-	private String width = "100%";
+	private String width = "90%";
 	
 	public LoginViewImpl() {			
 			listeners = new ArrayList<LoginViewListener>();
