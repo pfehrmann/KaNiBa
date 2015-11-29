@@ -1,8 +1,10 @@
 package de.kaniba.view;
 
+import com.vaadin.ui.Panel;
+
 public interface BarView {
 
-	public void setDisplay(double value);
+	public void setDisplay(Panel panel);
 	interface BarViewListener {
 		 void buttonClick(char operation);
 		 }
