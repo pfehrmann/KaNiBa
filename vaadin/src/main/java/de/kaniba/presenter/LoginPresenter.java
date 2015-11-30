@@ -30,12 +30,19 @@ public class LoginPresenter implements LoginView.LoginViewListener {
 	/**
 	 * Einloggen
 	 * 
-	 * @param event
+	 * @param event Das Event, das beim Klicken ausgelöst wurde
 	 */
 	@Override
-	public void click(ClickEvent event) {
+	public void loginButtonClick(ClickEvent event) {
 		// Session holen
 		VaadinSession session = ((MyUI) UI.getCurrent()).getSession();
+
+		// Wenn der User bereits eingeloggt ist, kann er sich nicht erneut
+		// einloggen
+		Object loggedInObj = session.getAttribute("loggedIn");
+		if (loggedInObj.getClass() == boolean.class && (boolean) loggedInObj) {
+			return;
+		}
 
 		// Passwort und Benutzernamen auslesen
 		String username = view.getUsernameText().getValue();
