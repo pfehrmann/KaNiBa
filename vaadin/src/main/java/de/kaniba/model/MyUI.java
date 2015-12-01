@@ -1,31 +1,21 @@
 package de.kaniba.model;
 
-import javax.servlet.annotation.WebServlet;
-
-import org.vaadin.teemu.ratingstars.RatingStars;
-
+import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import de.kaniba.view.BarView;
-import de.kaniba.view.BarViewImpl;
+import de.kaniba.presenter.LoginPresenter;
+import de.kaniba.view.LoginViewImpl;
 
 /**
  *
  */
 @Theme("mytheme")
 @Widgetset("de.kaniba.vaadin.MyAppWidgetset")
+@PreserveOnRefresh
 public class MyUI extends UI {
 
 	@Override
@@ -34,18 +24,9 @@ public class MyUI extends UI {
 		layout.setMargin(true);
 		setContent(layout);
 
+		LoginPresenter lp = new LoginPresenter(new User(), new LoginViewImpl());
 		
-	   	 BarViewImpl bvi = new BarViewImpl();
-	 
-		layout.addComponent(bvi);
-
-
+		layout.addComponent(lp.getView());
 	}
 
-	/*
-	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
-	@VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
-	public static class MyUIServlet extends VaadinServlet {
-	}
-	*/
 }
