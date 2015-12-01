@@ -24,9 +24,19 @@ public class MyUI extends UI {
 		layout.setMargin(true);
 		setContent(layout);
 
+
 		LoginPresenter lp = new LoginPresenter(new User(), new LoginViewImpl());
 		
 		layout.addComponent(lp.getView());
+
+	/*Rating Stars
+
+	    	BarViewImpl bvi = new BarViewImpl();
+
+	 
+		layout.addComponent(bvi);
+
+	*/ 
 	}
 
 }
