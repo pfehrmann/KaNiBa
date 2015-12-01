@@ -1,13 +1,18 @@
 package de.kaniba.view;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Panel;
+
+import de.kaniba.model.Rating;
 
 public interface BarView {
 
-	public void setDisplay(Panel panel);
-	interface BarViewListener {
-		 void buttonClick(char operation);
-		 }
-	public void addListener(BarViewListener listener);
 	
+	
+	interface BarViewListener{
+		void ratingButtonClick(Rating rating);
+	}
+
+	public void addRatingButtonClickListener(BarViewListener listener);
 }
