@@ -1,6 +1,7 @@
 package de.kaniba.model;
 
 import java.sql.Date;
+import java.sql.SQLException;
 
 public class InternalUser extends User {
 	private String sessionID;
@@ -13,7 +14,7 @@ public class InternalUser extends User {
 	private Address address;
 
 	InternalUser() {
-		throw new RuntimeException("implement me");
+		super();
 	}
 
 	public int getUserID() {
@@ -27,8 +28,9 @@ public class InternalUser extends User {
 	 *            Die Bar, die bewertet werden soll.
 	 * @param rating
 	 *            Das Ratig, das abgegeben wird.
+	 * @throws SQLException 
 	 */
-	public void rateBar(Bar bar, Rating rating) {
+	public void rateBar(Bar bar, Rating rating) throws SQLException {
 		if (ratedBar(bar)) {
 			Rating oldRating = getRating(bar.getBarID());
 			int diffGeneral = rating.getGeneralRating() - oldRating.getGeneralRating();
@@ -43,7 +45,7 @@ public class InternalUser extends User {
 			bar.setSumPeopleRating(bar.getSumPeopleRating() + diffPeople);
 			bar.setSumPprRating(bar.getSumPprRating() + diffPpr);
 
-			Database.saveBarRating(bar, rating);
+			Database.saveBarRating(rating);
 		} else {
 			bar.setSumAtmosphereRating(bar.getSumAtmosphereRating() + rating.getAtmosphereRating());
 			bar.setSumGeneralRating(bar.getSumGeneralRating() + rating.getGeneralRating());
@@ -52,7 +54,7 @@ public class InternalUser extends User {
 			bar.setSumPprRating(bar.getSumPprRating() + rating.getPprRating());
 			bar.setCountRating(bar.getCountRating() + 1);
 
-			Database.saveBarRating(bar, rating);
+			Database.saveBarRating(rating);
 		}
 	}
 
@@ -75,8 +77,9 @@ public class InternalUser extends User {
 	 *            Die Bar, von der das Rating abgefragt wird
 	 * @return Gibt das Rating zurück, oder null falls die Bar noch nicht
 	 *         bewertet wurde.
+	 * @throws SQLException 
 	 */
-	public Rating getRating(int barID) {
+	public Rating getRating(int barID) throws SQLException {
 		return Database.getRating(userID, barID);
 	}
 	

@@ -29,6 +29,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Sebastian/Downloads/ratingstars-1.4.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

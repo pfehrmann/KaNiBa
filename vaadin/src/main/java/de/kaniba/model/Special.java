@@ -16,7 +16,7 @@ public class Special {
 		this.specialID = UNKNOWNSPECIALID;
 	}
 	
-	public Special(int specialID) {
+	public Special(int specialID) throws Exception {
 		//Das Special aus der Datenbank auslesen
 		Special t = Database.readSpecial(specialID);
 		
@@ -80,5 +80,10 @@ public class Special {
 
 	public int getBarID() {
 		return barID;
+	}
+
+	public void setBarID(int barID) {
+		this.barID=barID;
+		
 	}
 }

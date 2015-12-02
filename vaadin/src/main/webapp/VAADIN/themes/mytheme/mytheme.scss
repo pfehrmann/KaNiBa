@@ -32,5 +32,10 @@
 @mixin mytheme {
   @include valo;
 
-  // Insert your own theme rules here
+
+  	.ratingpanel{
+  			border-style:none;
+  			alignment:center;
+  			
+			}  	 
 }
