@@ -1,5 +1,5 @@
 package de.kaniba.cucumber;
-/*
+
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeUnit;
@@ -145,4 +145,3 @@ public class StepDefs {
 	}
 	
 }
-*/
