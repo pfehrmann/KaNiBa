@@ -1,0 +1,135 @@
+package de.kaniba.model;
+
+import java.sql.Date;
+
+public class InternalUser extends User {
+	private String sessionID;
+	private int userID;
+	private Email email;
+	private String password;
+	private String name;
+	private String firstname;
+	private Date birthdate;
+	private Address address;
+
+	InternalUser() {
+		throw new RuntimeException("implement me");
+	}
+
+	public int getUserID() {
+		return userID;
+	}
+
+	/**
+	 * Methode, um einfach eine Bar zu bewerten.
+	 * 
+	 * @param bar
+	 *            Die Bar, die bewertet werden soll.
+	 * @param rating
+	 *            Das Ratig, das abgegeben wird.
+	 */
+	public void rateBar(Bar bar, Rating rating) {
+		if (ratedBar(bar)) {
+			Rating oldRating = getRating(bar.getBarID());
+			int diffGeneral = rating.getGeneralRating() - oldRating.getGeneralRating();
+			int diffPpr = rating.getPprRating() - oldRating.getPprRating();
+			int diffMusic = rating.getMusicRating() - oldRating.getMusicRating();
+			int diffPeople = rating.getPeopleRating() - oldRating.getPeopleRating();
+			int diffAtmosphere = rating.getAtmosphereRating() - oldRating.getAtmosphereRating();
+
+			bar.setSumAtmosphereRating(bar.getSumAtmosphereRating() + diffAtmosphere);
+			bar.setSumGeneralRating(bar.getSumGeneralRating() + diffGeneral);
+			bar.setSumMusicRating(bar.getSumMusicRating() + diffMusic);
+			bar.setSumPeopleRating(bar.getSumPeopleRating() + diffPeople);
+			bar.setSumPprRating(bar.getSumPprRating() + diffPpr);
+
+			Database.saveBarRating(bar, rating);
+		} else {
+			bar.setSumAtmosphereRating(bar.getSumAtmosphereRating() + rating.getAtmosphereRating());
+			bar.setSumGeneralRating(bar.getSumGeneralRating() + rating.getGeneralRating());
+			bar.setSumMusicRating(bar.getSumMusicRating() + rating.getMusicRating());
+			bar.setSumPeopleRating(bar.getSumPeopleRating() + rating.getPeopleRating());
+			bar.setSumPprRating(bar.getSumPprRating() + rating.getPprRating());
+			bar.setCountRating(bar.getCountRating() + 1);
+
+			Database.saveBarRating(bar, rating);
+		}
+	}
+
+	/**
+	 * Methode um zu bestimmen, ob der User eine bestimmte Bar schon bewertet
+	 * hat. Die UserID wird hierbei aus dem aktuellen User genommen
+	 * 
+	 * @param bar
+	 *            Die Bar, die überprüft wird.
+	 * @return Gibt true, wenn der User die Bar bereits bewertet hat.
+	 */
+	public boolean ratedBar(Bar bar) {
+		throw new RuntimeException("implement me");
+	}
+
+	/**
+	 * Gibt das Rating, dass der User für eine Bar abgegeben hat.
+	 * 
+	 * @param bar
+	 *            Die Bar, von der das Rating abgefragt wird
+	 * @return Gibt das Rating zurück, oder null falls die Bar noch nicht
+	 *         bewertet wurde.
+	 */
+	public Rating getRating(int barID) {
+		return Database.getRating(userID, barID);
+	}
+	
+	public Email getEmail() {
+		return email;
+	}
+
+	public void setEmail(Email email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public Date getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	public String getSessionID() {
+		return sessionID;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public Address getAddress() {
+		return this.address;
+	}
+
+}
