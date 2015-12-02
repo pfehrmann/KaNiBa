@@ -40,7 +40,7 @@ public class LoginPresenter implements LoginView.LoginViewListener {
 		// Wenn der User bereits eingeloggt ist, kann er sich nicht erneut
 		// einloggen
 		Object loggedInObj = session.getAttribute("loggedIn");
-		if (loggedInObj.getClass() == boolean.class && (boolean) loggedInObj) {
+		if (loggedInObj != null && loggedInObj.getClass() == boolean.class && (boolean) loggedInObj) {
 			return;
 		}
 
@@ -48,6 +48,10 @@ public class LoginPresenter implements LoginView.LoginViewListener {
 		String username = view.getUsernameText().getValue();
 		String password = view.getPasswordText().getValue();
 
+		if("philipp".equals(username) && "test".equals(password)) {
+			return;
+		}
+		
 		// Versuchen einzuloggen
 		try {
 			model = model.login(username, password);
