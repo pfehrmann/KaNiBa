@@ -1,5 +1,6 @@
 package de.kaniba.model;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public class Bar {
 		barID = UNKNOWNBARID;
 	}
 
-	public Bar(int barID) {
+	public Bar(int barID) throws SQLException {
 		Bar t = Database.readBar(barID);
 
 		this.barID = barID;
@@ -43,7 +44,7 @@ public class Bar {
 		this.countRating = t.getCountRating();
 	}
 	
-	public boolean saveBar() {
+	public boolean saveBar() throws SQLException {
 		return Database.saveBar(this);
 	}
 
@@ -145,7 +146,7 @@ public class Bar {
 
 	// Es macht unter Umständen Sinn, nur die Specials anzuzeigen, die aktuell
 	// laufen, z.B. beim anzeigen der specials für den normalen User.
-	public List<Special> getCurrentSpecials() {
+	public List<Special> getCurrentSpecials() throws SQLException {
 		if (currentSpecials != null) {
 			return currentSpecials;
 		} else {
@@ -155,7 +156,7 @@ public class Bar {
 	}
 
 	// Zeigt alle Specials an, hilfreich für Admins
-	public List<Special> getAllSpecials() {
+	public List<Special> getAllSpecials() throws SQLException {
 		if (allSpecials != null) {
 			return allSpecials;
 		} else {allSpecials = Database.readCurrentSpecials(barID);
