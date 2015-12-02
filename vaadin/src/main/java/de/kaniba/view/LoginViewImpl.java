@@ -32,6 +32,7 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 			listeners = new ArrayList<LoginViewListener>();
 			
 			mainPanel = new Panel();
+			mainPanel.setId("login-view-main-panel");
 			mainPanel.setWidth(width);
 			
 			VerticalLayout cont = new VerticalLayout();
@@ -42,16 +43,19 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 			usernameText = new TextField("Benutzername");
 			usernameText.setInputPrompt("Benutzername");
 			usernameText.setWidth(relativeWidth);
+			usernameText.setId("login-view-username-input");
 			cont.addComponent(usernameText);
 
 		    passwordText = new PasswordField("Passwort");
 		    passwordText.setInputPrompt("Passwort");
 		    passwordText.setWidth(relativeWidth);
+		    passwordText.setId("login-view-password-input");
 		    cont.addComponent(passwordText);
 		    
 		    submit = new Button("Einloggen");
 		    submit.addClickListener(this);
 		    submit.setWidth(relativeWidth);
+		    submit.setId("login-view-submit-button");
 		    cont.addComponent(submit);
 		    
 		    mainPanel.setContent(cont);
