@@ -28,15 +28,13 @@
 // Example variants can be copy/pasted from https://vaadin.com/wiki/-/wiki/Main/Valo+Examples
 
 @import "../valo/valo.scss";
-@import "./loginStyle.scss";
 
 @mixin mytheme {
   @include valo;
-  @include loginStyle;
 
+  // Insert your own theme rules here
   	.ratingpanel{
   			border-style:none;
-  			alignment:center;
   			
-			}  	 
+		}  	 
 }
