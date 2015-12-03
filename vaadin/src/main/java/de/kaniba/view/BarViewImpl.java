@@ -1,8 +1,10 @@
 package de.kaniba.view;
 
 import java.awt.List;
+import java.io.File;
 import java.util.ArrayList;
 
+import org.apache.commons.lang3.concurrent.BackgroundInitializer;
 import org.vaadin.teemu.ratingstars.RatingStars;
 
 import com.vaadin.data.Property;
@@ -11,9 +13,12 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.FileResource;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Panel;
 
 import de.kaniba.model.Rating;
@@ -32,14 +37,16 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	public RatingStars ratingatmo = new RatingStars();
 	public RatingStars ratingmusic = new RatingStars();
 	public RatingStars ratingppr = new RatingStars();
-
+	
 	public BarViewImpl() {
 
 		Panel mainPanel = createMainPanel();
 
 		Panel ratingStars = createRatingStars();
+		Image barImage = createBarPicture();
 		GridLayout mainLayout = new GridLayout(2, 2);
 		mainLayout.addComponent(ratingStars, 1, 1);
+		mainLayout.addComponent(barImage,0,1);
 		mainPanel.setContent(mainLayout);
 
 		setCompositionRoot(mainPanel);
@@ -125,6 +132,23 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	public void enter(ViewChangeEvent event) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public Image createBarPicture(){
+	
+		
+		String basepath = VaadinService.getCurrent()
+                .getBaseDirectory().getAbsolutePath();
+		FileResource resource = new FileResource(new File(basepath +"/WEB-INF/images/logo.png"));
+
+		//Show the image in the application
+		Image barimage = new Image(null, resource);
+	
+		barimage.setHeight("150px");
+	
+		
+		return barimage;
+		
 	}
 
 }

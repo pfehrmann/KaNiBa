@@ -12794,6 +12794,27 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: hidden;
 }
 
+.mytheme .login {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 95%;
+}
+
+.mytheme .login-panel {
+	padding: 12px;
+}
+
 .mytheme .ratingpanel {
 	border-style: none;
+	alignment: center;
+}
+
+.mytheme .login {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 95%;
+}
+
+.mytheme .login-panel {
+	padding: 12px;
 }
