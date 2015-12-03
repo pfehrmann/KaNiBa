@@ -99,4 +99,9 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public Button getSubmitButton() {
+		return submit;
+	}
 }

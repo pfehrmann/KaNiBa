@@ -547,27 +547,28 @@ public class Database {
 		Connection con = verbindung();  
 		Statement st = con.createStatement();   
 		
-		ResultSet rs = st.executeQuery("SELECT * FROM Ratings");
-
+		ResultSet rs = st.executeQuery("SELECT * FROM user");
+		
 		while ( rs.next() )
 		{
 			useremaildb = rs.getString("email");
 			userpassworddb = rs.getString("password");
 			isadmin = rs.getInt("isAdmin");
 			userid = rs.getInt("userID");
-			con.close();
-			if(useremaildb==useremail)
+			if(useremaildb.equals(useremail))
 			{
-				if(userpassworddb==password)
+				if(userpassworddb.equals(password))
 				{
 					if(isadmin==0)
 					{
 						InternalUser user = giveUser(userid);
+						con.close();
 						return user;
 					}
 					else
 					{
 						Admin user = (Admin) giveUser(userid);
+						con.close();
 						return user;
 					}
 				}

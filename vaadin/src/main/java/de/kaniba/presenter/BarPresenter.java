@@ -3,6 +3,7 @@ package de.kaniba.presenter;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.navigator.View;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Notification;
 
@@ -16,18 +17,17 @@ public class BarPresenter implements BarView.BarViewListener{
 	Rating ratingModel;
 	BarView view;
 
+	public View getView() {
+		return view;
+	}
 	
-	 public BarPresenter(Bar bmodel,BarView view,Rating rmodel) {
+	 public BarPresenter(Bar bmodel,BarView view/*,Rating rmodel*/) {
 		// TODO Auto-generated constructor stub
 		 this.barModel = bmodel;
-		 this.ratingModel = rmodel;
+		 /*this.ratingModel = rmodel;*/
 		 this.view = view;
 		 
 		 view.addRatingButtonClickListener(this);
-		 
-		 
-		 
-		
 	}
 
 
@@ -35,5 +35,4 @@ public class BarPresenter implements BarView.BarViewListener{
 	public void ratingButtonClick(Rating rating) {
 		// TODO Auto-generated method stub
 		Notification.show("Es Lebt");
-		
 	}}
