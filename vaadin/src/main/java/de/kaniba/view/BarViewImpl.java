@@ -1,23 +1,18 @@
 package de.kaniba.view;
 
-import java.awt.List;
 import java.util.ArrayList;
 
 import org.vaadin.teemu.ratingstars.RatingStars;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.event.MouseEvents.ClickEvent;
-import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 
+import de.kaniba.model.Database;
 import de.kaniba.model.Rating;
-import de.kaniba.view.*;
 
 public class BarViewImpl extends CustomComponent implements BarView {
 
@@ -38,6 +33,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		Panel mainPanel = createMainPanel();
 
 		Panel ratingStars = createRatingStars();
+		
 		GridLayout mainLayout = new GridLayout(2, 2);
 		mainLayout.addComponent(ratingStars, 1, 1);
 		mainPanel.setContent(mainLayout);
@@ -62,8 +58,6 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		ratingpanel.addStyleName("ratingpanel");
 		GridLayout starLayout = new GridLayout(1, 6);
 		starLayout.setSizeFull();
-
-		ratingatmo.getValue();
 
 		ratinggeneral.setMaxValue(5);
 		ratingatmo.setMaxValue(5);

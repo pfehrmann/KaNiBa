@@ -24,6 +24,8 @@ public class Bar {
 	private int sumPeopleRating;
 	private int sumAtmosphereRating;
 	private int countRating;
+	private String description;
+	private String name;
 
 	public Bar() {
 		barID = UNKNOWNBARID;
@@ -171,7 +173,6 @@ public class Bar {
 	public void addSpecial(Special special) {
 		currentSpecials.add(special);
 		allSpecials.add(special);
-		throw new RuntimeException("implement me");
 	}
 
 	/**
@@ -181,5 +182,24 @@ public class Bar {
 	public void updateRating() {
 		throw new RuntimeException("implement me");
 	}
-
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public String toString() {
+		return name + ", " + description + ", Ratings: " + countRating;
+	}
 }

@@ -23,4 +23,9 @@ public class Email {
 	public static boolean validateEmail(String mail) {
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		return this.mail;
+	}
 }

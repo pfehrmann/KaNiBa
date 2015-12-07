@@ -72,11 +72,14 @@ public class Database {
 			int musicRating=0;
 			int peopleRating =0;
 			int atmosphereRating=0;
+			int ratingCount = 0;
 			int userID=0;
 			String city=null;
 			String street=null;
 			String number=null;
 			String zip=null;
+			String description = null;
+			String name = null;
 			Connection con = verbindung();  
 			Statement st = con.createStatement(); 
 			ResultSet rs = st.executeQuery("SELECT * FROM bars");
@@ -88,11 +91,14 @@ public class Database {
 				musicRating = rs.getInt("musicRating");
 				peopleRating = rs.getInt("peopleRating");
 				atmosphereRating = rs.getInt("atmosphereRating");
+				ratingCount = rs.getInt("ratingCount");
 				userID = rs.getInt("userID");
 				city = rs.getString("city");
 				street = rs.getString("street");
 				number = rs.getString("number");
 				zip = rs.getString("zip");
+				description = rs.getString("description");
+				name = rs.getString("name");
 				if(i==barID)
 				{
 					ret.setSumGeneralRating(generalRating);
@@ -100,12 +106,14 @@ public class Database {
 					ret.setSumMusicRating(musicRating);
 					ret.setSumPeopleRating(peopleRating);
 					ret.setSumAtmosphereRating(atmosphereRating);
+					ret.setCountRating(ratingCount);
 					Admin admin = new Admin(giveUser(userID));
 					ret.setBarOwner(admin);
 					Address address = new Address(city,street,number,zip);
 					ret.setAddress(address);
 					ret.setPinboard(givePinboard(barID));					
-					ret.setCountRating(0);
+					ret.setName(name);
+					ret.setDescription(description);
 					con.close();
 					return ret;
 				}
@@ -123,22 +131,21 @@ public class Database {
 	 * @return Gibt den User zurück.
 	 */
 	public static InternalUser giveUser(int UserID) throws SQLException {
-		String name=null;
-		String firstname=null;
-		String email=null;
-		String password=null;
-		String sessionID=null;
-		Date birthdate=null;
-		String city=null;
-		String street=null;
-		String number=null;
-		String zip=null;     
-		Connection con = verbindung();  
-		Statement st = con.createStatement(); 
-		ResultSet rs = st.executeQuery("SELECT * FROM User");
-		int i=1;
+		String name = null;
+		String firstname = null;
+		String email = null;
+		String password = null;
+		String sessionID = null;
+		Date birthdate = null;
+		String city = null;
+		String street = null;
+		String number = null;
+		String zip = null;
+		Connection con = verbindung();
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery("SELECT * FROM User WHERE userID = " + UserID + ";");
 
-		while ( rs.next() ){
+		while (rs.next()) {
 			name = rs.getString("name");
 			firstname = rs.getString("firstname");
 			email = rs.getString("email");
@@ -150,25 +157,23 @@ public class Database {
 			number = rs.getString("number");
 			zip = rs.getString("zip");
 
-			if(i==UserID)
-			{
+			InternalUser user = new InternalUser();
+			user.setBirthdate(birthdate);
+			user.setFirstname(firstname);
+			user.setName(name);
+			user.setPassword(password);
+			Address address = new Address(city, street, number, zip);
+			user.setAddress(address);
+			Email emailemail = new Email(email);
+			user.setEmail(emailemail);
 
-				InternalUser user = new InternalUser();
-				user.setBirthdate(birthdate);
-				user.setFirstname(firstname);
-				user.setName(name);
-				user.setPassword(password);
-				Address address = new Address(city, street, number, zip);
-				user.setAddress(address);
-				Email emailemail = new Email(email);
-				user.setEmail(emailemail);
-				con.close();
-				return user;
-			}
-			i++;
+			st.close();
+			rs.close();
+			con.close();
+			return user;
 		}
 		con.close();
-		return null;		
+		return null;	
 	}
 	
 	/**
@@ -230,9 +235,15 @@ public class Database {
 		Connection con = verbindung();  
 		Statement st = con.createStatement(); 
 		Address address = bar.getAddress();
-		java.util.Date date= new java.util.Date();
+		java.util.Date date = new java.util.Date();
 		Timestamp lastUpdated = new Timestamp(date.getTime());
-		st.executeUpdate("INSERT INTO bars (userID,city,street,number,zip,generalRating,pprRating,musicRating,peopleRating,atmosphereRating,lastUpdated) VALUES ('"+bar.getBarOwner().getUserID()+"','"+address.getCity()+"','"+address.getStreet()+"','"+address.getNumber()+"','"+address.getZip()+"','0','0','0','0','0','"+lastUpdated+"');");
+		st.executeUpdate("INSERT INTO bars (userID,city,street,number,zip,generalRating,pprRating,musicRating,"
+				+ "peopleRating,atmosphereRating,ratingCount,lastUpdated,description,name) VALUES ('"
+				+ bar.getBarOwner().getUserID() + "','" + address.getCity() + "','" + address.getStreet() + "','"
+				+ address.getNumber() + "','" + address.getZip() + "','" + bar.getSumGeneralRating() + "','"
+				+ bar.getSumPprRating() + "','" + bar.getSumMusicRating() + "','" + bar.getSumPeopleRating() + "','"
+				+ bar.getSumAtmosphereRating() + "','" + bar.getCountRating() + "','" + lastUpdated + "', '"
+				+ bar.getDescription() + "', '" + bar.getName() + "');");
 		con.close();
 		return true;
 	}
@@ -540,34 +551,27 @@ public class Database {
 	 */
 	public static InternalUser logUserIn(String useremail, String password) throws SQLException {
 
-		String useremaildb=null;
-		String userpassworddb=null;
-		int isadmin=0;
+		String useremaildb = null;
+		String userpassworddb = null;
+		int isadmin = 0;
 		int userid = 0;
-		Connection con = verbindung();  
-		Statement st = con.createStatement();   
-		
+		Connection con = verbindung();
+		Statement st = con.createStatement();
+
 		ResultSet rs = st.executeQuery("SELECT * FROM user");
-		
-		while ( rs.next() )
-		{
+
+		while (rs.next()) {
 			useremaildb = rs.getString("email");
 			userpassworddb = rs.getString("password");
 			isadmin = rs.getInt("isAdmin");
 			userid = rs.getInt("userID");
-			if(useremaildb.equals(useremail))
-			{
-				System.out.println("[database:logUserIn] user gefunden, ID = " + userid);
-				if(userpassworddb.equals(password))
-				{
-					if(isadmin==0)
-					{
+			if (useremaildb.equalsIgnoreCase(useremail)) {
+				if (userpassworddb.equals(password)) {
+					if (isadmin == 0) {
 						InternalUser user = giveUser(userid);
 						con.close();
 						return user;
-					}
-					else
-					{
+					} else {
 						Admin user = (Admin) giveUser(userid);
 						con.close();
 						return user;
@@ -663,36 +667,40 @@ public class Database {
 	 * @throws SQLException 
 	 */
 	public static int saveUser(InternalUser user) throws SQLException {
-		int userID=0;
-		String UserEmail=null;
-		int update=0;
-		Connection con = verbindung();  
-		Statement st = con.createStatement(); 
-		ResultSet rs = st.executeQuery("SELECT * FROM user");
-		while ( rs.next() )
-		{
-			UserEmail = rs.getString("email");
-			if(UserEmail==user.getEmail().toString())
-			{
-				update=1;
-				userID=rs.getInt("userID");
-				break;
-			}
+		Connection con = verbindung();
+		Statement st = con.createStatement();
+		
+		String query = "SELECT userID FROM user WHERE email='" + user.getEmail().getMail() + "'";
+		ResultSet rs = st.executeQuery(query);
+		
+		int userID = -1;
+		while (rs.next()) {
+			userID = rs.getInt("userID");
 		}
-		if(update==1)
-		{
-			st.executeUpdate("UPDATE user SET name = "+user.getName()+", firstname = "+user.getFirstname()+", email = "+user.getEmail()+",  passwort= "+user.getPassword()+", sessionID = "+user.getSessionID()+", birthdate = "+user.getBirthdate()+", city = "+user.getAddress().getCity()+", street = "+user.getAddress().getStreet()+", number = "+user.getAddress().getNumber()+", zip = "+user.getAddress().getZip()+" WHERE userID= "+userID+";");
-		}
-		else
-		{
-			String query = "INSERT INTO user (name,firstname,email,password,sessionID,birthdate,city,street,number,zip) VALUES ('"
+		
+		//Update user
+		if(userID != -1) {
+			query = "UPDATE user SET name = '" + user.getName() + "', firstname = '" + user.getFirstname()
+					+ "', email = '" + user.getEmail() + "',  password = '" + user.getPassword() + "', sessionID = '"
+					+ user.getSessionID() + "', birthdate = '" + user.getBirthdate() + "', city = '"
+					+ user.getAddress().getCity() + "', street = '" + user.getAddress().getStreet() + "', number = '"
+					+ user.getAddress().getNumber() + "', zip = '" + user.getAddress().getZip() + "' WHERE userID = "
+					+ userID + ";";
+			System.out.println(query);
+			st.executeUpdate(query);
+		} else {
+			query = "INSERT INTO user (name,firstname,email,password,sessionID,birthdate,city,street,number,zip) VALUES ('"
 					+ user.getName() + "','" + user.getFirstname() + "','" + user.getEmail().getMail() + "','"
 					+ user.getPassword() + "','" + user.getSessionID() + "','" + user.getBirthdate() + "','"
 					+ user.getAddress().getCity() + "','" + user.getAddress().getStreet() + "','"
 					+ user.getAddress().getNumber() + "','" + user.getAddress().getZip() + "');";
 			st.executeUpdate(query);
 		}
-		con.close();		
+		
+		st.close();
+		rs.close();
+		con.close();
+		
 		return userID;
 	}
 	

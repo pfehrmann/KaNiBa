@@ -97,8 +97,16 @@ public class UpdateInformationPresenter implements UpdateInformationView.UpdateI
 	public void enter() {
 		this.model = (InternalUser) session.getAttribute("user");
 		
-		if(model == null) {
+		Object loggedInObj = session.getAttribute("loggedIn");
+		boolean loggedIn = false;
+		if (loggedInObj != null) {
+			loggedIn = (boolean) loggedInObj;
+		}
+
+		if (!loggedIn) {
+			Notification.show("Um deine Daten zu ändern, musst du eingeloggt sein.");
 			((NavigatorUI) UI.getCurrent()).getNavigator().navigateTo(LoginView.NAME);
+			return;
 		}
 		
 		view.setUser(model);
