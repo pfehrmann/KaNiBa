@@ -12,6 +12,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 public class LoginViewImpl extends CustomComponent implements LoginView, ClickListener{
@@ -96,7 +97,7 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
+		UI.getCurrent().getPage().setTitle("Login");
 		
 	}
 

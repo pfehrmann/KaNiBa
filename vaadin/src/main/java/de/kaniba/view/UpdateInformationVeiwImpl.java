@@ -15,6 +15,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 
 import de.kaniba.model.Address;
@@ -156,6 +157,7 @@ public class UpdateInformationVeiwImpl extends CustomComponent implements Update
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		UI.getCurrent().getPage().setTitle("Informationen aktualisieren");
 		for(UpdateInformationViewListener listener: listeners) {
 			listener.enter();
 		}

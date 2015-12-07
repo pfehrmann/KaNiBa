@@ -39,9 +39,7 @@ public class RegisterViewImpl extends CustomComponent implements RegisterView {
 	private Button submit;
 	private String width = "500px";
 	
-	public RegisterViewImpl() {
-		Page.getCurrent().setTitle("Registrieren");
-		
+	public RegisterViewImpl() {		
 		listeners = new ArrayList<>();
 		mainPanel = new Panel();
 		mainPanel.setWidth(width);
@@ -157,8 +155,7 @@ public class RegisterViewImpl extends CustomComponent implements RegisterView {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
-
+		Page.getCurrent().setTitle("Registrieren");
 	}
 
 	@Override
