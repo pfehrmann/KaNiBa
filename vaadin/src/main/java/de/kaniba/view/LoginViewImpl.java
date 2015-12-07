@@ -34,11 +34,11 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 			mainPanel = new Panel();
 			mainPanel.setId("login-view-main-panel");
 			mainPanel.setWidth(width);
+			mainPanel.addStyleName("login-panel");
 			
 			VerticalLayout cont = new VerticalLayout();
 			cont.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 			cont.setSpacing(true);
-			cont.addStyleName("login-panel");
 			
 			usernameText = new TextField("Benutzername");
 			usernameText.setInputPrompt("Benutzername");

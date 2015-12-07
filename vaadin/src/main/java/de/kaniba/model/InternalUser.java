@@ -13,7 +13,7 @@ public class InternalUser extends User {
 	private Date birthdate;
 	private Address address;
 
-	InternalUser() {
+	public InternalUser() {
 		super();
 	}
 
@@ -133,6 +133,10 @@ public class InternalUser extends User {
 
 	public Address getAddress() {
 		return this.address;
+	}
+	
+	public void saveUser() throws SQLException{
+		this.userID = Database.saveUser(this);
 	}
 
 }

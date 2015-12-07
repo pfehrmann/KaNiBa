@@ -9,6 +9,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 
 import de.kaniba.model.Admin;
+import de.kaniba.model.InternalUser;
 import de.kaniba.navigator.NavigatorUI;
 import de.kaniba.model.User;
 import de.kaniba.view.LoginView;
@@ -44,8 +45,8 @@ public class LoginPresenter implements LoginView.LoginViewListener {
 		
 		if (loggedInObj != null && loggedInObj.getClass() == Boolean.class && (boolean) loggedInObj) {
 			session.setAttribute("loggedIn", false);
+			session.setAttribute("model", new User());
 			view.getSubmitButton().setCaption("Einloggen");
-			System.out.println("log me out please :)");
 			return;
 		}
 
@@ -58,11 +59,13 @@ public class LoginPresenter implements LoginView.LoginViewListener {
 		
 		// Versuchen einzuloggen
 		boolean loggedIn = false;
+		InternalUser user = null;
 		
 		try {
-			User temp = model.login(username, password);
+			InternalUser temp = model.login(username, password);
 			if(temp != null) {
 				model = temp;
+				user = temp;
 				loggedIn = true;
 			} else {
 				loggedIn = false;
@@ -79,6 +82,8 @@ public class LoginPresenter implements LoginView.LoginViewListener {
 			if (model.getClass().equals(Admin.class)) {
 				admin = true;
 			}
+			//Bestätigung für den User anzeigen
+			Notification.show("Erfolgreich eingeloggt.");
 		}
 
 		// Im Fehlerfall eine Warnung ausgeben
@@ -96,7 +101,7 @@ public class LoginPresenter implements LoginView.LoginViewListener {
 		}
 
 		// Werte in die Session schreiben
-		session.setAttribute("user", model);
+		session.setAttribute("user", user);
 		session.setAttribute("admin", admin);
 		session.setAttribute("loggedIn", loggedIn);
 	}

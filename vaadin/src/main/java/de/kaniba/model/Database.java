@@ -557,6 +557,7 @@ public class Database {
 			userid = rs.getInt("userID");
 			if(useremaildb.equals(useremail))
 			{
+				System.out.println("[database:logUserIn] user gefunden, ID = " + userid);
 				if(userpassworddb.equals(password))
 				{
 					if(isadmin==0)
@@ -665,13 +666,12 @@ public class Database {
 		int userID=0;
 		String UserEmail=null;
 		int update=0;
-		int ratingID=0;
 		Connection con = verbindung();  
 		Statement st = con.createStatement(); 
 		ResultSet rs = st.executeQuery("SELECT * FROM user");
 		while ( rs.next() )
 		{
-			UserEmail = rs.getString("UserEmail");
+			UserEmail = rs.getString("email");
 			if(UserEmail==user.getEmail().toString())
 			{
 				update=1;
@@ -681,11 +681,16 @@ public class Database {
 		}
 		if(update==1)
 		{
-			st.executeUpdate("UPDATE user SET name = "+user.getName()+", firstname = "+user.getFirstname()+", email = "+user.getEmail()+",  passwort= "+user.getPassword()+", sessionID = "+user.getSessionID()+", birthdate = "+user.getBirthdate()+", city = "+user.getAddress().getCity()+", street = "+user.getAddress().getStreet()+", number = "+user.getAddress().getNumber()+", zip = "+user.getAddress().getZip()+" WHERE userID= "+ratingID+";");
+			st.executeUpdate("UPDATE user SET name = "+user.getName()+", firstname = "+user.getFirstname()+", email = "+user.getEmail()+",  passwort= "+user.getPassword()+", sessionID = "+user.getSessionID()+", birthdate = "+user.getBirthdate()+", city = "+user.getAddress().getCity()+", street = "+user.getAddress().getStreet()+", number = "+user.getAddress().getNumber()+", zip = "+user.getAddress().getZip()+" WHERE userID= "+userID+";");
 		}
 		else
 		{
-			st.executeUpdate("INSERT INTO user (name,firstname,email,password,sessionID,birthday,city,street,number,zip) VALUES ('"+user.getName()+"','"+user.getFirstname()+"','"+user.getEmail()+"','"+user.getPassword()+"','"+user.getSessionID()+"','"+user.getUserID()+"','"+user.getAddress().getCity()+"','"+user.getAddress().getStreet()+"','"+user.getAddress().getNumber()+"','"+user.getAddress().getZip()+"');");
+			String query = "INSERT INTO user (name,firstname,email,password,sessionID,birthdate,city,street,number,zip) VALUES ('"
+					+ user.getName() + "','" + user.getFirstname() + "','" + user.getEmail().getMail() + "','"
+					+ user.getPassword() + "','" + user.getSessionID() + "','" + user.getBirthdate() + "','"
+					+ user.getAddress().getCity() + "','" + user.getAddress().getStreet() + "','"
+					+ user.getAddress().getNumber() + "','" + user.getAddress().getZip() + "');";
+			st.executeUpdate(query);
 		}
 		con.close();		
 		return userID;
