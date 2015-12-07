@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.apache.commons.lang3.concurrent.BackgroundInitializer;
 import org.vaadin.teemu.ratingstars.RatingStars;
 
+import com.vaadin.ui.TextArea;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -41,15 +42,42 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	public BarViewImpl() {
 
 		Panel mainPanel = createMainPanel();
-
+		TextArea barInfoText = createBarInfoPanel();
 		Panel ratingStars = createRatingStars();
 		Image barImage = createBarPicture();
-		GridLayout mainLayout = new GridLayout(2, 2);
-		mainLayout.addComponent(ratingStars, 1, 1);
-		mainLayout.addComponent(barImage,0,1);
+		GridLayout mainLayout = new GridLayout(3, 2);
+		mainLayout.addComponent(ratingStars, 2, 0);
+		mainLayout.addComponent(barImage,0,0);
+		mainLayout.addComponent(barInfoText,1,0);
+		
 		mainPanel.setContent(mainLayout);
 
 		setCompositionRoot(mainPanel);
+	}
+
+	private TextArea createBarInfoPanel() {
+		
+		/*Hier fehlt noch eine Anbindung zur Datenbank deswegen Loreipsum Text*/
+		String platzhalter = "Lorem ipsum dolor sit amet,"
+				+ " consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna"
+				+ " aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."
+				+ " Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
+				+ " Lorem ipsum dolor sit amet, consetetur sadipscing elitr,"
+				+ " sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,"
+				+ " sed diam voluptua.";
+		
+		TextArea textInfo = new TextArea();
+		textInfo.setCaption("Überblick");
+		
+		textInfo.setValue(platzhalter);
+		textInfo.setWidth("400px");
+		textInfo.setHeight("350px");
+		textInfo.addStyleName("ratingpanel");
+		textInfo.setReadOnly(true);
+		
+		
+		
+		return textInfo;
 	}
 
 	private Panel createMainPanel() {
@@ -65,7 +93,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		Panel ratingpanel = new Panel();
 		Button ratingButton = new Button("Speichern");
 		ratingpanel.setWidth("300px");
-		ratingpanel.setHeight("250px");
+		ratingpanel.setHeight("350px");
 		ratingpanel.addStyleName("ratingpanel");
 		GridLayout starLayout = new GridLayout(1, 6);
 		starLayout.setSizeFull();
