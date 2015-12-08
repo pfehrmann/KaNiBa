@@ -10,14 +10,18 @@ import com.vaadin.ui.Panel;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
 
-public interface BarView extends View{
+public interface BarView extends View {
 
 	public void setMessageBoardStrings(List<Message> messages);
+
 	public void setBarDescription(String barDescription);
-	
-	
-	interface BarViewListener{
+
+	public void updateBarMessageBoard();
+
+	interface BarViewListener {
 		void ratingButtonClick(Rating rating);
+
+		void sendMessage(String message);
 	}
 
 	public void addRatingButtonClickListener(BarViewListener listener);

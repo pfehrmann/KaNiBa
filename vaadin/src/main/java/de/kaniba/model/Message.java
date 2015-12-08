@@ -16,6 +16,11 @@ public class Message {
 		this.message = message;
 		this.time = time;
 	}
+	public Message(int userID, int barID, String message) {
+		this.userID = userID;
+		this.barID = barID;
+		this.message = message;
+	}
 
 	public int getMessageID() {
 		return messageID;
@@ -55,6 +60,10 @@ public class Message {
 	
 	public void setTime(Timestamp time) {
 		this.time = time;
+	}
+	public void save() {
+		Database.saveMessage(this);
+		
 	}
 	
 }

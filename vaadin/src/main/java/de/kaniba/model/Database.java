@@ -118,6 +118,7 @@ public class Database {
 					ret.setPinboard(givePinboard(barID));					
 					ret.setName(name);
 					ret.setDescription(description);
+					ret.setBarID(barID);
 					con.close();
 					return ret;
 				}
@@ -170,7 +171,7 @@ public class Database {
 			user.setAddress(address);
 			Email emailemail = new Email(email);
 			user.setEmail(emailemail);
-
+			user.setUserID(UserID);
 			st.close();
 			rs.close();
 			con.close();
@@ -751,5 +752,26 @@ public class Database {
 
 		con.close();		
 		return false;
+	}
+
+	public static void saveMessage(Message message) {
+		// TODO Auto-generated method stub
+		Connection con;
+		try {
+			con = verbindung();
+			Statement st = con.createStatement();
+			st.executeUpdate("INSERT INTO message (userID,barID,message) VALUES ('"+message.getUserID()+"','"+message.getBarID()+"','"+message.getMessage()+"');");
+			con.close();
+			
+			
+			
+			
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		
 	}
 }

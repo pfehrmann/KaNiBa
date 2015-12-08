@@ -55,6 +55,10 @@ public class Bar {
 	public int getBarID() {
 		return barID;
 	}
+	
+	public void setBarID(int barID){
+		this.barID =barID;
+	}
 
 	public double getGeneralRating() {
 		return (double) sumGeneralRating / countRating;
@@ -91,6 +95,15 @@ public class Bar {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+		return pinboard;
+	}
+	
+	public Pinboard forceGetPinboard() {
+		try {
+			Database.givePinboard(barID);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return pinboard;
 	}

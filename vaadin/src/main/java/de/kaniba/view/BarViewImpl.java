@@ -47,6 +47,8 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	private RatingStars ratingppr = new RatingStars();
 	private TextArea messageArea;
 	private TextArea textInfo;
+	private String message;
+	private TextField messageField; 
 	
 	public BarViewImpl() {
 
@@ -88,19 +90,36 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	private Panel createMainPanel() {
 		Panel mainPanel = new Panel();
 
-		mainPanel.setWidth("900px");
-		mainPanel.setHeight("500px");
+		mainPanel.setWidth("1024px");
+		mainPanel.setHeight("600px");
 		return mainPanel;
 	}
 
 	private Panel createMessagePanel(){
 		Panel messagePanel = new Panel();
 		messageArea = new TextArea();
-		TextField messageField = new TextField();
+		messageField = new TextField();
 		
 		HorizontalLayout messageHLayout = new HorizontalLayout();
 		VerticalLayout messageVLayout = new VerticalLayout();
 		Button messageSendButton = new Button("Senden");
+		
+		messageSendButton.addClickListener(new Button.ClickListener() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1111413494665766271L;
+
+			@Override
+			public void buttonClick(com.vaadin.ui.Button.ClickEvent event) {
+				 message = messageField.getValue();
+				 for(BarViewListener listener : listenerList){
+					 listener.sendMessage(message);
+				 }
+				
+			}
+		});
 		
 		messageArea.setCaption("Messageboard");
 
@@ -117,10 +136,10 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		// Diese Methode legt die Anzeigeelemente für die Sterne an
 		Panel ratingpanel = new Panel();
 		Button ratingButton = new Button("Speichern");
-		ratingpanel.setWidth("300px");
-		ratingpanel.setHeight("350px");
+	
+	
 		ratingpanel.addStyleName("ratingpanel");
-		GridLayout starLayout = new GridLayout(1, 6);
+		VerticalLayout starLayout = new VerticalLayout();
 		starLayout.setSizeFull();
 
 		ratinggeneral.setMaxValue(5);
@@ -138,11 +157,12 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		ratingmusic.setImmediate(true);
 		ratingppr.setImmediate(true);
 
-		starLayout.addComponent(ratingButton, 0, 5);
-		starLayout.addComponent(ratinggeneral, 0, 0);
-		starLayout.addComponent(ratingatmo, 0, 1);
-		starLayout.addComponent(ratingmusic, 0, 2);
-		starLayout.addComponent(ratingppr, 0, 3);
+		
+		starLayout.addComponent(ratinggeneral);
+		starLayout.addComponent(ratingatmo);
+		starLayout.addComponent(ratingmusic);
+		starLayout.addComponent(ratingppr);
+		starLayout.addComponent(ratingButton);
 
 		ratingpanel.setContent(starLayout);
 
@@ -210,6 +230,8 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		 }
 		//TODO CustomComponet für Messages
 		messageArea.setValue(buffer);
+		
+	
 	}
 
 	@Override
@@ -220,4 +242,11 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		
 	}
 
+	@Override
+	public void updateBarMessageBoard() {
+		// TODO Auto-generated method stub
+		
+		
+	}
+	
 }
