@@ -219,10 +219,7 @@ public class Database {
 			}
 		}
 		con.close();
-		if(fehler==1)
-		{
-			return null;
-		}
+
 		/* BarID == barIDdb ???? */
 		Pinboard pinboard = new Pinboard(barID);
 		pinboard.messages=messages;
