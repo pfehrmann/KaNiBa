@@ -44,14 +44,20 @@ public class Bar {
 		this.sumPeopleRating = t.getSumPeopleRating();
 		this.sumPprRating = t.getSumPprRating();
 		this.countRating = t.getCountRating();
+		this.name = t.getName();
+		this.description = t.getDescription();
 	}
-	
+
 	public boolean saveBar() throws SQLException {
 		return Database.saveBar(this);
 	}
 
 	public int getBarID() {
 		return barID;
+	}
+	
+	public void setBarID(int barID){
+		this.barID =barID;
 	}
 
 	public double getGeneralRating() {
@@ -83,6 +89,22 @@ public class Bar {
 	}
 
 	public Pinboard getPinboard() {
+		if (pinboard == null) {
+			try {
+				Database.givePinboard(barID);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return pinboard;
+	}
+	
+	public Pinboard forceGetPinboard() {
+		try {
+			Database.givePinboard(barID);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return pinboard;
 	}
 
@@ -161,14 +183,16 @@ public class Bar {
 	public List<Special> getAllSpecials() throws SQLException {
 		if (allSpecials != null) {
 			return allSpecials;
-		} else {allSpecials = Database.readCurrentSpecials(barID);
-		return allSpecials;
+		} else {
+			allSpecials = Database.readCurrentSpecials(barID);
+			return allSpecials;
 		}
 	}
 
 	// Ein Special hinzufügen.
-	/* TODO: Das Special nur auf die aktuelle Liste setzen, wenn es da wirklich
-	 *  hingehört, also auf das Datum prüfen
+	/*
+	 * TODO: Das Special nur auf die aktuelle Liste setzen, wenn es da wirklich
+	 * hingehört, also auf das Datum prüfen
 	 */
 	public void addSpecial(Special special) {
 		currentSpecials.add(special);
@@ -182,23 +206,23 @@ public class Bar {
 	public void updateRating() {
 		throw new RuntimeException("implement me");
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public String toString() {
 		return name + ", " + description + ", Ratings: " + countRating;
 	}

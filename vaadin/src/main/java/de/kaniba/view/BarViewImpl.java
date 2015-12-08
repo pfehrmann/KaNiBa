@@ -1,11 +1,16 @@
-﻿package de.kaniba.view;
+package de.kaniba.view;
 
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.concurrent.BackgroundInitializer;
 import org.vaadin.teemu.ratingstars.RatingStars;
 
 import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -17,11 +22,14 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 
 import de.kaniba.model.Database;
+import de.kaniba.model.Message;
+import de.kaniba.model.Pinboard;
 import de.kaniba.model.Rating;
 
 public class BarViewImpl extends CustomComponent implements BarView {
@@ -36,18 +44,24 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	public RatingStars ratinggeneral = new RatingStars();
 	public RatingStars ratingatmo = new RatingStars();
 	public RatingStars ratingmusic = new RatingStars();
-	public RatingStars ratingppr = new RatingStars();
+	private RatingStars ratingppr = new RatingStars();
+	private TextArea messageArea;
+	private TextArea textInfo;
+	private String message;
+	private TextField messageField; 
 	
 	public BarViewImpl() {
 
 		Panel mainPanel = createMainPanel();
 		TextArea barInfoText = createBarInfoPanel();
 		Panel ratingStars = createRatingStars();
+		Panel pinboardPanel = createMessagePanel();
 		Image barImage = createBarPicture();
-		GridLayout mainLayout = new GridLayout(3, 2);
-		mainLayout.addComponent(ratingStars, 2, 0);
+		GridLayout mainLayout = new GridLayout(2, 3);
+		mainLayout.addComponent(ratingStars, 0, 1);
 		mainLayout.addComponent(barImage,0,0);
-		mainLayout.addComponent(barInfoText,1,0);
+		mainLayout.addComponent(barInfoText,1,0,1,1);
+		mainLayout.addComponent(pinboardPanel,0,2,1,2);
 		
 		mainPanel.setContent(mainLayout);
 
@@ -57,18 +71,12 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	private TextArea createBarInfoPanel() {
 		
 		/*Hier fehlt noch eine Anbindung zur Datenbank deswegen Loreipsum Text*/
-		String platzhalter = "Lorem ipsum dolor sit amet,"
-				+ " consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna"
-				+ " aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."
-				+ " Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
-				+ " Lorem ipsum dolor sit amet, consetetur sadipscing elitr,"
-				+ " sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,"
-				+ " sed diam voluptua.";
 		
-		TextArea textInfo = new TextArea();
-		textInfo.setCaption("Überblick");
 		
-		textInfo.setValue(platzhalter);
+		textInfo = new TextArea();
+		textInfo.setCaption("Ueberblick");
+		
+		
 		textInfo.setWidth("400px");
 		textInfo.setHeight("350px");
 		textInfo.addStyleName("ratingpanel");
@@ -82,19 +90,56 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	private Panel createMainPanel() {
 		Panel mainPanel = new Panel();
 
-		mainPanel.setWidth("900px");
-		mainPanel.setHeight("500px");
+		mainPanel.setWidth("1024px");
+		mainPanel.setHeight("600px");
 		return mainPanel;
+	}
+
+	private Panel createMessagePanel(){
+		Panel messagePanel = new Panel();
+		messageArea = new TextArea();
+		messageField = new TextField();
+		
+		HorizontalLayout messageHLayout = new HorizontalLayout();
+		VerticalLayout messageVLayout = new VerticalLayout();
+		Button messageSendButton = new Button("Senden");
+		
+		messageSendButton.addClickListener(new Button.ClickListener() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1111413494665766271L;
+
+			@Override
+			public void buttonClick(com.vaadin.ui.Button.ClickEvent event) {
+				 message = messageField.getValue();
+				 for(BarViewListener listener : listenerList){
+					 listener.sendMessage(message);
+				 }
+				
+			}
+		});
+		
+		messageArea.setCaption("Messageboard");
+
+		messageHLayout.addComponent(messageField);
+		messageHLayout.addComponent(messageSendButton);
+		messageVLayout.addComponent(messageArea);
+		messageVLayout.addComponent(messageHLayout);
+		messagePanel.setContent(messageVLayout);
+		
+		return messagePanel ;
 	}
 
 	private Panel createRatingStars() {
 		// Diese Methode legt die Anzeigeelemente für die Sterne an
 		Panel ratingpanel = new Panel();
 		Button ratingButton = new Button("Speichern");
-		ratingpanel.setWidth("300px");
-		ratingpanel.setHeight("350px");
+	
+	
 		ratingpanel.addStyleName("ratingpanel");
-		GridLayout starLayout = new GridLayout(1, 6);
+		VerticalLayout starLayout = new VerticalLayout();
 		starLayout.setSizeFull();
 
 		ratinggeneral.setMaxValue(5);
@@ -112,11 +157,12 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		ratingmusic.setImmediate(true);
 		ratingppr.setImmediate(true);
 
-		starLayout.addComponent(ratingButton, 0, 5);
-		starLayout.addComponent(ratinggeneral, 0, 0);
-		starLayout.addComponent(ratingatmo, 0, 1);
-		starLayout.addComponent(ratingmusic, 0, 2);
-		starLayout.addComponent(ratingppr, 0, 3);
+		
+		starLayout.addComponent(ratinggeneral);
+		starLayout.addComponent(ratingatmo);
+		starLayout.addComponent(ratingmusic);
+		starLayout.addComponent(ratingppr);
+		starLayout.addComponent(ratingButton);
 
 		ratingpanel.setContent(starLayout);
 
@@ -176,4 +222,31 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		
 	}
 
+	@Override
+	public void setMessageBoardStrings(List<Message> messages) {
+		String buffer = ""; 
+		for(Message message : messages){
+			 buffer+=message.getMessage()+"\n";
+		 }
+		//TODO CustomComponet für Messages
+		messageArea.setValue(buffer);
+		
+	
+	}
+
+	@Override
+	public void setBarDescription(String barDescription) {
+		textInfo.setReadOnly(false);
+		textInfo.setValue(barDescription);
+		
+		
+	}
+
+	@Override
+	public void updateBarMessageBoard() {
+		// TODO Auto-generated method stub
+		
+		
+	}
+	
 }

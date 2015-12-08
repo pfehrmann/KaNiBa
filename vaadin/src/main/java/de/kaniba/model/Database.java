@@ -118,6 +118,7 @@ public class Database {
 			ret.setPinboard(givePinboard(barID));
 			ret.setName(name);
 			ret.setDescription(description);
+			ret.setBarID(barID);
 			rs.close();
 			st.close();
 			con.close();
@@ -171,7 +172,7 @@ public class Database {
 			user.setAddress(address);
 			Email emailemail = new Email(email);
 			user.setEmail(emailemail);
-
+			user.setUserID(UserID);
 			st.close();
 			rs.close();
 			con.close();
@@ -184,14 +185,16 @@ public class Database {
 	}
 	
 	/**
-	 * Nimmt eine BarID und gibt das entsprechende Pinboard zurück
+	 * Nimmt eine barID und gibt das entsprechende Pinboard zurück
 	 * 
-	 * @param BarID
-	 *            Die BarID
+	 * @param barID
+	 *            Die barID
 	 * @return Gibt das Pinboard zurück.
 	 */
 	public static Pinboard givePinboard(int barID) throws SQLException 
 	{
+		System.out.println();
+		System.out.println("[DATABASE:givePinboard] barID: " + barID);
 		Connection con = verbindung();  
 		Statement st = con.createStatement(); 
 		String message=null;
@@ -200,8 +203,8 @@ public class Database {
 		int messageID=0;
 		int barIDdb=0;
 		List<Message> messages = new ArrayList<Message>();
-		ResultSet rs = st.executeQuery("SELECT * FROM Message");
-
+		ResultSet rs = st.executeQuery("SELECT * FROM message");
+		
 		int fehler=1;
 		while ( rs.next() )
 		{
@@ -210,24 +213,19 @@ public class Database {
 			userID=rs.getInt("userID");
 			messageID=rs.getInt("messageID");
 			barIDdb=rs.getInt("barID");
-			
 			if(barID==barIDdb)
 			{
 				fehler=0;
-				Message messagemessage = new Message(messageID,userID, barID,message,time);
-				messages.add(messagemessage);				
+				Message tempMessage = new Message(messageID,userID, barID,message,time);
+				messages.add(tempMessage);				
 			}
 		}
 		rs.close();
 		st.close();
 		con.close();
-		Pinboard pinboard = new Pinboard();
 		
-		if(fehler==1)
-		{
-			return pinboard;
-		}
-		
+		/* BarID == barIDdb ???? */
+		Pinboard pinboard = new Pinboard(barID);
 		pinboard.messages=messages;
 		return pinboard;
 	}
@@ -857,15 +855,30 @@ public class Database {
 				+ " VALUES ('"
 				+ message.getUserID() + "','" + message.getBarID() + "','" + message.getMessage() + "','" + message.getTime() 
 				+ "');");
-		System.out.println("yay");
 		ResultSet rs = st.executeQuery("select last_insert_id() as last_id from message");
 		if(rs.next()){
-		messageID = rs.getInt("last_id");
+		messageID = rs.getInt("last_id");		
+		message.setMessageID(messageID);
+		rs.close();
+		st.close();
+		con.close();
+		return message;		
+	}
+
+	public static List<Bar> searchForBar(String bar) throws SQLException{
+		Connection con = verbindung();
+		Statement st = con.createStatement();
+		String query = "SELECT barID FROM bars WHERE name LIKE '%" + bar + "%';";
+		ResultSet rs = st.executeQuery(query);
+		List<Bar> ret = new ArrayList<Bar>();
+		
+		while(rs.next()) {
+			ret.add(readBar(rs.getInt("barID")));
 		}
 		rs.close();
 		st.close();
 		con.close();
-		message.setMessageID(messageID);
-		return message;
+		
+		return ret;
 	}
 }

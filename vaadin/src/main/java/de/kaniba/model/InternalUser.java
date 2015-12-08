@@ -20,6 +20,10 @@ public class InternalUser extends User {
 	public int getUserID() {
 		return userID;
 	}
+	
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
 
 	/**
 	 * Methode, um einfach eine Bar zu bewerten.
