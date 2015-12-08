@@ -1,11 +1,16 @@
-﻿package de.kaniba.view;
+package de.kaniba.view;
 
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.concurrent.BackgroundInitializer;
 import org.vaadin.teemu.ratingstars.RatingStars;
 
 import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -17,11 +22,14 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 
 import de.kaniba.model.Database;
+import de.kaniba.model.Message;
+import de.kaniba.model.Pinboard;
 import de.kaniba.model.Rating;
 
 public class BarViewImpl extends CustomComponent implements BarView {
@@ -36,18 +44,22 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	public RatingStars ratinggeneral = new RatingStars();
 	public RatingStars ratingatmo = new RatingStars();
 	public RatingStars ratingmusic = new RatingStars();
-	public RatingStars ratingppr = new RatingStars();
+	private RatingStars ratingppr = new RatingStars();
+	private TextArea messageArea;
+	private TextArea textInfo;
 	
 	public BarViewImpl() {
 
 		Panel mainPanel = createMainPanel();
 		TextArea barInfoText = createBarInfoPanel();
 		Panel ratingStars = createRatingStars();
+		Panel pinboardPanel = createMessagePanel();
 		Image barImage = createBarPicture();
-		GridLayout mainLayout = new GridLayout(3, 2);
-		mainLayout.addComponent(ratingStars, 2, 0);
+		GridLayout mainLayout = new GridLayout(2, 3);
+		mainLayout.addComponent(ratingStars, 0, 1);
 		mainLayout.addComponent(barImage,0,0);
-		mainLayout.addComponent(barInfoText,1,0);
+		mainLayout.addComponent(barInfoText,1,0,1,1);
+		mainLayout.addComponent(pinboardPanel,0,2,1,2);
 		
 		mainPanel.setContent(mainLayout);
 
@@ -57,18 +69,12 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	private TextArea createBarInfoPanel() {
 		
 		/*Hier fehlt noch eine Anbindung zur Datenbank deswegen Loreipsum Text*/
-		String platzhalter = "Lorem ipsum dolor sit amet,"
-				+ " consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna"
-				+ " aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."
-				+ " Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
-				+ " Lorem ipsum dolor sit amet, consetetur sadipscing elitr,"
-				+ " sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,"
-				+ " sed diam voluptua.";
 		
-		TextArea textInfo = new TextArea();
-		textInfo.setCaption("Überblick");
 		
-		textInfo.setValue(platzhalter);
+		textInfo = new TextArea();
+		textInfo.setCaption("Ueberblick");
+		
+		
 		textInfo.setWidth("400px");
 		textInfo.setHeight("350px");
 		textInfo.addStyleName("ratingpanel");
@@ -85,6 +91,26 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		mainPanel.setWidth("900px");
 		mainPanel.setHeight("500px");
 		return mainPanel;
+	}
+
+	private Panel createMessagePanel(){
+		Panel messagePanel = new Panel();
+		messageArea = new TextArea();
+		TextField messageField = new TextField();
+		
+		HorizontalLayout messageHLayout = new HorizontalLayout();
+		VerticalLayout messageVLayout = new VerticalLayout();
+		Button messageSendButton = new Button("Senden");
+		
+		messageArea.setCaption("Messageboard");
+
+		messageHLayout.addComponent(messageField);
+		messageHLayout.addComponent(messageSendButton);
+		messageVLayout.addComponent(messageArea);
+		messageVLayout.addComponent(messageHLayout);
+		messagePanel.setContent(messageVLayout);
+		
+		return messagePanel ;
 	}
 
 	private Panel createRatingStars() {
@@ -173,6 +199,24 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	
 		
 		return barimage;
+		
+	}
+
+	@Override
+	public void setMessageBoardStrings(List<Message> messages) {
+		String buffer = ""; 
+		for(Message message : messages){
+			 buffer+=message.getMessage()+"\n";
+		 }
+		//TODO CustomComponet für Messages
+		messageArea.setValue(buffer);
+	}
+
+	@Override
+	public void setBarDescription(String barDescription) {
+		textInfo.setReadOnly(false);
+		textInfo.setValue(barDescription);
+		
 		
 	}
 

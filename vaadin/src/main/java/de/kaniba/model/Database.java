@@ -1,4 +1,4 @@
-﻿package de.kaniba.model;
+package de.kaniba.model;
 
 import java.sql.DriverManager;
 import java.sql.Timestamp;
@@ -183,12 +183,14 @@ public class Database {
 	/**
 	 * Nimmt eine BarID und gibt das entsprechende Pinboard zurück
 	 * 
-	 * @param BarID
+	 * @param barID
 	 *            Die BarID
 	 * @return Gibt das Pinboard zurück.
 	 */
-	public static Pinboard givePinboard(int BarID) throws SQLException 
+	public static Pinboard givePinboard(int barID) throws SQLException 
 	{
+		System.out.println();
+		System.out.println("[DATABASE:givePinboard] barID: " + barID);
 		Connection con = verbindung();  
 		Statement st = con.createStatement(); 
 		String message=null;
@@ -196,9 +198,9 @@ public class Database {
 		int userID=0;
 		int messageID=0;
 		int barIDdb=0;
-		List<Message> messages = null;
-		ResultSet rs = st.executeQuery("SELECT * FROM Message");
-
+		List<Message> messages = new ArrayList<Message>();
+		ResultSet rs = st.executeQuery("SELECT * FROM message");
+		
 		int fehler=1;
 		while ( rs.next() )
 		{
@@ -207,12 +209,12 @@ public class Database {
 			userID=rs.getInt("userID");
 			messageID=rs.getInt("messageID");
 			barIDdb=rs.getInt("barID");
-			
-			if(BarID==barIDdb)
+			System.out.println("[DATABASE:givePinboard] barIDdb: " + barIDdb);
+			if(barID==barIDdb)
 			{
 				fehler=0;
-				Message messagemessage = new Message(messageID,userID, BarID,message,time);
-				messages.add(messagemessage);				
+				Message tempMessage = new Message(messageID,userID, barID,message,time);
+				messages.add(tempMessage);				
 			}
 		}
 		con.close();
@@ -220,7 +222,8 @@ public class Database {
 		{
 			return null;
 		}
-		Pinboard pinboard = new Pinboard();
+		/* BarID == barIDdb ???? */
+		Pinboard pinboard = new Pinboard(barID);
 		pinboard.messages=messages;
 		return pinboard;
 	}

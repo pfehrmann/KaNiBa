@@ -1,9 +1,13 @@
 package de.kaniba.presenter;
 
+import java.sql.SQLException;
+
+import com.google.gwt.dom.client.ModElement;
 import com.vaadin.navigator.View;
 import com.vaadin.ui.Notification;
 
 import de.kaniba.model.Bar;
+import de.kaniba.model.Database;
 import de.kaniba.model.Rating;
 import de.kaniba.view.BarView;
 
@@ -18,17 +22,21 @@ public class BarPresenter implements BarView.BarViewListener{
 	}
 	
 	 public BarPresenter(Bar bmodel,BarView view/*,Rating rmodel*/) {
-		// TODO Auto-generated constructor stub
 		 this.barModel = bmodel;
 		 /*this.ratingModel = rmodel;*/
 		 this.view = view;
 		 
 		 view.addRatingButtonClickListener(this);
+		
+		 view.setBarDescription(barModel.getDescription());
+		 System.out.println(barModel);
+		 System.out.println(barModel.getPinboard());
+		 System.out.println(barModel.getPinboard().getMessages());
+		 view.setMessageBoardStrings(barModel.getPinboard().getMessages());
 	}
 
 
 	@Override
 	public void ratingButtonClick(Rating rating) {
-		// TODO Auto-generated method stub
-		Notification.show("Es Lebt");
+		rating.saveRating();
 	}}

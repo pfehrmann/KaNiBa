@@ -1,5 +1,7 @@
 package de.kaniba.navigator;
 
+import java.sql.SQLException;
+
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
@@ -13,6 +15,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 
 import de.kaniba.model.Bar;
+import de.kaniba.model.Database;
 import de.kaniba.model.User;
 import de.kaniba.presenter.BarPresenter;
 import de.kaniba.presenter.LoginPresenter;
@@ -113,7 +116,13 @@ public class NavigatorUI extends UI {
 		navigator.addView("", lp.getView());
 		navigator.addView(LoginView.NAME, lp.getView());
 		
-		BarPresenter bp = new BarPresenter(new Bar(), new BarViewImpl());
+		BarPresenter bp=null;
+		try {
+			bp = new BarPresenter(new Bar(1), new BarViewImpl());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		navigator.addView("bar", bp.getView());
 		
 		RegisterPresenter rp = new RegisterPresenter(new User(), new RegisterViewImpl());
