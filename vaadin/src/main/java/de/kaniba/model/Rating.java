@@ -32,7 +32,6 @@ public class Rating {
 	}
 	public void setRatingID(int ratingID) {
 		this.ratingID = ratingID;
-		throw new RuntimeException("implement me");
 	}
 	
 	public int getUserID() {
@@ -41,7 +40,6 @@ public class Rating {
 	
 	public void setUserID(int userID) {
 		this.userID = userID;
-		throw new RuntimeException("implement me");
 	}
 	
 	public int getBarID() {
@@ -50,7 +48,6 @@ public class Rating {
 	
 	public void setBarID(int barID) {
 		this.barID = barID;
-		throw new RuntimeException("implement me");
 	}
 	
 	public int getGeneralRating() {
@@ -59,7 +56,6 @@ public class Rating {
 	
 	public void setGeneralRating(int generalRating) {
 		this.generalRating = generalRating;
-		throw new RuntimeException("implement me");
 	}
 	
 	public int getPprRating() {
@@ -68,7 +64,6 @@ public class Rating {
 	
 	public void setPprRating(int pprRating) {
 		this.pprRating = pprRating;
-		throw new RuntimeException("implement me");
 	}
 	
 	public int getMusicRating() {
@@ -77,7 +72,6 @@ public class Rating {
 	
 	public void setMusicRating(int musicRating) {
 		this.musicRating = musicRating;
-		throw new RuntimeException("implement me");
 	}
 	
 	public int getPeopleRating() {
@@ -86,7 +80,6 @@ public class Rating {
 	
 	public void setPeopleRating(int peopleRating) {
 		this.peopleRating = peopleRating;
-		throw new RuntimeException("implement me");
 	}
 	
 	public int getAtmosphereRating() {
@@ -95,7 +88,6 @@ public class Rating {
 	
 	public void setAtmosphereRating(int atmosphereRating) {
 		this.atmosphereRating = atmosphereRating;
-		throw new RuntimeException("implement me");
 	}
 	
 	public Timestamp getTimestamp() {
@@ -104,6 +96,14 @@ public class Rating {
 	
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
+	}
+	
+	public void saveRating() {
+		try {
+			Database.saveBarRating(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

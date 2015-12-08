@@ -1,7 +1,5 @@
-package de.kaniba.view;
+﻿package de.kaniba.view;
 
-import java.awt.List;
-import java.io.File;
 import java.util.ArrayList;
 
 import org.apache.commons.lang3.concurrent.BackgroundInitializer;
@@ -20,10 +18,11 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 
+import de.kaniba.model.Database;
 import de.kaniba.model.Rating;
-import de.kaniba.view.*;
 
 public class BarViewImpl extends CustomComponent implements BarView {
 
@@ -97,8 +96,6 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		ratingpanel.addStyleName("ratingpanel");
 		GridLayout starLayout = new GridLayout(1, 6);
 		starLayout.setSizeFull();
-
-		ratingatmo.getValue();
 
 		ratinggeneral.setMaxValue(5);
 		ratingatmo.setMaxValue(5);

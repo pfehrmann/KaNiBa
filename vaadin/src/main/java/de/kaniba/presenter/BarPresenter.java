@@ -1,10 +1,6 @@
 package de.kaniba.presenter;
 
-
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.navigator.View;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Notification;
 
 import de.kaniba.model.Bar;

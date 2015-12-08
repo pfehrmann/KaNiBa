@@ -12,6 +12,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 public class LoginViewImpl extends CustomComponent implements LoginView, ClickListener{
@@ -34,11 +35,11 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 			mainPanel = new Panel();
 			mainPanel.setId("login-view-main-panel");
 			mainPanel.setWidth(width);
+			mainPanel.addStyleName("login-panel");
 			
 			VerticalLayout cont = new VerticalLayout();
 			cont.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 			cont.setSpacing(true);
-			cont.addStyleName("login-panel");
 			
 			usernameText = new TextField("Benutzername");
 			usernameText.setInputPrompt("Benutzername");
@@ -96,7 +97,7 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
+		UI.getCurrent().getPage().setTitle("Login");
 		
 	}
 
