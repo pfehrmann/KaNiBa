@@ -1,4 +1,4 @@
-package de.kaniba.model;
+﻿package de.kaniba.model;
 
 import java.sql.DriverManager;
 import java.sql.Timestamp;
@@ -32,11 +32,15 @@ import java.sql.Date;
  *12. InternalUser logUserIn(String useremail, String password): Überprüft Anmeldedaten.
  *13. Rating getRating(int userID, int barID): liest ein Rating aus.
  *14. boolean hasUserRatedBar(int userID, int barID): Überprüft ob ein User schon ein Rating abgegeben hat.
+ *15. int saveUser(InternalUser user)
+ *16. boolean changeEmail(InternalUser user,String Email)
  */
 
 public class Database {
 
 	public static void main(String[] args) throws Exception {
+		System.out.println("*****************---------------------------startet hier--------------------------------*************");
+		System.out.println(getRating(1,1));
 		
 	}
 	
@@ -667,6 +671,7 @@ public class Database {
 	 * @throws SQLException 
 	 */
 	public static int saveUser(InternalUser user) throws SQLException {
+
 		Connection con = verbindung();
 		Statement st = con.createStatement();
 		
@@ -695,6 +700,7 @@ public class Database {
 					+ user.getAddress().getCity() + "','" + user.getAddress().getStreet() + "','"
 					+ user.getAddress().getNumber() + "','" + user.getAddress().getZip() + "');";
 			st.executeUpdate(query);
+
 		}
 		
 		st.close();
@@ -719,14 +725,15 @@ public class Database {
 	public static boolean changeEmail(InternalUser user,String Email) throws SQLException {
 		int userID=0;
 		int update=0;
-		String UserEmail=null;
+		String UserEmail=user.getEmail().getMail();
 		Connection con = verbindung();  
 		Statement st = con.createStatement(); 
 		ResultSet rs = st.executeQuery("SELECT * FROM user");
 		while ( rs.next() )
 		{
-			UserEmail = rs.getString("UserEmail");
-			if(UserEmail==Email)
+			UserEmail = rs.getString("email");
+			userID = rs.getInt("userID");
+			if(UserEmail.equals(Email))
 			{
 				update=1;
 				break;
@@ -734,7 +741,7 @@ public class Database {
 		}
 		if(update==1)
 		{
-			st.executeUpdate("UPDATE user SET email = "+Email+" WHERE UserEmail= "+UserEmail+";");
+			st.executeUpdate("UPDATE user SET email = '"+Email+"' WHERE userID= '"+userID+"';");
 			con.close();
 			return true;
 		}
