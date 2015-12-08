@@ -7,6 +7,7 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 
 public interface LoginView extends View{
+	public static final String NAME = "login";
 	public TextField getUsernameText();
 	public PasswordField getPasswordText();
 	public Button getSubmitButton();

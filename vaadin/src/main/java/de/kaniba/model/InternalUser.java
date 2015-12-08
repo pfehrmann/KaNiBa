@@ -13,7 +13,7 @@ public class InternalUser extends User {
 	private Date birthdate;
 	private Address address;
 
-	InternalUser() {
+	public InternalUser() {
 		super();
 	}
 
@@ -67,7 +67,12 @@ public class InternalUser extends User {
 	 * @return Gibt true, wenn der User die Bar bereits bewertet hat.
 	 */
 	public boolean ratedBar(Bar bar) {
-		throw new RuntimeException("implement me");
+		try {
+			return Database.getRating(userID, bar.getBarID()).equals(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/**
@@ -133,6 +138,10 @@ public class InternalUser extends User {
 
 	public Address getAddress() {
 		return this.address;
+	}
+	
+	public void saveUser() throws SQLException{
+		this.userID = Database.saveUser(this);
 	}
 
 }

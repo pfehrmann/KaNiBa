@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 public class User {
 	
-	public User login(String username, String password) throws SQLException {
+	public InternalUser login(String username, String password) throws SQLException {
 		return Database.logUserIn(username, password);
 	}
 	
