@@ -774,4 +774,21 @@ public class Database {
 		}  
 		
 	}
+
+	public static List<Bar> searchForBar(String bar) throws SQLException{
+		Connection con = verbindung();
+		Statement st = con.createStatement();
+		String query = "SELECT barID FROM bars WHERE name LIKE '%" + bar + "%';";
+		ResultSet rs = st.executeQuery(query);
+		List<Bar> ret = new ArrayList<Bar>();
+		
+		while(rs.next()) {
+			ret.add(readBar(rs.getInt("barID")));
+		}
+		rs.close();
+		st.close();
+		con.close();
+		
+		return ret;
+	}
 }
