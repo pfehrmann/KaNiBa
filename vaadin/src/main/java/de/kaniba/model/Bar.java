@@ -91,7 +91,7 @@ public class Bar {
 	public Pinboard getPinboard() {
 		if (pinboard == null) {
 			try {
-				Database.givePinboard(barID);
+				pinboard=Database.givePinboard(barID);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -101,7 +101,7 @@ public class Bar {
 	
 	public Pinboard forceGetPinboard() {
 		try {
-			Database.givePinboard(barID);
+			pinboard=Database.givePinboard(barID);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
