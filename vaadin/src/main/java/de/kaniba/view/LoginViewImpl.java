@@ -12,6 +12,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 public class LoginViewImpl extends CustomComponent implements LoginView, ClickListener{
@@ -32,26 +33,30 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 			listeners = new ArrayList<LoginViewListener>();
 			
 			mainPanel = new Panel();
+			mainPanel.setId("login-view-main-panel");
 			mainPanel.setWidth(width);
+			mainPanel.addStyleName("login-panel");
 			
 			VerticalLayout cont = new VerticalLayout();
 			cont.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 			cont.setSpacing(true);
-			cont.addStyleName("login-panel");
 			
 			usernameText = new TextField("Benutzername");
 			usernameText.setInputPrompt("Benutzername");
 			usernameText.setWidth(relativeWidth);
+			usernameText.setId("login-view-username-input");
 			cont.addComponent(usernameText);
 
 		    passwordText = new PasswordField("Passwort");
 		    passwordText.setInputPrompt("Passwort");
 		    passwordText.setWidth(relativeWidth);
+		    passwordText.setId("login-view-password-input");
 		    cont.addComponent(passwordText);
 		    
 		    submit = new Button("Einloggen");
 		    submit.addClickListener(this);
 		    submit.setWidth(relativeWidth);
+		    submit.setId("login-view-submit-button");
 		    cont.addComponent(submit);
 		    
 		    mainPanel.setContent(cont);
@@ -92,7 +97,12 @@ public class LoginViewImpl extends CustomComponent implements LoginView, ClickLi
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
+		UI.getCurrent().getPage().setTitle("Login");
 		
+	}
+
+	@Override
+	public Button getSubmitButton() {
+		return submit;
 	}
 }
