@@ -45,6 +45,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	public RatingStars ratingatmo = new RatingStars();
 	public RatingStars ratingmusic = new RatingStars();
 	private RatingStars ratingppr = new RatingStars();
+	private RatingStars ratingpeople = new RatingStars();
 	private TextArea messageArea;
 	private TextArea textInfo;
 	private String message;
@@ -146,22 +147,26 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		ratingatmo.setMaxValue(5);
 		ratingmusic.setMaxValue(5);
 		ratingppr.setMaxValue(5);
+		ratingpeople.setMaxValue(5);
 
 		ratinggeneral.setCaption("Gesamtbewertung Bar: ");
 		ratingatmo.setCaption("Bewertung Atmosphäre: ");
 		ratingmusic.setCaption("Bewertung der Musik: ");
 		ratingppr.setCaption("Bewertung Preis-/Leistung: ");
-
+		ratingpeople.setCaption("Bewertung Leute:");
+		
 		ratinggeneral.setImmediate(true);
 		ratingatmo.setImmediate(true);
 		ratingmusic.setImmediate(true);
 		ratingppr.setImmediate(true);
+		ratingpeople.setImmediate(true);
 
 		
 		starLayout.addComponent(ratinggeneral);
 		starLayout.addComponent(ratingatmo);
 		starLayout.addComponent(ratingmusic);
 		starLayout.addComponent(ratingppr);
+		starLayout.addComponent(ratingpeople);
 		starLayout.addComponent(ratingButton);
 
 		ratingpanel.setContent(starLayout);
@@ -175,6 +180,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 				pprRating = ratingppr.getValue().intValue();
 				atmoRating = ratingatmo.getValue().intValue();
 				musicRating = ratingmusic.getValue().intValue();
+				peopleRating = ratingpeople.getValue().intValue();
 				/* Platzhalter Integer */
 				int barID = 0;
 				int ratingID = 0;
