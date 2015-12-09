@@ -39,6 +39,7 @@ public class BarPresenter implements BarView.BarViewListener{
 		
 		 view.setBarDescription(barModel.getDescription());
 		 view.setMessageBoardStrings(barModel.getPinboard().getMessages());
+		 session=UI.getCurrent().getSession();
 	}
 
 
@@ -55,6 +56,8 @@ public class BarPresenter implements BarView.BarViewListener{
 			
 			return;
 		}
+		rating.setBarID(barModel.getBarID());
+		rating.setUserID(iUModel.getUserID());
 		rating.saveRating();
 	}
 

@@ -417,10 +417,10 @@ public class Database {
 		} else {
 
 			st.executeUpdate(
-					"INSERT INTO ratings (userID,barID,generalRating,pprRating,musicRating,peopleRating,atmosphereRating,time) VALUES ('"
+					"INSERT INTO ratings (userID,barID,generalRating,pprRating,musicRating,peopleRating,atmosphereRating) VALUES ('"
 							+ rating.getUserID() + "','" + rating.getBarID() + "','" + rating.getGeneralRating() + "','"
 							+ rating.getPprRating() + "','" + rating.getMusicRating() + "','" + rating.getPeopleRating()
-							+ "','" + rating.getAtmosphereRating() + "','" + rating.getTimestamp() + "');");
+							+ "','" + rating.getAtmosphereRating() + "');");
 
 			// Liest das RatingCount aus und erhöht um 1
 			ResultSet rs2 = st.executeQuery("SELECT * FROM ratings");

@@ -93,7 +93,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		Panel mainPanel = new Panel();
 
 		mainPanel.setWidth("100%");
-		mainPanel.setHeight("600px");
+	
 		mainPanel.setId("bar-view-mainPanel");
 		return mainPanel;
 	}
@@ -204,11 +204,9 @@ public class BarViewImpl extends CustomComponent implements BarView {
 				peopleRating = ratingpeople.getValue().intValue();
 				
 				/* Platzhalter Integer */
-				int barID = 0;
-				int ratingID = 0;
-				int userID = 0;
+				
 
-				Rating rating = new Rating(ratingID, userID, barID, generalRating, pprRating, musicRating, peopleRating,
+				Rating rating = new Rating(-1, -1, -1, generalRating, pprRating, musicRating, peopleRating,
 						atmoRating, null);
 				for (BarViewListener listener : listenerList) {
 					listener.ratingButtonClick(rating);
