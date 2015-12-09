@@ -175,6 +175,7 @@ public class Database {
 			user.setAddress(address);
 			Email emailemail = new Email(email);
 			user.setEmail(emailemail);
+			user.setUserID(userID);
 
 			st.close();
 			rs.close();
