@@ -4,6 +4,10 @@ import java.sql.DriverManager;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.kaniba.view.Answer;
+import de.kaniba.view.Question;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -867,5 +871,82 @@ public class Database {
 		con.close();
 		message.setMessageID(messageID);
 		return message;
+	}
+	
+	public static Question readQuestion(int questionID) throws SQLException{
+		Question ret = null;
+		
+		Connection con = verbindung();
+		Statement st = con.createStatement();
+		String query = "SELECT * FROM questions WHERE questionID = " + questionID + ";";
+		ResultSet rs = st.executeQuery(query);
+		
+		while(rs.next()) {
+			ret = new Question();
+			ret.setBarID(rs.getInt("barID"));
+			ret.setMessage(rs.getString("message"));
+			ret.setQuestionID(rs.getInt("questionID"));
+			ret.setText(rs.getBoolean("text"));
+			
+		}
+		rs.close();
+		st.close();
+		con.close();
+		
+		return ret;
+	}
+	
+	public static List<Question> getQuestionsForBar(int barID) throws SQLException{
+		Connection con = verbindung();
+		Statement st = con.createStatement();
+		String query = "SELECT questionID FROM questions WHERE barID = " + barID + ";";
+		ResultSet rs = st.executeQuery(query);
+		List<Question> ret = new ArrayList<Question>();
+		
+		while(rs.next()) {
+			ret.add(readQuestion(rs.getInt("questionID")));
+		}
+		rs.close();
+		st.close();
+		con.close();
+		
+		return ret;
+	}
+	
+	public static Answer readAnswer(int answerID) throws SQLException{
+		Answer ret = null;
+		
+		Connection con = verbindung();
+		Statement st = con.createStatement();
+		String query = "SELECT * FROM answers WHERE answerID = " + answerID + ";";
+		ResultSet rs = st.executeQuery(query);
+		
+		while(rs.next()) {
+			ret = new Answer();
+			ret.setAnswerID(rs.getInt("answerID"));
+			ret.setQuestionID(rs.getInt("questionID"));
+			ret.setUserID(rs.getInt("userID"));
+			ret.setAnswerString(rs.getString("answerString"));
+			ret.setText(rs.getBoolean("isText"));
+			ret.setAnswerBool(rs.getBoolean("answerBool"));
+			
+		}
+		rs.close();
+		st.close();
+		con.close();
+		
+		return ret;
+	}
+	
+	public static void saveAnswer(Answer answer) throws SQLException{
+		Connection con = verbindung();
+		Statement st = con.createStatement();
+		st.executeUpdate("INSERT INTO answers (questionID,userID,answerString,isText,answerBool) VALUES ('" 
+		+ answer.getQuestionID() + "','"
+		+ answer.getUserID() + "','" 
+		+ answer.getAnswerString() + "','" 
+		+ (answer.isText()?1:0) + "','" 
+		+ (answer.getAnswerBool()?1:0) + "');");
+		con.close();
 	}
 }

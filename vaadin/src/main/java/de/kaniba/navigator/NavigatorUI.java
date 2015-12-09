@@ -19,6 +19,7 @@ import de.kaniba.model.Bar;
 import de.kaniba.model.User;
 import de.kaniba.presenter.BarPresenter;
 import de.kaniba.presenter.LoginPresenter;
+import de.kaniba.presenter.QuestionPresenter;
 import de.kaniba.presenter.RegisterPresenter;
 import de.kaniba.presenter.UpdateInformationPresenter;
 import de.kaniba.view.BarViewImpl;
@@ -79,6 +80,17 @@ public class NavigatorUI extends UI {
 			}
 		});
 		menu.addComponent(bpBtn);
+		
+		Button qpBtn = new Button("Questionair 1", new Button.ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				QuestionPresenter qp = new QuestionPresenter(1);
+				navigator.addView("questions", qp.getView());
+				navigator.navigateTo("questions");
+			}
+		});
+		menu.addComponent(qpBtn);
 
 		Button rpBtn = new Button("Register", new Button.ClickListener() {
 
@@ -97,8 +109,8 @@ public class NavigatorUI extends UI {
 			}
 		});
 		menu.addComponent(upBtn);
-
-		searchField = new TextField("Suchen");
+	
+		searchField = new TextField();
 		menu.addComponent(searchField);
 
 		Button searchBtn = new Button("Suchen", new Button.ClickListener() {
