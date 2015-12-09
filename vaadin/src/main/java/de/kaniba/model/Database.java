@@ -347,20 +347,21 @@ public class Database {
 		int barID = -1;
 		int update = -1;
 		int ratingID = -1;
-		int generalRatingBar = -1;
-		int pprRatingBar = -1;
-		int musicRatingBar = -1;
-		int peopleRatingBar = -1;
-		int atmosphereRatingBar = -1;
-		int generalRating = -1;
-		int pprRating = -1;
-		int musicRating = -1;
-		int peopleRating = -1;
-		int atmosphereRating = -1;
-		int ratingCount = -1;
+		int generalRatingBar = 0;
+		int pprRatingBar = 0;
+		int musicRatingBar = 0;
+		int peopleRatingBar = 0;
+		int atmosphereRatingBar = 0;
+		int generalRating = 0;
+		int pprRating = 0;
+		int musicRating = 0;
+		int peopleRating = 0;
+		int atmosphereRating = 0;
+		int ratingCount = 0;
 		Connection con = verbindung();
 		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("SELECT * FROM ratings");
+		ResultSet rs = st.executeQuery("SELECT * FROM ratings WHERE userID="+rating.getUserID()+" AND barID = "+rating.getBarID());
+		
 		while (rs.next()) {
 			userID = rs.getInt("userID");
 			barID = rs.getInt("barID");
@@ -423,15 +424,14 @@ public class Database {
 							+ "','" + rating.getAtmosphereRating() + "');");
 
 			// Liest das RatingCount aus und erhöht um 1
-			ResultSet rs2 = st.executeQuery("SELECT * FROM ratings");
-			rs2 = st.executeQuery("SELECT ratingCount FROM bars WHERE barID=" + rating.getBarID());
+			ResultSet rs2 = st.executeQuery("SELECT ratingCount FROM bars WHERE barID=" + rating.getBarID());
 			if (rs2.next()) {
 				ratingCount = rs2.getInt("ratingCount") + 1;
 			}
 			rs2.close();
 			
 			// Speichert das neue RatingCount
-			st.executeUpdate("UPDATE bars SET ratingCount = " + ratingCount);
+			st.executeUpdate("UPDATE bars SET ratingCount = " + ratingCount+" WHERE barID=" + rating.getBarID());
 		}
 		
 		rs.close();
