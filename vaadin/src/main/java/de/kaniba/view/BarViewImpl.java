@@ -10,6 +10,7 @@ import org.vaadin.teemu.ratingstars.RatingStars;
 
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -27,6 +28,7 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 
+import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
 import de.kaniba.model.Message;
 import de.kaniba.model.Pinboard;
@@ -45,6 +47,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	public RatingStars ratingatmo = new RatingStars();
 	public RatingStars ratingmusic = new RatingStars();
 	private RatingStars ratingppr = new RatingStars();
+	private RatingStars ratingpeople = new RatingStars();
 	private TextArea messageArea;
 	private TextArea textInfo;
 	private String message;
@@ -81,6 +84,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		textInfo.setHeight("350px");
 		textInfo.addStyleName("ratingpanel");
 		textInfo.setReadOnly(true);
+		textInfo.setId("bar-view-textInfo");
 		
 		
 		
@@ -90,8 +94,9 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	private Panel createMainPanel() {
 		Panel mainPanel = new Panel();
 
-		mainPanel.setWidth("1024px");
-		mainPanel.setHeight("600px");
+		mainPanel.setWidth("100%");
+	
+		mainPanel.setId("bar-view-mainPanel");
 		return mainPanel;
 	}
 
@@ -122,11 +127,22 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		});
 		
 		messageArea.setCaption("Messageboard");
-
+		messageArea.setSizeFull();
+		messageField.setSizeFull();
+		messageSendButton.setSizeUndefined();
+		
+		/*ID's für Selenium */
+		messageArea.setId("bar-view-messageArea");
+		messageField.setId("bar-view-messageField");
+		messageSendButton.setId("bar-view-SendButton");
+		
+		messageField.setStyleName("messageField");
 		messageHLayout.addComponent(messageField);
 		messageHLayout.addComponent(messageSendButton);
 		messageVLayout.addComponent(messageArea);
 		messageVLayout.addComponent(messageHLayout);
+		messageHLayout.setSizeFull();
+		messageVLayout.setSizeFull();
 		messagePanel.setContent(messageVLayout);
 		
 		return messagePanel ;
@@ -146,25 +162,37 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		ratingatmo.setMaxValue(5);
 		ratingmusic.setMaxValue(5);
 		ratingppr.setMaxValue(5);
+		ratingpeople.setMaxValue(5);
+		
+		/*Benennung für Selenium */
+		ratinggeneral.setId("bar-view-ratinggeneral");
+		ratingatmo.setId("bar-view-ratingatmo");
+		ratingmusic.setId("bar-view-ratingmusic");
+		ratingppr.setId("bar-view-ratingppr");
+		ratingpeople.setId("bar-view-ratingpeople");
 
 		ratinggeneral.setCaption("Gesamtbewertung Bar: ");
 		ratingatmo.setCaption("Bewertung Atmosphäre: ");
 		ratingmusic.setCaption("Bewertung der Musik: ");
 		ratingppr.setCaption("Bewertung Preis-/Leistung: ");
-
+		ratingpeople.setCaption("Bewertung Leute:");
+		
 		ratinggeneral.setImmediate(true);
 		ratingatmo.setImmediate(true);
 		ratingmusic.setImmediate(true);
 		ratingppr.setImmediate(true);
+		ratingpeople.setImmediate(true);
 
 		
 		starLayout.addComponent(ratinggeneral);
 		starLayout.addComponent(ratingatmo);
 		starLayout.addComponent(ratingmusic);
 		starLayout.addComponent(ratingppr);
+		starLayout.addComponent(ratingpeople);
 		starLayout.addComponent(ratingButton);
 
 		ratingpanel.setContent(starLayout);
+		ratingpanel.setId("bar-view-ratingpanel");
 
 		ratingButton.addClickListener(new Button.ClickListener() {
 
@@ -175,12 +203,12 @@ public class BarViewImpl extends CustomComponent implements BarView {
 				pprRating = ratingppr.getValue().intValue();
 				atmoRating = ratingatmo.getValue().intValue();
 				musicRating = ratingmusic.getValue().intValue();
+				peopleRating = ratingpeople.getValue().intValue();
+				
 				/* Platzhalter Integer */
-				int barID = 0;
-				int ratingID = 0;
-				int userID = 0;
+				
 
-				Rating rating = new Rating(ratingID, userID, barID, generalRating, pprRating, musicRating, peopleRating,
+				Rating rating = new Rating(-1, -1, -1, generalRating, pprRating, musicRating, peopleRating,
 						atmoRating, null);
 				for (BarViewListener listener : listenerList) {
 					listener.ratingButtonClick(rating);
@@ -201,7 +229,10 @@ public class BarViewImpl extends CustomComponent implements BarView {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
+		UI.getCurrent().getPage().setTitle("Bar");
+		for (BarViewListener listener : listenerList ){
+			listener.enter();
+		}
 
 	}
 	
@@ -217,7 +248,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	
 		barimage.setHeight("150px");
 	
-		
+		barimage.setId("bar-view-barimage");
 		return barimage;
 		
 	}
@@ -246,6 +277,16 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	public void updateBarMessageBoard() {
 		// TODO Auto-generated method stub
 		
+		
+	}
+
+	@Override
+	public void setRating(Bar bar) {
+		ratinggeneral.setValue(bar.getGeneralRating());
+		ratingatmo.setValue(bar.getAtmosphereRating());
+		ratingmusic.setValue(bar.getMusicRating());
+		ratingpeople.setValue(bar.getPeopleRating());
+		ratingppr.setValue(bar.getPprRating());
 		
 	}
 	

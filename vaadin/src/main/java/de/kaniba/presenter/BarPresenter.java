@@ -39,6 +39,7 @@ public class BarPresenter implements BarView.BarViewListener{
 		
 		 view.setBarDescription(barModel.getDescription());
 		 view.setMessageBoardStrings(barModel.getPinboard().getMessages());
+		 session=UI.getCurrent().getSession();
 	}
 
 
@@ -55,7 +56,16 @@ public class BarPresenter implements BarView.BarViewListener{
 			
 			return;
 		}
+		rating.setBarID(barModel.getBarID());
+		rating.setUserID(iUModel.getUserID());
 		rating.saveRating();
+		Notification.show("Danke das du abgestimmt hast");
+		try {
+			barModel= Database.readBar(barModel.getBarID());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		view.setRating(barModel);
 	}
 
 	@Override
@@ -76,4 +86,12 @@ public class BarPresenter implements BarView.BarViewListener{
 		Message dbMessage = new Message( iUModel.getUserID(), barModel.getBarID(), message);
 		dbMessage.save();
 		view.setMessageBoardStrings(barModel.forceGetPinboard().getMessages());
+	}
+
+	@Override
+	public void enter() {
+		
+		view.setRating(barModel);
+		UI.getCurrent().getPage().setTitle(barModel.getName());
+	
 	}}

@@ -29,6 +29,7 @@ public class SearchViewImpl extends CustomComponent implements SerachView, Butto
 
 		Panel mainPanel = new Panel();
 		VerticalLayout cont = new VerticalLayout();
+		cont.setSpacing(true);
 
 		this.searchString = searchString;
 		try {
@@ -39,6 +40,7 @@ public class SearchViewImpl extends CustomComponent implements SerachView, Butto
 
 		for (Bar b : bars) {
 			HorizontalLayout barLayout = new HorizontalLayout();
+			barLayout.setSpacing(true);
 			barLayout.addComponent(new Label(b.getName()));
 			Button link = new Button("Bar ansehen");
 			link.setData(b);

@@ -7,6 +7,7 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.navigator.View;
 import com.vaadin.ui.Panel;
 
+import de.kaniba.model.Bar;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
 
@@ -17,11 +18,14 @@ public interface BarView extends View {
 	public void setBarDescription(String barDescription);
 
 	public void updateBarMessageBoard();
+	
+	public void setRating(Bar bar);
 
 	interface BarViewListener {
 		void ratingButtonClick(Rating rating);
 
 		void sendMessage(String message);
+		void enter();
 	}
 
 	public void addRatingButtonClickListener(BarViewListener listener);

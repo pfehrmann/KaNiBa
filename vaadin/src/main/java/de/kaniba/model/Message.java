@@ -1,5 +1,6 @@
 package de.kaniba.model;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class Message {
@@ -62,7 +63,11 @@ public class Message {
 		this.time = time;
 	}
 	public void save() {
-		Database.saveMessage(this);
+		try {
+			Database.saveMessage(this);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
