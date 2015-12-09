@@ -82,6 +82,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		textInfo.setHeight("350px");
 		textInfo.addStyleName("ratingpanel");
 		textInfo.setReadOnly(true);
+		textInfo.setId("bar-view-textInfo");
 		
 		
 		
@@ -93,6 +94,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 
 		mainPanel.setWidth("100%");
 		mainPanel.setHeight("600px");
+		mainPanel.setId("bar-view-mainPanel");
 		return mainPanel;
 	}
 
@@ -127,6 +129,11 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		messageField.setSizeFull();
 		messageSendButton.setSizeUndefined();
 		
+		/*ID's für Selenium */
+		messageArea.setId("bar-view-messageArea");
+		messageField.setId("bar-view-messageField");
+		messageSendButton.setId("bar-view-SendButton");
+		
 		messageField.setStyleName("messageField");
 		messageHLayout.addComponent(messageField);
 		messageHLayout.addComponent(messageSendButton);
@@ -154,6 +161,13 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		ratingmusic.setMaxValue(5);
 		ratingppr.setMaxValue(5);
 		ratingpeople.setMaxValue(5);
+		
+		/*Benennung für Selenium */
+		ratinggeneral.setId("bar-view-ratinggeneral");
+		ratingatmo.setId("bar-view-ratingatmo");
+		ratingmusic.setId("bar-view-ratingmusic");
+		ratingppr.setId("bar-view-ratingppr");
+		ratingpeople.setId("bar-view-ratingpeople");
 
 		ratinggeneral.setCaption("Gesamtbewertung Bar: ");
 		ratingatmo.setCaption("Bewertung Atmosphäre: ");
@@ -176,6 +190,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		starLayout.addComponent(ratingButton);
 
 		ratingpanel.setContent(starLayout);
+		ratingpanel.setId("bar-view-ratingpanel");
 
 		ratingButton.addClickListener(new Button.ClickListener() {
 
@@ -230,7 +245,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	
 		barimage.setHeight("150px");
 	
-		
+		barimage.setId("bar-view-barimage");
 		return barimage;
 		
 	}
