@@ -10,6 +10,7 @@ import org.vaadin.teemu.ratingstars.RatingStars;
 
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -27,6 +28,7 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 
+import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
 import de.kaniba.model.Message;
 import de.kaniba.model.Pinboard;
@@ -227,7 +229,10 @@ public class BarViewImpl extends CustomComponent implements BarView {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
+		UI.getCurrent().getPage().setTitle("Bar");
+		for (BarViewListener listener : listenerList ){
+			listener.enter();
+		}
 
 	}
 	
@@ -272,6 +277,16 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	public void updateBarMessageBoard() {
 		// TODO Auto-generated method stub
 		
+		
+	}
+
+	@Override
+	public void setRating(Bar bar) {
+		ratinggeneral.setValue(bar.getGeneralRating());
+		ratingatmo.setValue(bar.getAtmosphereRating());
+		ratingmusic.setValue(bar.getMusicRating());
+		ratingpeople.setValue(bar.getPeopleRating());
+		ratingppr.setValue(bar.getPprRating());
 		
 	}
 	
