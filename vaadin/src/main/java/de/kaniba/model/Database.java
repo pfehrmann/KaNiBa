@@ -122,6 +122,7 @@ public class Database {
 			ret.setPinboard(givePinboard(barID));
 			ret.setName(name);
 			ret.setDescription(description);
+			ret.setBarID(barID);
 			rs.close();
 			st.close();
 			con.close();
@@ -858,9 +859,9 @@ public class Database {
 		Connection con = verbindung();  
 		Statement st = con.createStatement(); 
 		Integer messageID =-1;
-		st.executeUpdate("INSERT INTO message (userID,barID,message,time)"
+		st.executeUpdate("INSERT INTO message (userID,barID,message)"
 				+ " VALUES ('"
-				+ message.getUserID() + "','" + message.getBarID() + "','" + message.getMessage() + "','" + message.getTime() 
+				+ message.getUserID() + "','" + message.getBarID() + "','" + message.getMessage() 
 				+ "');");
 		System.out.println("yay");
 		ResultSet rs = st.executeQuery("select last_insert_id() as last_id from message");
