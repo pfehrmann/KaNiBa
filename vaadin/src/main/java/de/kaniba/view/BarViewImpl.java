@@ -91,7 +91,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	private Panel createMainPanel() {
 		Panel mainPanel = new Panel();
 
-		mainPanel.setWidth("1024px");
+		mainPanel.setWidth("100%");
 		mainPanel.setHeight("600px");
 		return mainPanel;
 	}
@@ -123,11 +123,17 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		});
 		
 		messageArea.setCaption("Messageboard");
-
+		messageArea.setSizeFull();
+		messageField.setSizeFull();
+		messageSendButton.setSizeUndefined();
+		
+		messageField.setStyleName("messageField");
 		messageHLayout.addComponent(messageField);
 		messageHLayout.addComponent(messageSendButton);
 		messageVLayout.addComponent(messageArea);
 		messageVLayout.addComponent(messageHLayout);
+		messageHLayout.setSizeFull();
+		messageVLayout.setSizeFull();
 		messagePanel.setContent(messageVLayout);
 		
 		return messagePanel ;
@@ -181,6 +187,7 @@ public class BarViewImpl extends CustomComponent implements BarView {
 				atmoRating = ratingatmo.getValue().intValue();
 				musicRating = ratingmusic.getValue().intValue();
 				peopleRating = ratingpeople.getValue().intValue();
+				
 				/* Platzhalter Integer */
 				int barID = 0;
 				int ratingID = 0;
