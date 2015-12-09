@@ -2,7 +2,6 @@ package de.kaniba.model;
 
 import java.sql.DriverManager;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,13 +37,16 @@ import java.sql.Date;
  *14. boolean hasUserRatedBar(int userID, int barID): Überprüft ob ein User schon ein Rating abgegeben hat.
  *15. int saveUser(InternalUser user)
  *16. boolean changeEmail(InternalUser user,String Email)
+ *17. Message saveMessage(Message message)
  */
 
 public class Database {
 
 	public static void main(String[] args) throws Exception {
 		System.out.println("*****************---------------------------startet hier--------------------------------*************");
-		System.out.println(getRating(1,1));
+		java.util.Date date = new java.util.Date();
+		Timestamp lastUpdated = new Timestamp(date.getTime());
+		System.out.println(hasUserRatedBar(1, 42));
 		
 	}
 	
@@ -90,46 +92,46 @@ public class Database {
 			String name = null;
 			Connection con = verbindung();  
 			Statement st = con.createStatement(); 
-			ResultSet rs = st.executeQuery("SELECT * FROM bars");
-			int i=1;
+			ResultSet rs = st.executeQuery("SELECT * FROM bars WHERE barID="+barID);
 
-			while ( rs.next() ){
-				generalRating = rs.getInt("generalRating");
-				pprRating = rs.getInt("pprRating");
-				musicRating = rs.getInt("musicRating");
-				peopleRating = rs.getInt("peopleRating");
-				atmosphereRating = rs.getInt("atmosphereRating");
-				ratingCount = rs.getInt("ratingCount");
-				userID = rs.getInt("userID");
-				city = rs.getString("city");
-				street = rs.getString("street");
-				number = rs.getString("number");
-				zip = rs.getString("zip");
-				description = rs.getString("description");
-				name = rs.getString("name");
-				if(i==barID)
-				{
-					ret.setSumGeneralRating(generalRating);
-					ret.setSumPprRating(pprRating);
-					ret.setSumMusicRating(musicRating);
-					ret.setSumPeopleRating(peopleRating);
-					ret.setSumAtmosphereRating(atmosphereRating);
-					ret.setCountRating(ratingCount);
-					Admin admin = new Admin(giveUser(userID));
-					ret.setBarOwner(admin);
-					Address address = new Address(city,street,number,zip);
-					ret.setAddress(address);
-					ret.setPinboard(givePinboard(barID));					
-					ret.setName(name);
-					ret.setDescription(description);
-					ret.setBarID(barID);
-					con.close();
-					return ret;
-				}
-				i++;
-			}
+		while (rs.next()) {
+			generalRating = rs.getInt("generalRating");
+			pprRating = rs.getInt("pprRating");
+			musicRating = rs.getInt("musicRating");
+			peopleRating = rs.getInt("peopleRating");
+			atmosphereRating = rs.getInt("atmosphereRating");
+			ratingCount = rs.getInt("ratingCount");
+			userID = rs.getInt("userID");
+			city = rs.getString("city");
+			street = rs.getString("street");
+			number = rs.getString("number");
+			zip = rs.getString("zip");
+			description = rs.getString("description");
+			name = rs.getString("name");
+
+			ret.setSumGeneralRating(generalRating);
+			ret.setSumPprRating(pprRating);
+			ret.setSumMusicRating(musicRating);
+			ret.setSumPeopleRating(peopleRating);
+			ret.setSumAtmosphereRating(atmosphereRating);
+			ret.setCountRating(ratingCount);
+			Admin admin = new Admin(giveUser(userID));
+			ret.setBarOwner(admin);
+			Address address = new Address(city, street, number, zip);
+			ret.setAddress(address);
+			ret.setPinboard(givePinboard(barID));
+			ret.setName(name);
+			ret.setDescription(description);
+			rs.close();
+			st.close();
 			con.close();
-			return null;		
+			return ret;
+
+		}
+		rs.close();
+		st.close();
+		con.close();
+		return null;
 	}
 
 	/**
@@ -139,12 +141,11 @@ public class Database {
 	 *            Die UserID
 	 * @return Gibt den User zurück.
 	 */
-	public static InternalUser giveUser(int UserID) throws SQLException {
+	public static InternalUser giveUser(int userID) throws SQLException {
 		String name = null;
 		String firstname = null;
 		String email = null;
 		String password = null;
-		String sessionID = null;
 		Date birthdate = null;
 		String city = null;
 		String street = null;
@@ -152,14 +153,13 @@ public class Database {
 		String zip = null;
 		Connection con = verbindung();
 		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("SELECT * FROM User WHERE userID = " + UserID + ";");
+		ResultSet rs = st.executeQuery("SELECT * FROM User WHERE userID = " + userID + ";");
 
 		while (rs.next()) {
 			name = rs.getString("name");
 			firstname = rs.getString("firstname");
 			email = rs.getString("email");
 			password = rs.getString("password");
-			sessionID = rs.getString("sessionID");
 			birthdate = rs.getDate("birthdate");
 			city = rs.getString("city");
 			street = rs.getString("street");
@@ -175,12 +175,14 @@ public class Database {
 			user.setAddress(address);
 			Email emailemail = new Email(email);
 			user.setEmail(emailemail);
-			user.setUserID(UserID);
+
 			st.close();
 			rs.close();
 			con.close();
 			return user;
 		}
+		rs.close();
+		st.close();
 		con.close();
 		return null;	
 	}
@@ -188,14 +190,12 @@ public class Database {
 	/**
 	 * Nimmt eine BarID und gibt das entsprechende Pinboard zurück
 	 * 
-	 * @param barID
+	 * @param BarID
 	 *            Die BarID
 	 * @return Gibt das Pinboard zurück.
 	 */
 	public static Pinboard givePinboard(int barID) throws SQLException 
 	{
-		System.out.println();
-		System.out.println("[DATABASE:givePinboard] barID: " + barID);
 		Connection con = verbindung();  
 		Statement st = con.createStatement(); 
 		String message=null;
@@ -204,8 +204,8 @@ public class Database {
 		int messageID=0;
 		int barIDdb=0;
 		List<Message> messages = new ArrayList<Message>();
-		ResultSet rs = st.executeQuery("SELECT * FROM message");
-		
+		ResultSet rs = st.executeQuery("SELECT * FROM Message");
+
 		int fehler=1;
 		while ( rs.next() )
 		{
@@ -214,18 +214,24 @@ public class Database {
 			userID=rs.getInt("userID");
 			messageID=rs.getInt("messageID");
 			barIDdb=rs.getInt("barID");
-			System.out.println("[DATABASE:givePinboard] barIDdb: " + barIDdb);
+			
 			if(barID==barIDdb)
 			{
 				fehler=0;
-				Message tempMessage = new Message(messageID,userID, barID,message,time);
-				messages.add(tempMessage);				
+				Message messagemessage = new Message(messageID,userID, barID,message,time);
+				messages.add(messagemessage);				
 			}
 		}
+		rs.close();
+		st.close();
 		con.close();
-
-		/* BarID == barIDdb ???? */
-		Pinboard pinboard = new Pinboard(barID);
+		Pinboard pinboard = new Pinboard();
+		
+		if(fehler==1)
+		{
+			return pinboard;
+		}
+		
 		pinboard.messages=messages;
 		return pinboard;
 	}
@@ -239,8 +245,7 @@ public class Database {
 	 * @throws SQLException 
 	 */
 	public static boolean saveBar(Bar bar) throws SQLException 
-	{
-		
+	{		
 		Connection con = verbindung();  
 		Statement st = con.createStatement(); 
 		Address address = bar.getAddress();
@@ -253,6 +258,7 @@ public class Database {
 				+ bar.getSumPprRating() + "','" + bar.getSumMusicRating() + "','" + bar.getSumPeopleRating() + "','"
 				+ bar.getSumAtmosphereRating() + "','" + bar.getCountRating() + "','" + lastUpdated + "', '"
 				+ bar.getDescription() + "', '" + bar.getName() + "');");
+		st.close();
 		con.close();
 		return true;
 	}
@@ -292,15 +298,11 @@ public class Database {
 			if(barIDdb==barID)
 			{
 				generalRating += rs.getInt("generalRating");
-				generalRating /=2;
 				pprRating += rs.getInt("pprRating");
-				pprRating /=2;
 				musicRating += rs.getInt("musicRating");
-				musicRating /=2;
 				peopleRating += rs.getInt("peopleRating");
-				peopleRating /=2;
 				atmosphereRating += rs.getInt("atmosphereRating");
-				atmosphereRating /=2;
+				
 			}
 		}
 		rs = st.executeQuery("SELECT * FROM bars");
@@ -331,40 +333,108 @@ public class Database {
 	 * @param rating
 	 *            Das abgebenene Rating
 	 * @return Gibt true zurück, wenn es beim Speichern keine Probleme gab.
-	 * @throws SQLException 
+	 * @throws SQLException
+	 * @todo time, timestamp, lastupdated
 	 */
 	public static boolean saveBarRating(Rating rating) throws SQLException {
 		// Die Bar wird hier als Parameter mit übergeben, da hier die jeweils
 		// die gesamtSumme und das Count Rating noch enthalten ist.
 		// Das Rating muss entweder in die Datanbank geschrieben werden, oder
 		// geupdated werden.
-		int userID=0;
-		int barID=0;
-		int update=0;
-		int ratingID=0;
-		Connection con = verbindung();  
-		Statement st = con.createStatement(); 
+		int userID = -1;
+		int barID = -1;
+		int update = -1;
+		int ratingID = -1;
+		int generalRatingBar = -1;
+		int pprRatingBar = -1;
+		int musicRatingBar = -1;
+		int peopleRatingBar = -1;
+		int atmosphereRatingBar = -1;
+		int generalRating = -1;
+		int pprRating = -1;
+		int musicRating = -1;
+		int peopleRating = -1;
+		int atmosphereRating = -1;
+		int ratingCount = -1;
+		Connection con = verbindung();
+		Statement st = con.createStatement();
 		ResultSet rs = st.executeQuery("SELECT * FROM ratings");
-		while ( rs.next() )
-		{
+		while (rs.next()) {
 			userID = rs.getInt("userID");
 			barID = rs.getInt("barID");
-			if(userID==rating.getUserID()&&barID==rating.getBarID())
-			{
-				update=1;
-				ratingID=rs.getInt("ratingID");
+
+			if (userID == rating.getUserID() && barID == rating.getBarID()) {
+				update = 1;
+				// Holt die Ratings des zu aktualisierenden Ratings sowie die ID
+				// aus der DB
+				generalRating = rs.getInt("generalRating");
+				pprRating = rs.getInt("pprRating");
+				musicRating = rs.getInt("musicRating");
+				peopleRating = rs.getInt("peopleRating");
+				atmosphereRating = rs.getInt("atmosphereRating");
+				ratingID = rs.getInt("ratingID");
+
 				break;
 			}
 		}
-		if(update==1)
-		{
-			st.executeUpdate("UPDATE ratings SET generalRating = "+rating.getGeneralRating()+", pprRating = "+rating.getPprRating()+", musicRating = "+rating.getMusicRating()+", peoplerating = "+rating.getPeopleRating()+", atmosphereRating = "+rating.getAtmosphereRating()+", time = "+rating.getTimestamp()+" WHERE ratingID= "+ratingID+";");
+		if (update == 1) {
+			rs = st.executeQuery("SELECT * FROM bars WHERE barID=" + rating.getBarID());
+			if (rs.next()) {
+				// Holt die alten Ratings der Bar aus der Datenbank
+				generalRatingBar = rs.getInt("generalRating");
+				pprRatingBar = rs.getInt("pprRating");
+				musicRatingBar = rs.getInt("musicRating");
+				peopleRatingBar = rs.getInt("peopleRating");
+				atmosphereRatingBar = rs.getInt("atmosphereRating");
+			}
+
+			// Entfernt das alte Rating vom Bar-Rating, damit das neue addiert
+			// werden kann
+			generalRatingBar -= generalRating;
+			pprRatingBar -= pprRating;
+			musicRatingBar -= musicRating;
+			peopleRatingBar -= peopleRating;
+			atmosphereRatingBar -= atmosphereRating;
+
+			// Addiert das neue Rating zum Bar-Rating
+			generalRatingBar += rating.getGeneralRating();
+			pprRatingBar += rating.getPprRating();
+			musicRatingBar += rating.getMusicRating();
+			peopleRatingBar += rating.getPeopleRating();
+			atmosphereRatingBar += rating.getAtmosphereRating();
+
+			// Aktualisiert das Bar-Rating
+			st.executeUpdate("UPDATE bars SET generalRating = '" + generalRatingBar + "', pprRating = '" + pprRatingBar
+					+ "', musicRating = '" + musicRatingBar + "', peopleRating = '" + peopleRatingBar
+					+ "', atmosphereRating = '" + atmosphereRatingBar + "' WHERE barID= '" + rating.getBarID() + "';");
+			
+			//Aktualisiert das Rating
+			st.executeUpdate("UPDATE ratings SET generalRating = '" + rating.getGeneralRating() + "', pprRating = '"
+					+  rating.getPprRating() + "', musicRating = '" +  rating.getMusicRating() + "', peopleRating = '"
+					+  rating.getPeopleRating() + "', atmosphereRating = '" +  rating.getAtmosphereRating() + "' WHERE ratingID= '" + ratingID + "';");
+		} else {
+
+			st.executeUpdate(
+					"INSERT INTO ratings (userID,barID,generalRating,pprRating,musicRating,peopleRating,atmosphereRating,time) VALUES ('"
+							+ rating.getUserID() + "','" + rating.getBarID() + "','" + rating.getGeneralRating() + "','"
+							+ rating.getPprRating() + "','" + rating.getMusicRating() + "','" + rating.getPeopleRating()
+							+ "','" + rating.getAtmosphereRating() + "','" + rating.getTimestamp() + "');");
+
+			// Liest das RatingCount aus und erhöht um 1
+			ResultSet rs2 = st.executeQuery("SELECT * FROM ratings");
+			rs2 = st.executeQuery("SELECT ratingCount FROM bars WHERE barID=" + rating.getBarID());
+			if (rs2.next()) {
+				ratingCount = rs2.getInt("ratingCount") + 1;
+			}
+			rs2.close();
+			
+			// Speichert das neue RatingCount
+			st.executeUpdate("UPDATE bars SET ratingCount = " + ratingCount);
 		}
-		else
-		{
-			st.executeUpdate("INSERT INTO ratings (userID,barID,generalRating,pprRating,musicRating,peopleRating,atmosphereRating,time) VALUES ('"+rating.getUserID()+"','"+rating.getBarID()+"','"+rating.getGeneralRating()+"','"+rating.getPprRating()+"','"+rating.getMusicRating()+"','"+rating.getPeopleRating()+"','"+rating.getAtmosphereRating()+"','"+rating.getTimestamp()+"');");
-		}
-		con.close();		
+		
+		rs.close();
+		st.close();
+		con.close();
 		return true;
 	}
 
@@ -385,7 +455,7 @@ public class Database {
 		Timestamp end=null;
 		Timestamp created=null;
 		int barIDdb=0;
-		ArrayList <Special> list=null;
+		ArrayList <Special> list=new ArrayList <Special>();
 		Connection con = verbindung();  
 		Statement st = con.createStatement();  
 		
@@ -475,6 +545,8 @@ public class Database {
 				list.add(special);
 			}
 		}
+		rs.close();
+		st.close();
 		con.close();
 		if(fehler==1)
 		{
@@ -502,8 +574,7 @@ public class Database {
 		Connection con = verbindung();  
 		Statement st = con.createStatement();   
 		
-		ResultSet rs = st.executeQuery("SELECT * FROM specials");
-		int i=1;
+		ResultSet rs = st.executeQuery("SELECT * FROM specials WHERE specialID="+specialID);
 		while ( rs.next() )
 		{
 			userID = rs.getInt("userID");
@@ -511,21 +582,23 @@ public class Database {
 			begin = rs.getTimestamp("begin");
 			end = rs.getTimestamp("end");
 			created = rs.getTimestamp("created");
-			if(i==specialID)
-			{
-				Special special = new Special();
-				special.setBegin(begin);
-				special.setCreated(created);
-				special.setEnd(end);
-				special.setMessage(message);
-				special.setUserID(userID);
-				special.setBarID(barID);
-				con.close();
-				return special;
-			}
-			i++;
+
+			Special special = new Special();
+			special.setBegin(begin);
+			special.setCreated(created);
+			special.setEnd(end);
+			special.setMessage(message);
+			special.setUserID(userID);
+			special.setBarID(barID);
+			rs.close();
+			st.close();
+			con.close();
+			return special;
+
 		}
-		con.close();
+		rs.close();
+		st.close();
+		
 		return null;
 	}
 
@@ -542,6 +615,7 @@ public class Database {
 		Connection con = verbindung();  
 		Statement st = con.createStatement(); 
 		st.executeUpdate("INSERT INTO specials (barID,userID,message,begin,end,created) VALUES ('"+special.getBarID()+"','"+special.getUserID()+"','"+special.getMessage()+"','"+special.getBegin()+"','"+special.getEnd()+"','"+special.getCreated()+"');");
+		st.close();
 		con.close();
 		return true;
 	}
@@ -578,16 +652,22 @@ public class Database {
 				if (userpassworddb.equals(password)) {
 					if (isadmin == 0) {
 						InternalUser user = giveUser(userid);
+						rs.close();
+						st.close();
 						con.close();
 						return user;
 					} else {
-						Admin user = (Admin) giveUser(userid);
+						Admin user = new Admin(giveUser(userid));
+						rs.close();
+						st.close();
 						con.close();
 						return user;
 					}
 				}
 			}
 		}
+		rs.close();
+		st.close();
 		con.close();
 		return null;
 	}
@@ -627,10 +707,14 @@ public class Database {
 			time = rs.getTimestamp("time");
 			if(barID==barIDdb && userID==userIDdb)
 			{
+				rs.close();
+				st.close();
 				con.close();
 				return new Rating(ratingID, userIDdb, barIDdb, generalRating, pprRating, musicRating, peopleRating, atmosphereRating, time);
 			}
 		}
+		rs.close();
+		st.close();
 		con.close();
 		return null;
 	}
@@ -658,10 +742,14 @@ public class Database {
 			barIDdb = rs.getInt("barID");
 			if(barID==barIDdb && userID==userIDdb)
 			{
+				rs.close();
+				st.close();
 				con.close();
 				return true;
 			}
 		}
+		rs.close();
+		st.close();
 		con.close();
 		return false;
 	}
@@ -747,50 +835,42 @@ public class Database {
 		if(update==1)
 		{
 			st.executeUpdate("UPDATE user SET email = '"+Email+"' WHERE userID= '"+userID+"';");
+			st.close();
 			con.close();
 			return true;
 		}
-
+		st.close();
 		con.close();		
 		return false;
 	}
-
-	public static void saveMessage(Message message) {
-		// TODO Auto-generated method stub
-		Connection con;
-		try {
-			con = verbindung();
-			Statement st = con.createStatement();
-			st.executeUpdate("INSERT INTO message (userID,barID,message) VALUES ('"+message.getUserID()+"','"+message.getBarID()+"','"+message.getMessage()+"');");
-			con.close();
-			
-			
-			
-			
-			
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
-		
-	}
-
-	public static List<Bar> searchForBar(String bar) throws SQLException{
-		Connection con = verbindung();
-		Statement st = con.createStatement();
-		String query = "SELECT barID FROM bars WHERE name LIKE '%" + bar + "%';";
-		ResultSet rs = st.executeQuery(query);
-		List<Bar> ret = new ArrayList<Bar>();
-		
-		while(rs.next()) {
-			ret.add(readBar(rs.getInt("barID")));
+	
+	/**
+	 * Speichert eine Message und gibt sie zurück,wenn das Speichern erfolgreich war.
+	 * 
+	 * @param message
+	 *            Die zu speichernde Message
+	 * @return Gibt die Message zurück, wenn die Message problemlos gespeichert wurde.
+	 * @throws SQLException 
+	 */
+	public static Message saveMessage(Message message) throws SQLException 
+	{		
+		Connection con = verbindung();  
+		Statement st = con.createStatement(); 
+		Integer messageID =-1;
+		st.executeUpdate("INSERT INTO message (userID,barID,message,time)"
+				+ " VALUES ('"
+				+ message.getUserID() + "','" + message.getBarID() + "','" + message.getMessage() + "','" + message.getTime() 
+				+ "');");
+		System.out.println("yay");
+		ResultSet rs = st.executeQuery("select last_insert_id() as last_id from message");
+		if(rs.next()){
+		messageID = rs.getInt("last_id");
 		}
 		rs.close();
 		st.close();
 		con.close();
-		
-		return ret;
+		message.setMessageID(messageID);
+		return message;
 	}
 	
 	public static Question readQuestion(int questionID) throws SQLException{
