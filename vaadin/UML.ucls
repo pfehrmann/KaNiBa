@@ -2,72 +2,712 @@
 <class-diagram version="1.1.9" icons="true" automaticImage="JPEG" always-add-relationships="false" 
   generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true" 
   router="FAN">  
-  <class id="1" language="java" name="de.kaniba.vaadin.MyUI" project="vaadin" 
-    file="/vaadin/src/main/java/de/kaniba/vaadin/MyUI.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="219" y="79"/>    
+  <class id="1" language="java" name="de.kaniba.model.Pinboard" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/model/Pinboard.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="76" width="87" x="554" y="1427"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="de.kaniba.vaadin.MyUIServlet" project="vaadin" 
-    file="/vaadin/src/main/java/de/kaniba/vaadin/MyUIServlet.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="115" y="74"/>    
+  <class id="2" language="java" name="de.kaniba.model.Database" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/model/Database.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="305" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="de.kaniba.view.BarViewImpl" project="vaadin" 
-    file="/vaadin/src/main/java/de/kaniba/view/BarViewImpl.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="76" width="131" x="339" y="37"/>    
+  <class id="3" language="java" name="de.kaniba.model.InternalUser" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/model/InternalUser.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="166" width="110" x="892" y="719"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <interface id="4" language="java" name="de.kaniba.view.BarView.BarViewListener" project="vaadin" 
-    file="/vaadin/src/main/java/de/kaniba/view/BarView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="204" y="334"/>    
+  <class id="4" language="java" name="de.kaniba.model.User" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/model/User.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="804" y="369"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
-  </interface>  
-  <interface id="5" language="java" name="de.kaniba.view.BarView" project="vaadin" 
-    file="/vaadin/src/main/java/de/kaniba/view/BarView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="211" y="221"/>    
+  </class>  
+  <class id="5" language="java" name="de.kaniba.model.Email" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/model/Email.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="76" width="87" x="908" y="979"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
-  </interface>  
-  <class id="6" language="java" name="de.kaniba.presenter.BarPresenter" project="vaadin" 
+  </class>  
+  <class id="6" language="java" name="de.kaniba.model.Special" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/model/Special.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="202" width="147" x="681" y="1427"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="de.kaniba.model.Message" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/model/Message.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="148" width="104" x="554" y="1669"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="de.kaniba.model.Admin" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/model/Admin.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="87" x="721" y="979"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="de.kaniba.model.Rating" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/model/Rating.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="220" width="131" x="721" y="719"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="de.kaniba.model.Address" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/model/Address.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="130" width="96" x="868" y="1427"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="de.kaniba.model.SystemAdmin" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/model/SystemAdmin.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="103" x="1035" y="979"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="de.kaniba.model.Bar" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/model/Bar.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="238" width="152" x="681" y="1149"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="de.kaniba.navigator.NavigatorUI" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/navigator/NavigatorUI.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="94" width="130" x="694" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="de.kaniba.navigator.NavigatorUIServlet" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/navigator/NavigatorUIServlet.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="129" x="478" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="de.kaniba.presenter.BarPresenter" project="vaadin" 
     file="/vaadin/src/main/java/de/kaniba/presenter/BarPresenter.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="58" width="101" x="154" y="627"/>    
+    <position height="76" width="142" x="622" y="369"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <realization id="7">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="5"/>  
+  <class id="16" language="java" name="de.kaniba.presenter.QuestionPresenter" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/presenter/QuestionPresenter.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="76" width="142" x="48" y="369"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="de.kaniba.presenter.RegisterPresenter" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/presenter/RegisterPresenter.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="129" x="1318" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="de.kaniba.presenter.UpdateInformationPresenter" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/presenter/UpdateInformationPresenter.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="76" width="186" x="1116" y="369"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="de.kaniba.presenter.LoginPresenter" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/presenter/LoginPresenter.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="112" x="912" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="de.kaniba.view.Answer" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/Answer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="166" width="129" x="90" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="21" language="java" name="de.kaniba.view.BarView.BarViewListener" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/BarView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="119" x="541" y="979"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="22" language="java" name="de.kaniba.view.BarView" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/BarView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="103" x="536" y="719"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="23" language="java" name="de.kaniba.view.BarViewImpl" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/BarViewImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="310" width="151" x="431" y="369"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="24" language="java" name="de.kaniba.view.LoginView" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/LoginView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="76" width="103" x="952" y="369"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="25" language="java" name="de.kaniba.view.LoginView.LoginViewListener" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/LoginView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1091" y="756"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="26" language="java" name="de.kaniba.view.LoginViewImpl" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/LoginViewImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="184" width="174" x="1076" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="27" language="java" name="de.kaniba.view.QuestionView.QuestionViewListener" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/QuestionView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="150" x="45" y="979"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="28" language="java" name="de.kaniba.view.QuestionView" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/QuestionView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="103" x="66" y="719"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="29" language="java" name="de.kaniba.view.QuestionElement" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/QuestionElement.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="76" width="148" x="230" y="719"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="30" language="java" name="de.kaniba.view.Question" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/Question.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="130" width="104" x="397" y="979"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="31" language="java" name="de.kaniba.view.QuestionViewImpl" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/QuestionViewImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="94" width="127" x="230" y="369"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="32" language="java" name="de.kaniba.view.RegisterView" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/RegisterView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="76" width="103" x="1363" y="369"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="33" language="java" name="de.kaniba.view.RegisterView.RegisterViewListener" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/RegisterView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="147" x="1359" y="719"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="34" language="java" name="de.kaniba.view.RegisterViewImpl" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/RegisterViewImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="292" width="207" x="1487" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="35" language="java" name="de.kaniba.view.SearchViewImpl" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/SearchViewImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="76" width="122" x="235" y="979"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="36" language="java" name="de.kaniba.view.SerachView.SearchViewListener" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/SerachView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="140" x="235" y="1427"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="37" language="java" name="de.kaniba.view.SerachView" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/SerachView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="58" width="103" x="111" y="1149"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="38" language="java" name="de.kaniba.view.UpdateInformationVeiwImpl" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/UpdateInformationVeiwImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="292" width="207" x="1527" y="369"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="39" language="java" name="de.kaniba.view.UpdateInformationView" project="vaadin" 
+    file="/vaadin/src/main/java/de/kaniba/view/UpdateInformationView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="76" width="157" x="1162" y="719"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="40" language="java" name="de.kaniba.view.UpdateInformationView.UpdateInformationViewListener" 
+    project="vaadin" file="/vaadin/src/main/java/de/kaniba/view/UpdateInformationView.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="58" width="204" x="1162" y="979"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <association id="41">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="42" name="model"/>      
+      <multiplicity id="43" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="44">    
+    <bendpoint x="408" y="719"/>    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="45" name="questions"/>      
+      <multiplicity id="46" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="47">    
+    <bendpoint x="1536" y="719"/>    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="48" name="listeners"/>      
+      <multiplicity id="49" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="50">    
+    <bendpoint x="1131" y="719"/>    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="40"/>  
   </realization>  
-  <nesting id="8">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="4"/>  
+  <association id="51">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="52" name="messages"/>      
+      <multiplicity id="53" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="54">    
+    <bendpoint x="877" y="979"/>    
+    <bendpoint x="877" y="1149"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="55" name="address"/>      
+      <multiplicity id="56" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="57">    
+    <end type="SOURCE" refId="35" navigable="false">      
+      <attribute id="58" name="bars"/>      
+      <multiplicity id="59" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="60">    
+    <bendpoint x="495" y="719"/>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="61" name="listenerList"/>      
+      <multiplicity id="62" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="63">    
+    <bendpoint x="35" y="719"/>    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="27"/>  
+  </realization>  
+  <generalization id="64">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="65">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="66" name="ownedBars"/>      
+      <multiplicity id="67" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="68">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="69" name="view"/>      
+      <multiplicity id="70" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="71">    
+    <end type="SOURCE" refId="37"/>    
+    <end type="TARGET" refId="36"/>  
   </nesting>  
-  <realization id="9">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="4"/>  
+  <realization id="72">    
+    <bendpoint x="669" y="719"/>    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="21"/>  
   </realization>  
+  <association id="73">    
+    <bendpoint x="1085" y="369"/>    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="74" name="listeners"/>      
+      <multiplicity id="75" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="25" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="76">    
+    <end type="SOURCE" refId="28"/>    
+    <end type="TARGET" refId="27"/>  
+  </nesting>  
+  <association id="77">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="78" name="view"/>      
+      <multiplicity id="79" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="80">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="81" name="allSpecials"/>      
+      <multiplicity id="82" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="83">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="21"/>  
+  </nesting>  
+  <association id="84">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="85" name="view"/>      
+      <multiplicity id="86" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="39" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="87">    
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="25"/>  
+  </nesting>  
+  <association id="88">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="89" name="userModel"/>      
+      <multiplicity id="90" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="91">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="92" name="ratingModel"/>      
+      <multiplicity id="93" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="94">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="95" name="barOwner"/>      
+      <multiplicity id="96" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="97">    
+    <bendpoint x="1496" y="369"/>    
+    <end type="SOURCE" refId="34" navigable="false">      
+      <attribute id="98" name="listeners"/>      
+      <multiplicity id="99" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="33" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="100">    
+    <end type="SOURCE" refId="29" navigable="false">      
+      <attribute id="101" name="question"/>      
+      <multiplicity id="102" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="103">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="104" name="iUModel"/>      
+      <multiplicity id="105" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="106">    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="107" name="elements"/>      
+      <multiplicity id="108" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="29" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="109">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <realization id="110">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="32"/>  
+  </realization>  
+  <association id="111">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="112" name="currentSpecials"/>      
+      <multiplicity id="113" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="114">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="22"/>  
+  </realization>  
+  <nesting id="115">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="40"/>  
+  </nesting>  
+  <association id="116">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="117" name="model"/>      
+      <multiplicity id="118" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="119">    
+    <end type="SOURCE" refId="31"/>    
+    <end type="TARGET" refId="28"/>  
+  </realization>  
+  <association id="120">    
+    <bendpoint x="244" y="1149"/>    
+    <end type="SOURCE" refId="35" navigable="false">      
+      <attribute id="121" name="listeners"/>      
+      <multiplicity id="122" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="36" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="123">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="124" name="view"/>      
+      <multiplicity id="125" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="126">    
+    <bendpoint x="690" y="719"/>    
+    <bendpoint x="690" y="979"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="127" name="barModel"/>      
+      <multiplicity id="128" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="129">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="130" name="pinboard"/>      
+      <multiplicity id="131" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="132">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="133" name="email"/>      
+      <multiplicity id="134" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="135">    
+    <end type="SOURCE" refId="32"/>    
+    <end type="TARGET" refId="33"/>  
+  </nesting>  
+  <realization id="136">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="39"/>  
+  </realization>  
+  <association id="137">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="138" name="model"/>      
+      <multiplicity id="139" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="140">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="141" name="view"/>      
+      <multiplicity id="142" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="32" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="143">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="144" name="address"/>      
+      <multiplicity id="145" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="146">    
+    <bendpoint x="199" y="719"/>    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="147" name="listeners"/>      
+      <multiplicity id="148" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="149">    
+    <bendpoint x="1332" y="369"/>    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="33"/>  
+  </realization>  
+  <realization id="150">    
+    <bendpoint x="921" y="369"/>    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="25"/>  
+  </realization>  
+  <realization id="151">    
+    <end type="SOURCE" refId="35"/>    
+    <end type="TARGET" refId="37"/>  
+  </realization>  
+  <realization id="152">    
+    <end type="SOURCE" refId="26"/>    
+    <end type="TARGET" refId="24"/>  
+  </realization>  
+  <generalization id="153">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
