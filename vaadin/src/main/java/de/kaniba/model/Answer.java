@@ -1,8 +1,6 @@
-package de.kaniba.view;
+package de.kaniba.model;
 
 import java.sql.SQLException;
-
-import de.kaniba.model.Database;
 
 public class Answer {
 	private int answerID;
