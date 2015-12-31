@@ -33,10 +33,23 @@
 @mixin mytheme {
   @include valo;
   @include loginStyle;
-
-  	.ratingpanel{
-  			border-style:none;
-  			alignment:center;
-  			
-			}  	 
+	
+	.searchField-Button {
+		border-bottom-left-radius: 0 !important;
+		border-top-left-radius: 0 !important;
+	}
+	
+	.searchField-textField {
+		border-bottom-right-radius: 0 !important;
+		border-top-right-radius: 0 !important;
+	}
+	
+	.main-wrapper {
+		margin: 0 auto !important;
+	}
+	
+  	.ratingpanel {
+  		border-style:none;
+  		alignment:center;		
+	}  	 
 }

@@ -1,6 +1,7 @@
 package de.kaniba.navigator;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
@@ -8,13 +9,20 @@ import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Component.Event;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextField;
 
+import de.kaniba.components.SearchField;
 import de.kaniba.model.Bar;
 import de.kaniba.model.User;
 import de.kaniba.presenter.BarPresenter;
@@ -40,6 +48,7 @@ import de.kaniba.view.UpdateInformationView;
 public class NavigatorUI extends UI {
 	private Navigator navigator;
 	private TextField searchField;
+	private SearchField sf;
 
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
@@ -48,9 +57,19 @@ public class NavigatorUI extends UI {
 		/**
 		 * Das layout beiinhaltet alle Elemente
 		 */
-		final VerticalLayout layout = new VerticalLayout();
-		layout.setMargin(true);
+		final VerticalLayout superLayout = new VerticalLayout();
 
+		final CssLayout layout = new CssLayout() {
+			@Override
+			protected String getCss(Component c) {
+				return "margin: 10px;";
+			}
+		};
+		layout.setWidth("750px");
+		layout.addStyleName("main-wrapper");
+
+		superLayout.addComponent(layout);
+		superLayout.setComponentAlignment(layout, Alignment.TOP_CENTER);
 		/*
 		 * Die Buttons werden genutzt, um zwischen den Views zu navigieren. Um
 		 * von außerhalb auf den Navigator zuzugreifen, kann folgendes
@@ -59,8 +78,12 @@ public class NavigatorUI extends UI {
 		 */
 
 		/* Das Layout für das Menü */
-		HorizontalLayout menu = new HorizontalLayout();
-		menu.setSpacing(true);
+		CssLayout menu = new CssLayout() {
+			@Override
+			protected String getCss(Component c) {
+				return "margin: 10px;";
+			}
+		};
 		layout.addComponent(menu);
 
 		Button lpBtn = new Button("Login", new Button.ClickListener() {
@@ -80,7 +103,7 @@ public class NavigatorUI extends UI {
 			}
 		});
 		menu.addComponent(bpBtn);
-		
+
 		Button qpBtn = new Button("Questionair 1", new Button.ClickListener() {
 
 			@Override
@@ -109,20 +132,18 @@ public class NavigatorUI extends UI {
 			}
 		});
 		menu.addComponent(upBtn);
-	
-		searchField = new TextField();
-		menu.addComponent(searchField);
 
-		Button searchBtn = new Button("Suchen", new Button.ClickListener() {
+		sf = new SearchField();
+		sf.addListener(new Listener() {
 
 			@Override
-			public void buttonClick(ClickEvent event) {
-				SearchViewImpl searchView = new SearchViewImpl(searchField.getValue());
+			public void componentEvent(Event event) {
+				SearchViewImpl searchView = new SearchViewImpl(sf.getSearchValue());
 				navigator.addView("search", searchView);
 				navigator.navigateTo("search");
 			}
 		});
-		menu.addComponent(searchBtn);
+		menu.addComponent(sf);
 
 		/*
 		 * Dem layout wird in weiterer Container hinzugefügt, in dem die View
@@ -131,7 +152,17 @@ public class NavigatorUI extends UI {
 		VerticalLayout cont = new VerticalLayout();
 		layout.addComponent(cont);
 
-		setContent(layout);
+		Button btn = new Button("Get ScreenWidth");
+		btn.addClickListener(new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				layout.addComponent(new Label(UI.getCurrent().getPage().getBrowserWindowWidth() + " x "
+						+ UI.getCurrent().getPage().getBrowserWindowHeight()));
+			}
+		});
+		layout.addComponent(btn);
+
+		setContent(superLayout);
 
 		// Navigation einrichten
 		navigator = new Navigator(this, cont);

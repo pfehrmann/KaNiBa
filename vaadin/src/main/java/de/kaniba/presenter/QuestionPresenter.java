@@ -9,13 +9,13 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 
+import de.kaniba.model.Answer;
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
 import de.kaniba.navigator.NavigatorUI;
-import de.kaniba.view.Answer;
 import de.kaniba.view.BarView;
 import de.kaniba.view.LoginView;
 import de.kaniba.view.QuestionElement;

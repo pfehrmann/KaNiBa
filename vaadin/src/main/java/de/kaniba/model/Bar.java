@@ -61,23 +61,38 @@ public class Bar {
 	}
 
 	public double getGeneralRating() {
-		return (double) sumGeneralRating / countRating;
+		if (countRating == 0) {
+			return 0;
+		}
+		return (double) sumGeneralRating / (double) countRating;
 	}
 
 	public double getPprRating() {
-		return (double) sumPprRating / countRating;
+		if (countRating == 0) {
+			return 0;
+		}
+		return (double) sumPprRating / (double) countRating;
 	}
 
 	public double getMusicRating() {
-		return (double) sumMusicRating / countRating;
+		if (countRating == 0) {
+			return 0;
+		}
+		return (double) sumMusicRating / (double) countRating;
 	}
 
 	public double getPeopleRating() {
-		return (double) sumPeopleRating / countRating;
+		if (countRating == 0) {
+			return 0;
+		}
+		return (double) sumPeopleRating / (double) countRating;
 	}
 
 	public double getAtmosphereRating() {
-		return (double) sumAtmosphereRating / countRating;
+		if (countRating == 0) {
+			return 0;
+		}
+		return (double) sumAtmosphereRating / (double) countRating;
 	}
 
 	public Admin getBarOwner() {

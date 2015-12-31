@@ -3,6 +3,8 @@ package de.kaniba.view;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Component;
 
+import de.kaniba.model.Question;
+
 public class QuestionElement {
 	private AbstractField component;
 	private Question question;

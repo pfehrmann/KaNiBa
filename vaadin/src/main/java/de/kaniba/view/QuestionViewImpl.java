@@ -18,6 +18,7 @@ import com.vaadin.ui.CheckBox;
 
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
+import de.kaniba.model.Question;
 import de.kaniba.navigator.NavigatorUI;
 import de.kaniba.presenter.BarPresenter;
 
