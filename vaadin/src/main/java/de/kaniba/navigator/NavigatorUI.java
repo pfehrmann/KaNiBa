@@ -22,6 +22,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextField;
 
+import de.kaniba.components.Menu;
 import de.kaniba.components.SearchField;
 import de.kaniba.model.Bar;
 import de.kaniba.model.User;
@@ -65,107 +66,34 @@ public class NavigatorUI extends UI {
 				return "margin: 10px;";
 			}
 		};
+
 		layout.setWidth("750px");
 		layout.addStyleName("main-wrapper");
-
-		superLayout.addComponent(layout);
-		superLayout.setComponentAlignment(layout, Alignment.TOP_CENTER);
-		/*
-		 * Die Buttons werden genutzt, um zwischen den Views zu navigieren. Um
-		 * von außerhalb auf den Navigator zuzugreifen, kann folgendes
-		 * aufgerufen werden: Navigator nav = ((NavigatorUI)
-		 * UI.getCurrent()).getNavigator();
-		 */
-
-		/* Das Layout für das Menü */
-		CssLayout menu = new CssLayout() {
-			@Override
-			protected String getCss(Component c) {
-				return "margin: 10px;";
-			}
-		};
-		layout.addComponent(menu);
-
-		Button lpBtn = new Button("Login", new Button.ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				navigator.navigateTo("");
-			}
-		});
-		menu.addComponent(lpBtn);
-
-		Button bpBtn = new Button("Bar Presenter", new Button.ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				navigator.navigateTo("bar");
-			}
-		});
-		menu.addComponent(bpBtn);
-
-		Button qpBtn = new Button("Questionair 1", new Button.ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				QuestionPresenter qp = new QuestionPresenter(1);
-				navigator.addView("questions", qp.getView());
-				navigator.navigateTo("questions");
-			}
-		});
-		menu.addComponent(qpBtn);
-
-		Button rpBtn = new Button("Register", new Button.ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				navigator.navigateTo("register");
-			}
-		});
-		menu.addComponent(rpBtn);
-
-		Button upBtn = new Button("UpdateInfos", new Button.ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				navigator.navigateTo("updateInformation");
-			}
-		});
-		menu.addComponent(upBtn);
-
-		sf = new SearchField();
-		sf.addListener(new Listener() {
-
-			@Override
-			public void componentEvent(Event event) {
-				SearchViewImpl searchView = new SearchViewImpl(sf.getSearchValue());
-				navigator.addView("search", searchView);
-				navigator.navigateTo("search");
-			}
-		});
-		menu.addComponent(sf);
 
 		/*
 		 * Dem layout wird in weiterer Container hinzugefügt, in dem die View
 		 * ausgetauscht werden.
 		 */
 		VerticalLayout cont = new VerticalLayout();
-		layout.addComponent(cont);
-
-		Button btn = new Button("Get ScreenWidth");
-		btn.addClickListener(new Button.ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				layout.addComponent(new Label(UI.getCurrent().getPage().getBrowserWindowWidth() + " x "
-						+ UI.getCurrent().getPage().getBrowserWindowHeight()));
-			}
-		});
-		layout.addComponent(btn);
 
 		setContent(superLayout);
 
-		// Navigation einrichten
+		/*
+		 * Navigation einrichten
+		 * 
+		 * Um von außerhalb auf den Navigator zuzugreifen, kann folgendes
+		 * aufgerufen werden: Navigator nav = ((NavigatorUI)
+		 * UI.getCurrent()).getNavigator();
+		 */
 		navigator = new Navigator(this, cont);
+
+		// Die komponenten werden erst hier hinzugefügt, da ansonsten
+		// nullpointer exceptions auftreten
+		Menu menu = new Menu(navigator);
+		superLayout.addComponent(menu);
+		superLayout.addComponent(layout);
+		superLayout.setComponentAlignment(layout, Alignment.TOP_CENTER);
+		layout.addComponent(cont);
 
 		/*
 		 * Die Presenter werden initialisiert und Die Views werden zum Navigator
