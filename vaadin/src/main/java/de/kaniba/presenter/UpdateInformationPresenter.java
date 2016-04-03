@@ -8,6 +8,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 
+import de.kaniba.components.Menu;
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.User;
@@ -39,11 +40,7 @@ public class UpdateInformationPresenter implements UpdateInformationView.UpdateI
 		if (loggedInObj != null) {
 			loggedIn = (boolean) loggedInObj;
 		}
-
-		if (!loggedIn) {
-			Notification.show("Um deine Daten zu ändern, musst du eingeloggt sein.");
-			navigator.navigateTo(LoginView.NAME);
-		}
+		
 		this.model = (InternalUser) session.getAttribute("user");
 
 		if(model != null) {
@@ -105,7 +102,8 @@ public class UpdateInformationPresenter implements UpdateInformationView.UpdateI
 
 		if (!loggedIn) {
 			Notification.show("Um deine Daten zu ändern, musst du eingeloggt sein.");
-			((NavigatorUI) UI.getCurrent()).getNavigator().navigateTo(LoginView.NAME);
+			//((NavigatorUI) UI.getCurrent()).getNavigator().navigateTo(LoginView.NAME);
+			Menu.showLogin();
 			return;
 		}
 		

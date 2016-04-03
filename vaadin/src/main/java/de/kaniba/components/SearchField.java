@@ -2,8 +2,6 @@ package de.kaniba.components;
 
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.event.FieldEvents.BlurEvent;
-import com.vaadin.event.FieldEvents.BlurListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
@@ -15,6 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchField extends CustomComponent {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private TextField searchField;
 	private Button searchButton;
 	private HorizontalLayout layout;
@@ -24,6 +26,7 @@ public class SearchField extends CustomComponent {
 		listeners = new ArrayList<Listener>();
 
 		layout = new HorizontalLayout();
+		this.setWidth("233.34px");
 
 		searchField = new TextField();
 		searchField.addStyleName("searchField-textField");

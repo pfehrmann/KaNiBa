@@ -2,9 +2,10 @@ package de.kaniba.presenter;
 
 import java.sql.SQLException;
 
-import com.google.gwt.dom.client.ModElement;
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.tapio.googlemaps.client.LatLon;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 
@@ -15,7 +16,6 @@ import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
 import de.kaniba.navigator.NavigatorUI;
 import de.kaniba.view.BarView;
-import de.kaniba.view.LoginView;
 
 public class BarPresenter implements BarView.BarViewListener {
 
@@ -29,15 +29,11 @@ public class BarPresenter implements BarView.BarViewListener {
 		return view;
 	}
 
-	public BarPresenter(Bar bmodel, BarView view/* ,Rating rmodel */) {
-		this.barModel = bmodel;
+	public BarPresenter(BarView view/* ,Rating rmodel */) {
 		/* this.ratingModel = rmodel; */
 		this.view = view;
 
 		view.addRatingButtonClickListener(this);
-
-		view.setBarDescription(barModel.getDescription());
-		view.setMessageBoardStrings(barModel.getPinboard().getMessages());
 		session = UI.getCurrent().getSession();
 	}
 
@@ -58,6 +54,8 @@ public class BarPresenter implements BarView.BarViewListener {
 		rating.setUserID(iUModel.getUserID());
 		rating.saveRating();
 		Notification.show("Danke das du abgestimmt hast");
+		
+		//TODO: Remove this.
 		try {
 			barModel = Database.readBar(barModel.getBarID());
 		} catch (SQLException e) {
@@ -68,7 +66,6 @@ public class BarPresenter implements BarView.BarViewListener {
 
 	@Override
 	public void sendMessage(String message) {
-		// TODO Auto-generated method stub
 		session = ((NavigatorUI) UI.getCurrent()).getSession();
 
 		Object loggedInObj = session.getAttribute("loggedIn");
@@ -87,8 +84,44 @@ public class BarPresenter implements BarView.BarViewListener {
 	}
 
 	@Override
-	public void enter() {
-		view.setRating(barModel);
-		UI.getCurrent().getPage().setTitle(barModel.getName());
+	public void enter(ViewChangeEvent event) {
+		// Get the barID and the corresponding bar
+		barModel = null;
+		if (event.getParameters() != null) {
+			String idParameter = event.getParameters();
+
+			int id = -1;
+			try {
+				id = Integer.parseInt(idParameter);
+			} catch (NumberFormatException e) {
+				// don't do anything.
+			}
+
+			if (id != -1) {
+				try {
+					barModel = new Bar(id);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		// set the coordinates of the bar
+		LatLon coords = Utils.getLatLon(barModel);
+		view.setMapCoords(coords);
+		
+		// initialize the view
+		if (barModel != null) {
+
+			//TODO: if the user is logged in, use his rating.
+			view.setRating(barModel);
+			view.setBarDescription(barModel.getDescription());
+			view.setBarTitle(barModel.getName());
+			view.setBarAddress(barModel.getAddress());
+			if(barModel.getPinboard() != null) {
+				view.setMessageBoardStrings(barModel.getPinboard().getMessages());
+			}
+			UI.getCurrent().getPage().setTitle(barModel.getName());
+		}
 	}
 }

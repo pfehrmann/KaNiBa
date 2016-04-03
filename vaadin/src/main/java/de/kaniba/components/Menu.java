@@ -7,8 +7,16 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.Window;
 
+import de.kaniba.model.User;
+import de.kaniba.presenter.FindBarPresenter;
+import de.kaniba.presenter.LoginPresenter;
 import de.kaniba.presenter.QuestionPresenter;
+import de.kaniba.view.FindBarImpl;
+import de.kaniba.view.LoginView;
+import de.kaniba.view.LoginViewImpl;
 import de.kaniba.view.SearchViewImpl;
 
 @SuppressWarnings("serial")
@@ -18,24 +26,16 @@ public class Menu extends CustomComponent {
 
 		/* Das Layout für das Menü */
 		Layout menuLayout = new HorizontalLayout();
+		menuLayout.addStyleName("menu-bar");
 
 		MenuBar mb = new MenuBar();
 		//mb.setWidth(100.0f, Unit.PERCENTAGE);
 		menuLayout.addComponent(mb);
-
-		MenuItem home = mb.addItem("Login", null, new Command() {
-
-			@Override
-			public void menuSelected(MenuItem selectedItem) {
-				navigator.navigateTo("");
-			}
-		});
 		
-		MenuItem barPresenter = mb.addItem("Bar Presenter", null, new Command() {
-
+		MenuItem findBar = mb.addItem("BarFinder", null, new Command() {
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				navigator.navigateTo("bar");
+				navigator.navigateTo(FindBarPresenter.NAME);
 			}
 		});
 		
@@ -64,19 +64,25 @@ public class Menu extends CustomComponent {
 				navigator.navigateTo("updateInformation");
 			}
 		});
-
-		final SearchField sf = new SearchField();
-		sf.addListener(new Listener() {
+		
+		MenuItem home = mb.addItem("Login", null, new Command() {
 
 			@Override
-			public void componentEvent(Event event) {
-				SearchViewImpl searchView = new SearchViewImpl(sf.getSearchValue());
-				navigator.addView("search", searchView);
-				navigator.navigateTo("search");
+			public void menuSelected(MenuItem selectedItem) {
+				showLogin();
 			}
 		});
-		menuLayout.addComponent(sf);
 
 		setCompositionRoot(menuLayout);
+	}
+	
+	public static void showLogin() {
+		Window loginWindow = new Window("Login");
+		LoginPresenter lp = new LoginPresenter(new User(), new LoginViewImpl());
+		loginWindow.setContent((CustomComponent) lp.getView());
+		loginWindow.setModal(true);
+		loginWindow.setDraggable(false);
+		loginWindow.setResizable(false);
+		UI.getCurrent().addWindow(loginWindow);
 	}
 }

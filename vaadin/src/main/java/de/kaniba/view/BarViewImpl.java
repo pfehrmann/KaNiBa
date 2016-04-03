@@ -10,18 +10,25 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.data.Property;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.tapio.googlemaps.GoogleMap;
+import com.vaadin.tapio.googlemaps.client.GoogleMapControl;
+import com.vaadin.tapio.googlemaps.client.LatLon;
+import com.vaadin.tapio.googlemaps.client.overlays.GoogleMapMarker;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Panel;
 
+import de.kaniba.model.Address;
 import de.kaniba.model.Bar;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
@@ -34,52 +41,99 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	public int pprRating;
 	public int musicRating;
 	public int atmoRating;
-	public int peopleRating = 0;
+	public int peopleRating;
+
+	private boolean initializing = false;
+
 	public RatingStars ratinggeneral;
 	public RatingStars ratingatmo;
 	public RatingStars ratingmusic;
-	
 	private RatingStars ratingppr;
 	private RatingStars ratingpeople;
+
+	private GoogleMap map;
+
 	private TextArea messageArea;
-	private TextArea textInfo;
+	private Label barInfoText;
+	private Label address;
 	private String message;
 	private TextField messageField;
+	private Panel mainPanel;
 
 	public BarViewImpl() {
-		Panel mainPanel = createMainPanel();
-		
-		TextArea barInfoText = createBarInfoPanel();
-		Panel ratingStars = createRatingStars();
+		mainPanel = createMainPanel();
+
+		Panel barInfo = createBarInfoPanel();
+		Panel ratingPanel = createRatingPanel();
 		Panel pinboardPanel = createMessagePanel();
 		Image barImage = createBarPicture();
-		
-		GridLayout mainLayout = new GridLayout(2, 3);
+		Panel mapPanel = createMap();
+		Panel addressPanel = createAddressPanel();
+
+		GridLayout mainLayout = new GridLayout(2, 2);
+		mainLayout.setColumnExpandRatio(1, 1.0f);
 		mainLayout.setWidth("100%");
 		mainLayout.setSpacing(true);
-		
-		mainLayout.setColumnExpandRatio(1, 1.0f);
-		mainLayout.addComponent(ratingStars, 0, 1);
 		mainLayout.addComponent(barImage, 0, 0);
-		mainLayout.addComponent(barInfoText, 1, 0, 1, 1);
-		mainLayout.addComponent(pinboardPanel, 0, 2, 1, 2);
 
+		// Left column
+		Layout left = new VerticalLayout();
+		left.addComponent(addressPanel);
+		left.addComponent(mapPanel);
+		left.addComponent(ratingPanel);
+
+		// ricght column
+		Layout right = new VerticalLayout();
+		right.addComponent(barInfo);
+		right.addComponent(pinboardPanel);
+
+		mainLayout.addComponent(left, 0, 1);
+		mainLayout.addComponent(right, 1, 0, 1, 1);
 		mainPanel.setContent(mainLayout);
-		
+
 		setCompositionRoot(mainPanel);
 	}
 
-	private TextArea createBarInfoPanel() {
-		textInfo = new TextArea();
-		textInfo.setWidth("100%");
-		textInfo.setHeight("100%");
-		textInfo.setCaption("Ueberblick");
+	private Panel createBarInfoPanel() {
+		barInfoText = new Label();
+		Panel barInfoPanel = new Panel();
 
-		textInfo.addStyleName("ratingpanel");
-		textInfo.setReadOnly(true);
-		textInfo.setId("bar-view-textInfo");
+		barInfoText.addStyleName("borderless");
+		barInfoText.setId("bar-view-textInfo");
 
-		return textInfo;
+		barInfoPanel.setContent(barInfoText);
+		barInfoPanel.addStyleName("bar-info-panel");
+		barInfoPanel.addStyleName("borderless");
+
+		return barInfoPanel;
+	}
+
+	private Panel createMap() {
+		Panel mapPanel = new Panel();
+
+		map = new GoogleMap("apiKey", null, "german");
+		map.setSizeFull();
+		map.setZoom(14);
+		map.setMinZoom(4);
+		map.setMaxZoom(18);
+		map.removeControl(GoogleMapControl.MapType);
+		map.removeControl(GoogleMapControl.Pan);
+		map.removeControl(GoogleMapControl.Rotate);
+		map.removeControl(GoogleMapControl.Zoom);
+		map.removeControl(GoogleMapControl.StreetView);
+		map.removeControl(GoogleMapControl.Scale);
+
+		mapPanel.setContent(map);
+		return mapPanel;
+	}
+
+	private Panel createAddressPanel() {
+		Panel addressPanel = new Panel();
+		addressPanel.addStyleName("borderless");
+
+		address = new Label();
+		addressPanel.setContent(address);
+		return addressPanel;
 	}
 
 	private Panel createMainPanel() {
@@ -140,7 +194,12 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		return messagePanel;
 	}
 
-	private Panel createRatingStars() {
+	/**
+	 * Create UI for the ratingstars
+	 * 
+	 * @return
+	 */
+	private Panel createRatingPanel() {
 		// Diese Methode legt die Anzeigeelemente für die Sterne an
 		ratinggeneral = new RatingStars();
 		ratingatmo = new RatingStars();
@@ -152,14 +211,32 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		Button ratingButton = new Button("Speichern");
 
 		ratingpanel.addStyleName("ratingpanel");
-		VerticalLayout starLayout = new VerticalLayout();
-		starLayout.setSizeFull();
+		Layout layout = new VerticalLayout();
+		layout.setSizeFull();
 
 		ratinggeneral.setMaxValue(5);
 		ratingatmo.setMaxValue(5);
 		ratingmusic.setMaxValue(5);
 		ratingppr.setMaxValue(5);
 		ratingpeople.setMaxValue(5);
+
+		Property.ValueChangeListener ratingValueChangeListener = new Property.ValueChangeListener() {
+			@Override
+			public void valueChange(Property.ValueChangeEvent event) {
+				if (!initializing) {
+					saveRating();
+				}
+			}
+		};
+
+		/*
+		 * This can only be done, if it is possible to save the rating if not all categorys are rated.
+		ratinggeneral.addValueChangeListener(ratingValueChangeListener);
+		ratingatmo.addValueChangeListener(ratingValueChangeListener);
+		ratingmusic.addValueChangeListener(ratingValueChangeListener);
+		ratingppr.addValueChangeListener(ratingValueChangeListener);
+		ratingpeople.addValueChangeListener(ratingValueChangeListener);
+		 */
 
 		ratinggeneral.setImmediate(true);
 		ratingatmo.setImmediate(true);
@@ -174,20 +251,26 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		ratingppr.setId("bar-view-ratingppr");
 		ratingpeople.setId("bar-view-ratingpeople");
 
-		ratinggeneral.setCaption("Gesamtbewertung Bar: ");
-		ratingatmo.setCaption("Bewertung Atmosphäre: ");
-		ratingmusic.setCaption("Bewertung der Musik: ");
-		ratingppr.setCaption("Bewertung Preis-/Leistung: ");
-		ratingpeople.setCaption("Bewertung Leute:");
+		ratinggeneral.addStyleName("borderless");
+		ratingatmo.addStyleName("borderless");
+		ratingmusic.addStyleName("borderless");
+		ratingppr.addStyleName("borderless");
+		ratingpeople.addStyleName("borderless");
 
-		starLayout.addComponent(ratinggeneral);
-		starLayout.addComponent(ratingatmo);
-		starLayout.addComponent(ratingmusic);
-		starLayout.addComponent(ratingppr);
-		starLayout.addComponent(ratingpeople);
-		starLayout.addComponent(ratingButton);
+		ratinggeneral.setCaption("Gesamtbewertung");
+		ratingatmo.setCaption("Atmosphäre");
+		ratingmusic.setCaption("Musik");
+		ratingppr.setCaption("Preis-/Leistung");
+		ratingpeople.setCaption("Leute");
 
-		ratingpanel.setContent(starLayout);
+		layout.addComponent(ratinggeneral);
+		layout.addComponent(ratingatmo);
+		layout.addComponent(ratingmusic);
+		layout.addComponent(ratingppr);
+		layout.addComponent(ratingpeople);
+		layout.addComponent(ratingButton);
+
+		ratingpanel.setContent(layout);
 		ratingpanel.setId("bar-view-ratingpanel");
 
 		ratingButton.addClickListener(new Button.ClickListener() {
@@ -214,6 +297,21 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		return ratingpanel;
 	}
 
+	private void saveRating() {
+		generalRating = ratinggeneral.getValue().intValue();
+		pprRating = ratingppr.getValue().intValue();
+		atmoRating = ratingatmo.getValue().intValue();
+		musicRating = ratingmusic.getValue().intValue();
+		peopleRating = ratingpeople.getValue().intValue();
+
+		/* Platzhalter Integer */
+
+		Rating rating = new Rating(-1, -1, -1, generalRating, pprRating, musicRating, peopleRating, atmoRating, null);
+		for (BarViewListener listener : listenerList) {
+			listener.ratingButtonClick(rating);
+		}
+	}
+
 	@Override
 	public void addRatingButtonClickListener(BarViewListener listener) {
 		listenerList.add(listener);
@@ -221,10 +319,12 @@ public class BarViewImpl extends CustomComponent implements BarView {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		initializing = true;
 		UI.getCurrent().getPage().setTitle("Bar");
 		for (BarViewListener listener : listenerList) {
-			listener.enter();
+			listener.enter(event);
 		}
+		initializing = false;
 	}
 
 	public Image createBarPicture() {
@@ -254,8 +354,20 @@ public class BarViewImpl extends CustomComponent implements BarView {
 
 	@Override
 	public void setBarDescription(String barDescription) {
-		textInfo.setReadOnly(false);
-		textInfo.setValue(barDescription);
+		barInfoText.setReadOnly(false);
+		barInfoText.setValue(barDescription);
+	}
+
+	@Override
+	public void setBarTitle(String barName) {
+		mainPanel.setCaption(barName);
+	}
+
+	@Override
+	public void setBarAddress(Address address) {
+		String addressString = address.getStreet() + " " + address.getNumber();
+		addressString += "\n" + address.getZip() + ", " + address.getCity();
+		this.address.setValue(addressString);
 	}
 
 	@Override
@@ -265,10 +377,20 @@ public class BarViewImpl extends CustomComponent implements BarView {
 
 	@Override
 	public void setRating(Bar bar) {
+		if (bar == null) {
+			return;
+		}
+
 		ratinggeneral.setValue(bar.getGeneralRating());
 		ratingatmo.setValue(bar.getAtmosphereRating());
 		ratingmusic.setValue(bar.getMusicRating());
 		ratingpeople.setValue(bar.getPeopleRating());
 		ratingppr.setValue(bar.getPprRating());
+	}
+
+	@Override
+	public void setMapCoords(LatLon coords) {
+		map.setCenter(coords);
+		map.addMarker(new GoogleMapMarker("", coords, false));
 	}
 }

@@ -33,7 +33,7 @@ public class Bar {
 
 	public Bar(int barID) throws SQLException {
 		Bar t = Database.readBar(barID);
-
+		
 		this.barID = barID;
 		this.barOwner = t.getBarOwner();
 		this.pinboard = t.getPinboard();

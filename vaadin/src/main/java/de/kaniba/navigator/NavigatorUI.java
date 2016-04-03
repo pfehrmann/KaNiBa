@@ -27,11 +27,13 @@ import de.kaniba.components.SearchField;
 import de.kaniba.model.Bar;
 import de.kaniba.model.User;
 import de.kaniba.presenter.BarPresenter;
+import de.kaniba.presenter.FindBarPresenter;
 import de.kaniba.presenter.LoginPresenter;
 import de.kaniba.presenter.QuestionPresenter;
 import de.kaniba.presenter.RegisterPresenter;
 import de.kaniba.presenter.UpdateInformationPresenter;
 import de.kaniba.view.BarViewImpl;
+import de.kaniba.view.FindBarImpl;
 import de.kaniba.view.LoginView;
 import de.kaniba.view.LoginViewImpl;
 import de.kaniba.view.RegisterView;
@@ -59,6 +61,7 @@ public class NavigatorUI extends UI {
 		 * Das layout beiinhaltet alle Elemente
 		 */
 		final VerticalLayout superLayout = new VerticalLayout();
+		superLayout.setId("super-layout");
 
 		final CssLayout layout = new CssLayout() {
 			@Override
@@ -68,6 +71,7 @@ public class NavigatorUI extends UI {
 		};
 
 		layout.setWidth("750px");
+		layout.setHeight("100%");
 		layout.addStyleName("main-wrapper");
 
 		/*
@@ -75,6 +79,8 @@ public class NavigatorUI extends UI {
 		 * ausgetauscht werden.
 		 */
 		VerticalLayout cont = new VerticalLayout();
+		cont.setId("ui-content");
+		cont.setHeight("100%");
 
 		setContent(superLayout);
 
@@ -90,6 +96,7 @@ public class NavigatorUI extends UI {
 		// Die komponenten werden erst hier hinzugefügt, da ansonsten
 		// nullpointer exceptions auftreten
 		Menu menu = new Menu(navigator);
+		menu.setHeight("37px");
 		superLayout.addComponent(menu);
 		superLayout.addComponent(layout);
 		superLayout.setComponentAlignment(layout, Alignment.TOP_CENTER);
@@ -101,17 +108,9 @@ public class NavigatorUI extends UI {
 		 * angezeigt wird. Über die namen kann zwischen den Views navigiert
 		 * werden.
 		 */
-		LoginPresenter lp = new LoginPresenter(new User(), new LoginViewImpl());
-		navigator.addView("", lp.getView());
-		navigator.addView(LoginView.NAME, lp.getView());
 
 		BarPresenter bp = null;
-		try {
-			bp = new BarPresenter(new Bar(1), new BarViewImpl());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		bp = new BarPresenter(new BarViewImpl());
 		navigator.addView("bar", bp.getView());
 
 		RegisterPresenter rp = new RegisterPresenter(new User(), new RegisterViewImpl());
@@ -119,6 +118,10 @@ public class NavigatorUI extends UI {
 
 		UpdateInformationPresenter up = new UpdateInformationPresenter(new UpdateInformationVeiwImpl());
 		navigator.addView(UpdateInformationView.NAME, up.getView());
+		
+		FindBarPresenter fp = new FindBarPresenter(new FindBarImpl());
+		navigator.addView(FindBarPresenter.NAME, fp.getView());
+		navigator.addView("", fp.getView());
 	}
 
 	public Navigator getNavigator() {

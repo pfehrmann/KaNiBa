@@ -58,12 +58,24 @@
 			<version>${cucumber.version}</version>
 			<scope>test</scope>
 		</dependency>
-	
+
 		<dependency>
-            <groupId>org.vaadin.addons</groupId>
-            <artifactId>ratingstars</artifactId>
-            <version>2.1</version>
-        </dependency>
+			<groupId>com.vaadin.tapio</groupId>
+			<artifactId>googlemaps</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>ratingstars</artifactId>
+			<version>2.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20160212</version>
+		</dependency>
 
 		<dependency>
 			<groupId>info.cukes</groupId>

@@ -88,9 +88,9 @@ public class QuestionViewImpl extends CustomComponent implements QuestionView, B
 	@Override
 	public void buttonClick(ClickEvent event) {
 		Bar b = ((Bar) ((Button) event.getSource()).getData());
-		BarPresenter bp = new BarPresenter(b, new BarViewImpl());
+		BarPresenter bp = new BarPresenter(new BarViewImpl());
 		((NavigatorUI) UI.getCurrent()).getNavigator().addView("bar", bp.getView());
-		((NavigatorUI) UI.getCurrent()).getNavigator().navigateTo("bar");
+		((NavigatorUI) UI.getCurrent()).getNavigator().navigateTo("bar/" + b.getBarID());
 	}
 
 	@Override
