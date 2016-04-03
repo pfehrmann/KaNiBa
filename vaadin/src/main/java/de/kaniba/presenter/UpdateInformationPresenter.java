@@ -102,8 +102,8 @@ public class UpdateInformationPresenter implements UpdateInformationView.UpdateI
 
 		if (!loggedIn) {
 			Notification.show("Um deine Daten zu ändern, musst du eingeloggt sein.");
-			//((NavigatorUI) UI.getCurrent()).getNavigator().navigateTo(LoginView.NAME);
 			Menu.showLogin();
+			UI.getCurrent().getNavigator().navigateTo("");
 			return;
 		}
 		

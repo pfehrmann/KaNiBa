@@ -48,8 +48,27 @@
 		margin: 0 auto !important;
 	}
 	
+	.menu-bar {
+		width: auto !important;
+		margin: 0 auto !important;
+	}
+	
   	.ratingpanel {
-  		border-style:none;
-  		alignment:center;		
-	}  	 
+  		border-style: none;
+  		alignment: center;		
+	} 
+	
+	.borderless {
+		border-style: none;
+	} 	 
+	
+	.borderless.v-ratingstars-wrapper {
+		margin-top: -8px;
+		margin-bottom: 5px;
+	}
+	
+	.bar-info-panel {
+		max-height: 450px;
+		overflow: auto !important;
+	}
 }

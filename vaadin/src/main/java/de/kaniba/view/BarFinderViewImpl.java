@@ -26,15 +26,15 @@ import de.kaniba.navigator.NavigatorUI;
 import de.kaniba.presenter.BarPresenter;
 import de.kaniba.presenter.Utils;
 
-public class FindBarImpl extends CustomComponent implements FindBarView {
-	private List<FindBarViewListener> listeners;
+public class BarFinderViewImpl extends CustomComponent implements BarFinderView {
+	private List<BarFinderViewListener> listeners;
 	
 	private GoogleMap map;
 	private Panel searchResultsPanel;
 	private List<GoogleMapMarker> markers;
 	private SearchField searchField;
 	
-	public FindBarImpl() {
+	public BarFinderViewImpl() {
 		markers = new ArrayList<>();
 		listeners = new ArrayList<>();
 		
@@ -64,7 +64,7 @@ public class FindBarImpl extends CustomComponent implements FindBarView {
 			
 			@Override
 			public void componentEvent(Event event) {
-				for(FindBarViewListener listener : listeners) {
+				for(BarFinderViewListener listener : listeners) {
 					listener.searchBar(searchField.getSearchValue());
 				}
 			}
@@ -128,13 +128,13 @@ public class FindBarImpl extends CustomComponent implements FindBarView {
 	}
 
 	@Override
-	public void addListener(FindBarViewListener listener) {
+	public void addListener(BarFinderViewListener listener) {
 		listeners.add(listener);
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
+		UI.getCurrent().getPage().setTitle("BarFinder");
 		
 	}
 }

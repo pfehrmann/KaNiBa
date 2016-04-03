@@ -7,14 +7,14 @@ import com.vaadin.navigator.View;
 
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
-import de.kaniba.view.FindBarView;
-import de.kaniba.view.FindBarView.FindBarViewListener;
+import de.kaniba.view.BarFinderView;
+import de.kaniba.view.BarFinderView.BarFinderViewListener;
 
-public class FindBarPresenter implements FindBarViewListener {
+public class BarFinderPresenter implements BarFinderViewListener {
 	public static final String NAME = "barFinder";
-	private FindBarView view;
+	private BarFinderView view;
 	
-	public FindBarPresenter(FindBarView view) {
+	public BarFinderPresenter(BarFinderView view) {
 		this.view = view;
 		view.addListener(this);
 	}

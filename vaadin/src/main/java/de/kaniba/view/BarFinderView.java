@@ -6,12 +6,12 @@ import com.vaadin.navigator.View;
 
 import de.kaniba.model.Bar;
 
-public interface FindBarView extends View {
+public interface BarFinderView extends View {
 	public void displayBars(List<Bar> bars);
 
-	interface FindBarViewListener {
+	interface BarFinderViewListener {
 		public void searchBar(String search);
 	}
 
-	public void addListener(FindBarViewListener listener);
+	public void addListener(BarFinderViewListener listener);
 }

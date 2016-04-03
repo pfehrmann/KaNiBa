@@ -1,45 +1,37 @@
 package de.kaniba.components;
 
 import com.vaadin.navigator.Navigator;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
 import de.kaniba.model.User;
-import de.kaniba.presenter.FindBarPresenter;
+import de.kaniba.navigator.NavigatorUI;
+import de.kaniba.presenter.BarFinderPresenter;
 import de.kaniba.presenter.LoginPresenter;
 import de.kaniba.presenter.QuestionPresenter;
-import de.kaniba.view.FindBarImpl;
-import de.kaniba.view.LoginView;
 import de.kaniba.view.LoginViewImpl;
-import de.kaniba.view.SearchViewImpl;
 
 @SuppressWarnings("serial")
 public class Menu extends CustomComponent {
 
 	public Menu(final Navigator navigator) {
+		MenuBar menuBar = new MenuBar();
+		menuBar.setId("menu-bar");
 
-		/* Das Layout für das Menü */
-		Layout menuLayout = new HorizontalLayout();
-		menuLayout.addStyleName("menu-bar");
-
-		MenuBar mb = new MenuBar();
-		//mb.setWidth(100.0f, Unit.PERCENTAGE);
-		menuLayout.addComponent(mb);
-		
-		MenuItem findBar = mb.addItem("BarFinder", null, new Command() {
+		MenuItem findBar = menuBar.addItem("BarFinder", null, new Command() {
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				navigator.navigateTo(FindBarPresenter.NAME);
+				navigator.navigateTo(BarFinderPresenter.NAME);
 			}
 		});
-		
-		MenuItem questionair = mb.addItem("Questionair 1", null, new Command() {
+
+		MenuItem questionair = menuBar.addItem("Questionair 1", null, new Command() {
 
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
@@ -49,7 +41,7 @@ public class Menu extends CustomComponent {
 			}
 		});
 
-		MenuItem register = mb.addItem("Register", null, new Command() {
+		MenuItem register = menuBar.addItem("Register", null, new Command() {
 
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
@@ -57,15 +49,28 @@ public class Menu extends CustomComponent {
 			}
 		});
 
-		MenuItem updateInfos = mb.addItem("UpdateInfos", null, new Command() {
+		MenuItem updateInfos = menuBar.addItem("UpdateInfos", null, new Command() {
 
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				navigator.navigateTo("updateInformation");
+				VaadinSession session = ((NavigatorUI) UI.getCurrent()).getSession();
+				Object loggedInObj = session.getAttribute("loggedIn");
+				boolean loggedIn = false;
+				if (loggedInObj != null) {
+					loggedIn = (boolean) loggedInObj;
+				}
+
+				if (!loggedIn) {
+					Notification.show("Zum ändern der deiner Daten musst du eingeloggt sein.",
+							Notification.Type.WARNING_MESSAGE);
+					showLogin();
+				} else {
+					navigator.navigateTo("updateInformation");
+				}
 			}
 		});
-		
-		MenuItem home = mb.addItem("Login", null, new Command() {
+
+		MenuItem login = menuBar.addItem("Login", null, new Command() {
 
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
@@ -73,9 +78,9 @@ public class Menu extends CustomComponent {
 			}
 		});
 
-		setCompositionRoot(menuLayout);
+		setCompositionRoot(menuBar);
 	}
-	
+
 	public static void showLogin() {
 		Window loginWindow = new Window("Login");
 		LoginPresenter lp = new LoginPresenter(new User(), new LoginViewImpl());
