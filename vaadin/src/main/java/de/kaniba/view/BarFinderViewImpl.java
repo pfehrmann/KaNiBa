@@ -1,10 +1,13 @@
 package de.kaniba.view;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.gwt.thirdparty.guava.common.collect.MapMaker;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Page;
 import com.vaadin.tapio.googlemaps.GoogleMap;
 import com.vaadin.tapio.googlemaps.client.GoogleMapControl;
 import com.vaadin.tapio.googlemaps.client.LatLon;
@@ -33,6 +36,7 @@ public class BarFinderViewImpl extends CustomComponent implements BarFinderView 
 	private Panel searchResultsPanel;
 	private List<GoogleMapMarker> markers;
 	private SearchField searchField;
+	private Panel mapPanel;
 	
 	public BarFinderViewImpl() {
 		markers = new ArrayList<>();
@@ -50,7 +54,7 @@ public class BarFinderViewImpl extends CustomComponent implements BarFinderView 
 		left.setWidth(searchField.getWidth(), searchField.getWidthUnits());
 		layout.addComponent(left);
 		
-		Panel mapPanel = createMapPanel();
+		mapPanel = createMapPanel();
 		layout.addComponent(mapPanel);
 		
 		Panel panel = new Panel();
@@ -82,7 +86,7 @@ public class BarFinderViewImpl extends CustomComponent implements BarFinderView 
 	}
 	
 	private Panel createMapPanel() {
-		Panel mapPanel = new Panel();
+		Panel panel = new Panel();
 
 		map = new GoogleMap("apiKey", null, "german");
 		map.setCenter(new LatLon(49.0068901, 8.4036527));
@@ -97,16 +101,21 @@ public class BarFinderViewImpl extends CustomComponent implements BarFinderView 
 		map.removeControl(GoogleMapControl.StreetView);
 		map.removeControl(GoogleMapControl.Scale);
 		
+		Collection<GoogleMapMarker> markers = map.getMarkers();
+		for (GoogleMapMarker marker : markers) {
+			map.removeMarker(marker);
+		}
+		
 		map.addMarkerClickListener(new MarkerClickListener() {
 			
 			@Override
 			public void markerClicked(GoogleMapMarker clickedMarker) {
-				UI.getCurrent().getNavigator().navigateTo("bar/" + clickedMarker.getId());
+				Page.getCurrent().updateLocation("#!bar/" + clickedMarker.getId(), true);
 			}
 		});
 
-		mapPanel.setContent(map);
-		return mapPanel;
+		panel.setContent(map);
+		return panel;
 	}
 	
 	@Override

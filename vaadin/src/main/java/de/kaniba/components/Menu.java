@@ -19,7 +19,8 @@ import de.kaniba.view.LoginViewImpl;
 
 @SuppressWarnings("serial")
 public class Menu extends CustomComponent {
-
+	private MenuItem login;
+	
 	public Menu(final Navigator navigator) {
 		MenuBar menuBar = new MenuBar();
 		menuBar.setId("menu-bar");
@@ -70,7 +71,7 @@ public class Menu extends CustomComponent {
 			}
 		});
 
-		MenuItem login = menuBar.addItem("Login", null, new Command() {
+		login = menuBar.addItem("Login", null, new Command() {
 
 			@Override
 			public void menuSelected(MenuItem selectedItem) {

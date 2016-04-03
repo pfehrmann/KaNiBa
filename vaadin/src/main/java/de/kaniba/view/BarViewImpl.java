@@ -2,6 +2,7 @@ package de.kaniba.view;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.vaadin.teemu.ratingstars.RatingStars;
@@ -112,6 +113,12 @@ public class BarViewImpl extends CustomComponent implements BarView {
 		Panel mapPanel = new Panel();
 
 		map = new GoogleMap("apiKey", null, "german");
+		
+		Collection<GoogleMapMarker> markers = map.getMarkers();
+		for (GoogleMapMarker marker : markers) {
+			map.removeMarker(marker);
+		}
+		
 		map.setSizeFull();
 		map.setZoom(14);
 		map.setMinZoom(4);
@@ -320,6 +327,12 @@ public class BarViewImpl extends CustomComponent implements BarView {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		initializing = true;
+		
+		Collection<GoogleMapMarker> markers = map.getMarkers();
+		for (GoogleMapMarker marker : markers) {
+			map.removeMarker(marker);
+		}
+		
 		UI.getCurrent().getPage().setTitle("Bar");
 		for (BarViewListener listener : listenerList) {
 			listener.enter(event);
