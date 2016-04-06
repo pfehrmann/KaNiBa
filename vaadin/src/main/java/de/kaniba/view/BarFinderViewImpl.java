@@ -100,6 +100,7 @@ public class BarFinderViewImpl extends CustomComponent implements BarFinderView 
 		map.removeControl(GoogleMapControl.Zoom);
 		map.removeControl(GoogleMapControl.StreetView);
 		map.removeControl(GoogleMapControl.Scale);
+		map.setHeight("600px");
 		
 		Collection<GoogleMapMarker> markers = map.getMarkers();
 		for (GoogleMapMarker marker : markers) {
