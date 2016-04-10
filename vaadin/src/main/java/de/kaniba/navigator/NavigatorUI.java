@@ -7,11 +7,14 @@ import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.UI;
 
+import de.kaniba.components.LoginPopup;
 import de.kaniba.model.User;
 import de.kaniba.presenter.BarPresenter;
 import de.kaniba.presenter.BarFinderPresenter;
@@ -36,11 +39,6 @@ public class NavigatorUI extends UI {
 	protected void init(VaadinRequest vaadinRequest) {
 		// Use the new design
 		TestDesign design = new TestDesign();
-		
-		// TODO: CHeck if this code is useful???
-		// GoogleMap map = new GoogleMap("", null, "german");
-		// map.setSizeFull();
-		// design.content.addComponent(map);
 		
 		// Add the logo to the menu
 		// TODO: Fix menu logo width and position
