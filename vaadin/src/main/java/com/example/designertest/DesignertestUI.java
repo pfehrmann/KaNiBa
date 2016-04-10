@@ -21,11 +21,11 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-@Theme("designertest")
+@Theme("mytheme")
 public class DesignertestUI extends UI {
 
-	@WebServlet(value = "/*", asyncSupported = true)
-	@VaadinServletConfiguration(productionMode = false, ui = DesignertestUI.class, widgetset = "com.example.designertest.widgetset.DesignertestWidgetset")
+	@WebServlet(value = "/VaadinDesigner/*", asyncSupported = true)
+	@VaadinServletConfiguration(productionMode = false, ui = DesignertestUI.class, widgetset = "de.kaniba.vaadin.MyAppWidgetset")
 	public static class Servlet extends VaadinServlet {
 	}
 

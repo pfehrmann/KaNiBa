@@ -80,14 +80,12 @@ public class SearchFieldProgram extends CustomComponent {
 		return searchField.getValue();
 	}
 
-	@Override
-	public void addListener(Listener listener) {
+	public void addSearchListener(Listener listener) {
 		super.addListener(listener);
 		listeners.add(listener);
 	}
 
-	@Override
-	public void removeListener(Listener listener) {
+	public void removeSearchListener(Listener listener) {
 		super.removeListener(listener);
 		listeners.remove(listener);
 	}

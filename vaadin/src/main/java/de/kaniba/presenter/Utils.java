@@ -12,11 +12,17 @@ import java.net.URLEncoder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.vaadin.server.VaadinService;
 import com.vaadin.tapio.googlemaps.client.LatLon;
 
 import de.kaniba.model.Bar;
 
 public class Utils {
+	public static String basepath() {
+		return VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
+	}
+	
 	private static String prepareAddress(Bar bar) {
 		String address = "";
 
