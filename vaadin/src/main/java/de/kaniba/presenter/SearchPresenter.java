@@ -17,9 +17,12 @@ public class SearchPresenter {
 
 	public SearchPresenter(SearchViewImpl view) {
 		this.view = view;
-		
+		view.registerPresenter(this);
 	}
 	
+	public SearchViewImpl getView() {
+		return view;
+	}
 
 	public void updateSearchView(String searchValue) {
 		// TODO: Liste aller bars bekommen
@@ -48,6 +51,7 @@ public class SearchPresenter {
 		view.setSearchResults(searchElementList);
 		
 		// TODO: Map Updaten
+		view.displayBarsOnMap(resultList);
 		
 	}	
 }

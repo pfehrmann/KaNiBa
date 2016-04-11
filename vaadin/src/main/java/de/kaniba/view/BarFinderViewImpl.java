@@ -145,6 +145,5 @@ public class BarFinderViewImpl extends CustomComponent implements BarFinderView 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		UI.getCurrent().getPage().setTitle("BarFinder");
-		
 	}
 }

@@ -19,6 +19,7 @@ import de.kaniba.model.User;
 import de.kaniba.presenter.BarPresenter;
 import de.kaniba.presenter.BarFinderPresenter;
 import de.kaniba.presenter.RegisterPresenter;
+import de.kaniba.presenter.SearchPresenter;
 import de.kaniba.presenter.UpdateInformationPresenter;
 import de.kaniba.view.BarViewImpl;
 import de.kaniba.view.BarFinderViewImpl;
@@ -51,7 +52,7 @@ public class NavigatorUI extends UI {
 		
 		// Create the Navigator and set it up
 		Navigator navigator = new Navigator(this, design.content);
-		navigator.addView("", new SearchViewImpl());
+		navigator.addView("", new SearchPresenter(new SearchViewImpl()).getView());
 		
 		navigator.addView("bar", new BarViewImpl());
 		
