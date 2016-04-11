@@ -16,14 +16,16 @@ import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
 import de.kaniba.navigator.NavigatorUI;
 import de.kaniba.view.BarView;
+import de.kaniba.view.BarViewListener;
 
-public class BarPresenter implements BarView.BarViewListener {
+public class BarPresenter implements BarViewListener {
 
 	Bar barModel;
 	Rating ratingModel;
 	BarView view;
 	InternalUser iUModel;
 	VaadinSession session;
+	BarViewListener listener;
 
 	public View getView() {
 		return view;
@@ -64,7 +66,6 @@ public class BarPresenter implements BarView.BarViewListener {
 		view.setRating(barModel);
 	}
 
-	@Override
 	public void sendMessage(String message) {
 		session = ((NavigatorUI) UI.getCurrent()).getSession();
 

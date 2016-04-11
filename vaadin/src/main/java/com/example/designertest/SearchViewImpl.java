@@ -28,6 +28,7 @@ import de.kaniba.presenter.Utils;
 import com.vaadin.ui.Component.Event;
 
 public class SearchViewImpl extends SearchView implements View{
+	public static final String NAME = "search";
 	protected GoogleMap map;
 	private List<SearchPresenter> presenterList;
 	

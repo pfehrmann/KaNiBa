@@ -2,6 +2,7 @@ package de.kaniba.navigator;
 
 import java.io.File;
 
+import com.example.designertest.BarView;
 import com.example.designertest.SearchViewImpl;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
@@ -12,6 +13,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
 import de.kaniba.components.LoginPopup;
@@ -35,11 +37,12 @@ import de.kaniba.view.UpdateInformationView;
 @Widgetset("de.kaniba.vaadin.MyAppWidgetset")
 @PreserveOnRefresh
 public class NavigatorUI extends UI {
-
+	private TestDesign design;
+	
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
 		// Use the new design
-		TestDesign design = new TestDesign();
+		design = new TestDesign();
 		
 		// Add the logo to the menu
 		// TODO: Fix menu logo width and position
@@ -52,9 +55,14 @@ public class NavigatorUI extends UI {
 		
 		// Create the Navigator and set it up
 		Navigator navigator = new Navigator(this, design.content);
-		navigator.addView("", new SearchPresenter(new SearchViewImpl()).getView());
 		
-		navigator.addView("bar", new BarViewImpl());
+		SearchViewImpl searchView = new SearchViewImpl();
+		SearchPresenter searchPresenter = new SearchPresenter(searchView);
+		navigator.addView("", searchView);
+		navigator.addView(searchView.NAME, searchView);
+		
+		com.example.designertest.BarPresenter barPresenter = new com.example.designertest.BarPresenter();
+		navigator.addView("bar", barPresenter.getView());
 		
 		/*
 		 * Die Presenter werden initialisiert und Die Views werden zum Navigator
@@ -73,9 +81,10 @@ public class NavigatorUI extends UI {
 
 		UpdateInformationPresenter up = new UpdateInformationPresenter(new UpdateInformationVeiwImpl());
 		navigator.addView(UpdateInformationView.NAME, up.getView());
-		
-		//BarFinderPresenter fp = new BarFinderPresenter(new BarFinderViewImpl());
-		//navigator.addView(BarFinderPresenter.NAME, fp.getView());
-		//navigator.addView("", fp.getView());
+	}
+	
+	public void setMenu(Component menu) {
+		design.menuContainer.removeAllComponents();
+		design.menuContainer.addComponent(menu);
 	}
 }

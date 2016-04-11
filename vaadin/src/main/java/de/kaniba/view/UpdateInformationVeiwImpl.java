@@ -37,7 +37,7 @@ public class UpdateInformationVeiwImpl extends CustomComponent implements Update
 	private TextField numberField;
 	private TextField zipField;
 	private Button submit;
-	private String width = "500px";
+	private String width = "100%";
 	
 	public UpdateInformationVeiwImpl() {
 		Page.getCurrent().setTitle("Informationen aktualisieren");

@@ -59,6 +59,16 @@ public class Bar {
 	public void setBarID(int barID){
 		this.barID =barID;
 	}
+	
+	public DisplayRating getDisplayRating() {
+		double general = getGeneralRating();
+		double price = getPprRating();
+		double music = getMusicRating();
+		double people = getPeopleRating();
+		double atmosphere = getAtmosphereRating();
+		
+		return new DisplayRating(general, price, music, people, atmosphere);
+	}
 
 	public double getGeneralRating() {
 		if (countRating == 0) {
