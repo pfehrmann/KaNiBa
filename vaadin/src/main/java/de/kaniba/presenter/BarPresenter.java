@@ -2,127 +2,157 @@ package de.kaniba.presenter;
 
 import java.sql.SQLException;
 
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.tapio.googlemaps.client.LatLon;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.Notification.Type;
 
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
+import de.kaniba.model.DisplayRating;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
-import de.kaniba.navigator.NavigatorUI;
 import de.kaniba.view.BarView;
-import de.kaniba.view.BarViewListener;
 
-public class BarPresenter implements BarViewListener {
+public class BarPresenter {
+	private Bar bar;
+	private BarView view;
+	private boolean settingUp;
 
-	Bar barModel;
-	Rating ratingModel;
-	BarView view;
-	InternalUser iUModel;
-	VaadinSession session;
-	BarViewListener listener;
+	public BarPresenter() {
+		view = new BarView();
+		view.setPresenter(this);
+		settingUp = false;
+	}
 
-	public View getView() {
+	public BarView getView() {
 		return view;
 	}
 
-	public BarPresenter(BarView view/* ,Rating rmodel */) {
-		/* this.ratingModel = rmodel; */
-		this.view = view;
-
-		view.addRatingButtonClickListener(this);
-		session = UI.getCurrent().getSession();
-	}
-
-	@Override
-	public void ratingButtonClick(Rating rating) {
-		this.iUModel = (InternalUser) session.getAttribute("user");
-		Object loggedInObj = session.getAttribute("loggedIn");
-		boolean loggedIn = false;
-		if (loggedInObj != null) {
-			loggedIn = (boolean) loggedInObj;
-		}
-		if (!loggedIn) {
-			Notification.show("Bitte logg dich ein um abzustimmen");
-
-			return;
-		}
-		rating.setBarID(barModel.getBarID());
-		rating.setUserID(iUModel.getUserID());
-		rating.saveRating();
-		Notification.show("Danke das du abgestimmt hast");
-		
-		//TODO: Remove this.
-		try {
-			barModel = Database.readBar(barModel.getBarID());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		view.setRating(barModel);
-	}
-
-	public void sendMessage(String message) {
-		session = ((NavigatorUI) UI.getCurrent()).getSession();
-
-		Object loggedInObj = session.getAttribute("loggedIn");
-		boolean loggedIn = false;
-		if (loggedInObj != null) {
-			loggedIn = (boolean) loggedInObj;
-		}
-		if (!loggedIn) {
-			Notification.show("Um eine Message zu senden muss du eingeloggt sein!");
-			return;
-		}
-		this.iUModel = (InternalUser) session.getAttribute("user");
-		Message dbMessage = new Message(iUModel.getUserID(), barModel.getBarID(), message);
-		dbMessage.save();
-		view.setMessageBoardStrings(barModel.forceGetPinboard().getMessages());
-	}
-
-	@Override
 	public void enter(ViewChangeEvent event) {
-		// Get the barID and the corresponding bar
-		barModel = null;
-		if (event.getParameters() != null) {
-			String idParameter = event.getParameters();
+		settingUp = true;
+		
+		bar = getBarFromParams(event.getParameters());
+		
+		if(bar == null) {
+			settingUp = false;
+			
+			//TODO: Show 404 - Bar not found page
+			return;
+		}
+		view.setMapCoords(Utils.getLatLon(bar));
+		view.setBarName(bar.getName());
+		view.setBarAddress(Utils.getOneLineAddress(bar));
+		view.setBarDescription(bar.getDescription());
+		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
+		
+		if (Utils.isLoggedIn()) {
+			Rating userRating = null;
+			try {
+				userRating = Database.getRating(Utils.getUser().getUserID(), bar.getBarID());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			if (userRating != null) {
+				view.setBarRating(new DisplayRating(userRating));
+			}
+		} else {
+			view.setBarRating(bar.getDisplayRating());
+		}
+		settingUp = false;
+	}
+
+	private Bar getBarFromParams(String params) {
+		Bar bar = null;
+
+		if (params != null) {
 
 			int id = -1;
 			try {
-				id = Integer.parseInt(idParameter);
+				id = Integer.parseInt(params);
 			} catch (NumberFormatException e) {
 				// don't do anything.
+				// An invalid ID was supplied
 			}
 
 			if (id != -1) {
 				try {
-					barModel = new Bar(id);
+					bar = new Bar(id);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		
-		// set the coordinates of the bar
-		LatLon coords = Utils.getLatLon(barModel);
-		view.setMapCoords(coords);
-		
-		// initialize the view
-		if (barModel != null) {
 
-			//TODO: if the user is logged in, use his rating.
-			view.setRating(barModel);
-			view.setBarDescription(barModel.getDescription());
-			view.setBarTitle(barModel.getName());
-			view.setBarAddress(barModel.getAddress());
-			if(barModel.getPinboard() != null) {
-				view.setMessageBoardStrings(barModel.getPinboard().getMessages());
-			}
-			UI.getCurrent().getPage().setTitle(barModel.getName());
+		return bar;
+	}
+
+	public void saveRating(Rating rating) {
+		if (settingUp) {
+			return;
 		}
+		boolean loggedIn = Utils.isLoggedIn();
+		if (!loggedIn) {
+			Notification.show("Um abzustimmen muss du eingeloggt sein.", Type.WARNING_MESSAGE);
+			return;
+		}
+
+		InternalUser user = Utils.getUser();
+
+		Rating fromDatabase = null;
+		try {
+			
+			fromDatabase = Database.getRating(user.getUserID(), bar.getBarID());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		if(fromDatabase == null) {
+			fromDatabase = new Rating(-1, Utils.getUser().getUserID(), bar.getBarID(), 0, 0, 0, 0, 0, null);
+		}
+
+		rating.setUserID(user.getUserID());
+		rating.setBarID(bar.getBarID());
+
+		// Check if a value is 0. If so, replace that value with the last rating
+		// of the user. If no former rating exists, set all to 0.
+		if (rating.getAtmosphereRating() == 0) {
+			rating.setAtmosphereRating(fromDatabase.getAtmosphereRating());
+		}
+
+		if (rating.getPeopleRating() == 0) {
+			rating.setPeopleRating(fromDatabase.getPeopleRating());
+		}
+
+		if (rating.getPprRating() == 0) {
+			rating.setPprRating(fromDatabase.getPprRating());
+		}
+
+		if (rating.getGeneralRating() == 0) {
+			rating.setGeneralRating(fromDatabase.getGeneralRating());
+		}
+
+		if (rating.getMusicRating() == 0) {
+			rating.setMusicRating(fromDatabase.getMusicRating());
+		}
+
+		try {
+			Database.saveBarRating(rating);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void sendMessage(String message) {
+		if (!Utils.isLoggedIn()) {
+			Notification.show("Um eine Message zu senden muss du eingeloggt sein!");
+			return;
+		}
+		InternalUser user = Utils.getUser();
+		Message dbMessage = new Message(user.getUserID(), bar.getBarID(), message);
+		dbMessage.save();
+		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
 	}
 }

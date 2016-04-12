@@ -22,6 +22,18 @@ import de.kaniba.model.Bar;
 import de.kaniba.model.InternalUser;
 
 public class Utils {
+	
+	public static String getOneLineAddress(Bar bar) {
+		String address = "";
+
+		address += bar.getAddress().getStreet();
+		address += " " + bar.getAddress().getNumber();
+		address += ", " + bar.getAddress().getZip();
+		address += " " + bar.getAddress().getCity();
+
+		return address;
+	}
+	
 	public static String basepath() {
 		return VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 	}

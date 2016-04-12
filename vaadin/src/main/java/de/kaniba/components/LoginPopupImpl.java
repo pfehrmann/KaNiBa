@@ -95,4 +95,9 @@ public class LoginPopupImpl extends LoginPopup {
 		session.setAttribute("admin", admin);
 		session.setAttribute("loggedIn", loggedIn);
 	}
+
+	public void setLoginName(String username) {
+		usernameTextfield.setValue(username);
+		
+	}
 }

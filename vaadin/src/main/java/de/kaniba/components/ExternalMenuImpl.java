@@ -4,9 +4,8 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.example.designertest.SearchView;
-import com.example.designertest.SearchViewImpl;
-import com.vaadin.ui.Notification;
+
+import de.kaniba.view.SearchView;
 
 public class ExternalMenuImpl extends ExternalMenu {
 	
@@ -28,7 +27,7 @@ public class ExternalMenuImpl extends ExternalMenu {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
-				UI.getCurrent().getNavigator().navigateTo(SearchViewImpl.NAME);
+				UI.getCurrent().getNavigator().navigateTo(SearchView.NAME);
 			}
 		});
 	}

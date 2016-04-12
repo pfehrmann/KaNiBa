@@ -19,7 +19,6 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 
 import de.kaniba.model.Address;
-import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
 
 public class UpdateInformationVeiwImpl extends CustomComponent implements UpdateInformationView {

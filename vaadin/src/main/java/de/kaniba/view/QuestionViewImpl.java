@@ -16,11 +16,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CheckBox;
 
-import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
 import de.kaniba.model.Question;
-import de.kaniba.navigator.NavigatorUI;
-import de.kaniba.presenter.BarPresenter;
 
 public class QuestionViewImpl extends CustomComponent implements QuestionView, Button.ClickListener {
 	private int barID;
@@ -87,10 +84,7 @@ public class QuestionViewImpl extends CustomComponent implements QuestionView, B
 
 	@Override
 	public void buttonClick(ClickEvent event) {
-		Bar b = ((Bar) ((Button) event.getSource()).getData());
-		BarPresenter bp = new BarPresenter(new BarViewImpl());
-		((NavigatorUI) UI.getCurrent()).getNavigator().addView("bar", bp.getView());
-		((NavigatorUI) UI.getCurrent()).getNavigator().navigateTo("bar/" + b.getBarID());
+		UI.getCurrent().getNavigator().navigateTo("bar/" + barID);
 	}
 
 	@Override

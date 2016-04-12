@@ -1,7 +1,5 @@
 package de.kaniba.components;
 
-import com.example.designertest.SearchView;
-import com.example.designertest.SearchViewImpl;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
@@ -11,6 +9,7 @@ import com.vaadin.ui.Notification;
 import de.kaniba.model.User;
 import de.kaniba.navigator.NavigatorUI;
 import de.kaniba.presenter.Utils;
+import de.kaniba.view.SearchView;
 import de.kaniba.view.UpdateInformationView;
 
 public class InternalMenuImpl extends InternalMenu {
@@ -19,7 +18,7 @@ public class InternalMenuImpl extends InternalMenu {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
-				UI.getCurrent().getNavigator().navigateTo(SearchViewImpl.NAME);
+				UI.getCurrent().getNavigator().navigateTo(SearchView.NAME);
 			}
 		});
 		
