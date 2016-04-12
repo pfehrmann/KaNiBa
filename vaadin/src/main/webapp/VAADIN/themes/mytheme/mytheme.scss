@@ -73,6 +73,7 @@
 		border-style: none;
 	}
 		
+	// für die sterne
 	.desaturate:before {
         content: '';
         position: absolute;
@@ -82,11 +83,11 @@
         left: 0;
         background: inherit;
          /*grayscale for background image*/
-        -webkit-filter: grayscale(1); 
+        -webkit-filter: $unquote("grayscale(1)"); 
         -webkit-filter: grayscale(100%); 
         -moz-filter: grayscale(100%);
         filter: gray; 
-        filter: grayscale(100%);
+        // filter: grayscale(100%);
         /* Not correctly interpreted... */
         /*filter: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' height='0'><filter id='greyscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0' /></filter></svg>#greyscale");*/
     }
@@ -94,6 +95,15 @@
 	.bar-info-panel {
 		max-height: 450px;
 		overflow: auto !important;
+	}
+	
+	.search-element {
+		@include transition(background, 0.2s);
+	}
+	
+	.search-element:hover {
+		background: lightgray;
+		
 	}
 	
 	.search-result-even {
@@ -110,5 +120,25 @@
 	
 	.message-odd {
 	    background: LightGray;
+	}
+	
+	.tag {
+		margin-bottom: 5px;
+	}
+	
+	.tag div{
+		display: inline;
+		width: auto !important;
+		margin-right: 8px;
+		margin-bottom: 3px;
+		background: darkgray;
+		color: white;
+		border-radius: 6px;
+		padding: 2px 10px;
+		@include transition(background, 0.2s);
+	}
+	
+	.tag div:hover{
+		background: lightgray;
 	}
 }

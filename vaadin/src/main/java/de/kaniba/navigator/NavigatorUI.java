@@ -13,9 +13,11 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
 import de.kaniba.model.User;
+import de.kaniba.presenter.BarPresenter;
 import de.kaniba.presenter.RegisterPresenter;
 import de.kaniba.presenter.SearchPresenter;
 import de.kaniba.presenter.UpdateInformationPresenter;
+import de.kaniba.view.BarView;
 import de.kaniba.view.RegisterView;
 import de.kaniba.view.RegisterViewImpl;
 import de.kaniba.view.SearchView;
@@ -54,8 +56,8 @@ public class NavigatorUI extends UI {
 		navigator.addView("", searchView);
 		navigator.addView(SearchView.NAME, searchView);
 		
-		de.kaniba.presenter.BarPresenter barPresenter = new de.kaniba.presenter.BarPresenter();
-		navigator.addView("bar", barPresenter.getView());
+		BarPresenter barPresenter = new BarPresenter();
+		navigator.addView(BarView.NAME, barPresenter.getView());
 		
 		/*
 		 * Die Presenter werden initialisiert und Die Views werden zum Navigator

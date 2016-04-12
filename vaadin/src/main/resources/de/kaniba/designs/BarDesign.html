@@ -11,7 +11,7 @@
     <column expand="1"> 
      <vaadin-grid-layout id="left-grid" size-full _id="leftGrid"> 
       <row> 
-       <column> 
+       <column rowspan=2> 
         <vaadin-image id="bar-image" width="90px" height="90px" _id="barImage"></vaadin-image> 
        </column> 
        <column expand="1"> 
@@ -21,23 +21,32 @@
        </column> 
       </row> 
       <row> 
-       <column></column> 
        <column expand="1"> 
         <vaadin-label size-auto plain-text _id="barAddressLabel" id="bar-address-label">
           Anschrift der Bar 
         </vaadin-label> 
        </column> 
       </row> 
+      <row>
+       <column colspan=2>
+        <vaadin-css-layout style-name="tag" spacing _id="tagLayout">
+         <vaadin-label>tag1</vaadin-label>
+         <vaadin-label>tag2</vaadin-label>
+         <vaadin-label>tag3</vaadin-label>
+         <vaadin-label>tag4</vaadin-label>
+        </vaadin-css-layout>
+       </column>
+      </row>
       <row expand="1"> 
-       <column> 
+       <column colspan=2> 
         <vaadin-panel id="info-panel" size-full _id="infoPanel"></vaadin-panel> 
        </column> 
       </row> 
       <row> 
-       <column> 
+       <column colspan=2> 
         <vaadin-grid-layout width-full height="200px" _id="messageAreaGrid"> 
          <row expand="1"> 
-          <column expand="1"> 
+          <column expand="1" colspan=2> 
            <vaadin-panel size-full _id="messagePanel"></vaadin-panel> 
           </column> 
          </row> 

@@ -32,6 +32,8 @@ import de.kaniba.model.User;
 import de.kaniba.presenter.BarPresenter;
 
 public class BarView extends BarDesign implements View {
+	public static final String NAME = "bar";
+	
 	protected GoogleMap map;
 
 	private BarPresenter presenter;
@@ -42,18 +44,7 @@ public class BarView extends BarDesign implements View {
 		removeComponent(leftGrid);
 		addComponent(leftGrid, 0, 0, 0, 1);
 
-		leftGrid.removeComponent(barImage);
-		leftGrid.addComponent(barImage, 0, 0, 0, 1);
-		leftGrid.removeComponent(infoPanel);
-		leftGrid.addComponent(infoPanel, 0, 2, 1, 2);
-		leftGrid.removeComponent(messageAreaGrid);
-		leftGrid.addComponent(messageAreaGrid, 0, 3, 1, 3);
-		messageAreaGrid.removeComponent(messagePanel);
-		messageAreaGrid.addComponent(messagePanel, 0, 0, 1, 0);
-
-		infoPanel.setContent(new Label(
-				"Hallo, wir sind das St&ouml;vchen. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-				ContentMode.HTML));
+		infoPanel.setContent(new Label("Keine Beschreibung verfügbar", ContentMode.HTML));
 		map = new GoogleMap("apiKey", null, "german");
 		map.setSizeFull();
 		setRowExpandRatio(0, 1.0f);
