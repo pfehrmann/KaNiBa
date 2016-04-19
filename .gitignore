@@ -16,6 +16,8 @@ local.properties
 .settings/
 .loadpath
 
+vaadin/target/
+
 # External tool builders
 .externalToolBuilders/
 

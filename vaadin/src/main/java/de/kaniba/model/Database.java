@@ -4,10 +4,6 @@ import java.sql.DriverManager;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
-import de.kaniba.view.Answer;
-import de.kaniba.view.Question;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -432,6 +428,28 @@ public class Database {
 			
 			// Speichert das neue RatingCount
 			st.executeUpdate("UPDATE bars SET ratingCount = " + ratingCount+" WHERE barID=" + rating.getBarID());
+			
+			rs = st.executeQuery("SELECT * FROM bars WHERE barID=" + rating.getBarID());
+			if (rs.next()) {
+				// Holt die alten Ratings der Bar aus der Datenbank
+				generalRatingBar = rs.getInt("generalRating");
+				pprRatingBar = rs.getInt("pprRating");
+				musicRatingBar = rs.getInt("musicRating");
+				peopleRatingBar = rs.getInt("peopleRating");
+				atmosphereRatingBar = rs.getInt("atmosphereRating");
+			}
+
+			// Addiert das neue Rating zum Bar-Rating
+			generalRatingBar += rating.getGeneralRating();
+			pprRatingBar += rating.getPprRating();
+			musicRatingBar += rating.getMusicRating();
+			peopleRatingBar += rating.getPeopleRating();
+			atmosphereRatingBar += rating.getAtmosphereRating();
+
+			// Aktualisiert das Bar-Rating
+			st.executeUpdate("UPDATE bars SET generalRating = '" + generalRatingBar + "', pprRating = '" + pprRatingBar
+					+ "', musicRating = '" + musicRatingBar + "', peopleRating = '" + peopleRatingBar
+					+ "', atmosphereRating = '" + atmosphereRatingBar + "' WHERE barID= '" + rating.getBarID() + "';");
 		}
 		
 		rs.close();
@@ -786,7 +804,6 @@ public class Database {
 					+ user.getAddress().getCity() + "', street = '" + user.getAddress().getStreet() + "', number = '"
 					+ user.getAddress().getNumber() + "', zip = '" + user.getAddress().getZip() + "' WHERE userID = "
 					+ userID + ";";
-			System.out.println(query);
 			st.executeUpdate(query);
 		} else {
 			query = "INSERT INTO user (name,firstname,email,password,sessionID,birthdate,city,street,number,zip) VALUES ('"
@@ -863,7 +880,6 @@ public class Database {
 				+ " VALUES ('"
 				+ message.getUserID() + "','" + message.getBarID() + "','" + message.getMessage() 
 				+ "');");
-		System.out.println("yay");
 		ResultSet rs = st.executeQuery("select last_insert_id() as last_id from message");
 		if(rs.next()){
 		messageID = rs.getInt("last_id");

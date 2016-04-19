@@ -3,6 +3,8 @@ package de.kaniba.model;
 import java.sql.Timestamp;
 
 public class Rating {
+	public static final int UNSET = 0;
+	
 	private int ratingID;
 	private int userID;
 	private int barID;

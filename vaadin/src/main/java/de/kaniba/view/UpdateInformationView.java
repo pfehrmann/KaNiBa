@@ -8,7 +8,6 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 
 import de.kaniba.model.InternalUser;
-import de.kaniba.model.User;
 
 public interface UpdateInformationView extends View{
 	public static final String NAME = "updateInformation";

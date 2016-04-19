@@ -19,7 +19,6 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 
 import de.kaniba.model.Address;
-import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
 
 public class UpdateInformationVeiwImpl extends CustomComponent implements UpdateInformationView {
@@ -37,7 +36,7 @@ public class UpdateInformationVeiwImpl extends CustomComponent implements Update
 	private TextField numberField;
 	private TextField zipField;
 	private Button submit;
-	private String width = "500px";
+	private String width = "100%";
 	
 	public UpdateInformationVeiwImpl() {
 		Page.getCurrent().setTitle("Informationen aktualisieren");

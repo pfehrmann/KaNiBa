@@ -1,6 +1,5 @@
 package de.kaniba.view;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,6 @@ import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
 
 public class RegisterViewImpl extends CustomComponent implements RegisterView {
-
 	private List<RegisterViewListener> listeners;
 	private Panel mainPanel;
 	private TextField nameField;
@@ -37,7 +35,7 @@ public class RegisterViewImpl extends CustomComponent implements RegisterView {
 	private TextField numberField;
 	private TextField zipField;
 	private Button submit;
-	private String width = "500px";
+	private String width = "100%";
 	
 	public RegisterViewImpl() {		
 		listeners = new ArrayList<>();
