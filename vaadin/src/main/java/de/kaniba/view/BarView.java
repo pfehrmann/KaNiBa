@@ -161,8 +161,9 @@ public class BarView extends BarDesign implements View {
 
 	public void setBarMessageBoard(List<Message> messages) {
 		
-		List<Component> components = new ArrayList<>();
-		messages.forEach(element -> {
+		final List<Component> components = new ArrayList<>();
+		
+		for(Message element : messages) {
 			InternalUser user = null;
 			try {
 				user = Database.giveUser(element.getUserID());
@@ -181,7 +182,7 @@ public class BarView extends BarDesign implements View {
 				layout.setWidth("100%");
 				components.add(component);
 			}
-		});
+		}
 		
 		for(int i = 0; i < components.size(); i++) {
 			if(i % 2 == 1) {
@@ -192,7 +193,9 @@ public class BarView extends BarDesign implements View {
 		}
 		
 		VerticalLayout layout = new VerticalLayout();
-		components.forEach(e -> layout.addComponent(e));
+		for(Component e : components) {
+			layout.addComponent(e);
+		}
 		
 		messagePanel.setContent(layout);
 	}

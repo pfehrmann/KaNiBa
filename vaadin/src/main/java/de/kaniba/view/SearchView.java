@@ -3,6 +3,7 @@ package de.kaniba.view;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -116,10 +117,9 @@ public class SearchView extends SearchDesign implements View {
 		System.out.println("Set search results, " + elements.size());
 		this.resultList.removeAllComponents();
 		resultList.addComponent(searchBar);
-		elements.forEach(element -> {
+		for(SearchElement element : elements) {
 			resultList.addComponent(element);
-			System.out.println(element);
-		});
+		}
 	}
 
 	public void registerPresenter(SearchPresenter presenter) {

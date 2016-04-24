@@ -16,10 +16,8 @@ import de.kaniba.navigator.NavigatorUI;
 import de.kaniba.presenter.Utils;
 
 public class LoginPopupImpl extends LoginPopup {
-	private Window window;
 
-	public LoginPopupImpl(Window window) {
-		this.window = window;
+	public LoginPopupImpl(final Window window) {
 		loginButton.addClickListener(new ClickListener() {
 
 			@Override

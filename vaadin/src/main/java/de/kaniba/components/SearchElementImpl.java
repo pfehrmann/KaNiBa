@@ -10,7 +10,7 @@ import de.kaniba.view.BarView;
 
 public class SearchElementImpl extends SearchElement {
 
-	public SearchElementImpl (Bar bar) {
+	public SearchElementImpl (final Bar bar) {
 		addressLabel.setValue(Utils.getOneLineAddress(bar));
 		nameLabel.setValue(bar.getName());
 		
