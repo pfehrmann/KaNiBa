@@ -2,13 +2,17 @@ package kaniba.test;
 
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
+import de.kaniba.model.Rating;
 
 public class TestInternalUser {
 	private InternalUser user;
@@ -23,6 +27,27 @@ public class TestInternalUser {
 	@After
 	public void tearDown() throws Exception {
 		original.saveUser();
+	}
+	
+	@Test
+	public void testUserID() {
+		assertEquals(5, user.getUserID());
+	}
+	
+	@Test
+	public void testRateBar() throws SQLException {
+		Bar bar = null;
+		bar = Database.readBar(1);
+		
+		user.rateBar(bar, new Rating(-1, user.getUserID(), bar.getBarID(), 3, 3, 3, 3, 3, null));
+		assertEquals(true, user.ratedBar(bar));
+		
+		Rating rating = user.getRating(bar.getBarID());
+		assertEquals(3, rating.getAtmosphereRating());
+		assertEquals(3, rating.getGeneralRating());
+		assertEquals(3, rating.getMusicRating());
+		assertEquals(3, rating.getPprRating());
+		assertEquals(3, rating.getPeopleRating());
 	}
 
 	@Test

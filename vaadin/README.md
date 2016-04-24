@@ -36,3 +36,7 @@ next theme compilation or running the "mvn clean" target.
 When developing the theme, running the application in the "run" mode (rather than
 in "debug") in the IDE can speed up consecutive on-the-fly theme compilations
 significantly.
+
+Using SonarQube
+==============
+clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Pcoverage-per-test

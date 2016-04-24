@@ -40,7 +40,7 @@ public class RegisterViewImpl extends CustomComponent implements RegisterView {
 	public RegisterViewImpl() {		
 		listeners = new ArrayList<>();
 		mainPanel = new Panel();
-		mainPanel.setWidth(width);
+		//mainPanel.setWidth(width);
 		mainPanel.addStyleName("login-panel");
 		
 		FormLayout form = new FormLayout();

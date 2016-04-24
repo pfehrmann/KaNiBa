@@ -5,12 +5,19 @@ package kaniba.test;
 
 import static org.junit.Assert.*;
 
+import java.util.concurrent.TimeUnit;
+
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.vaadin.ui.Window;
 
 import de.kaniba.components.LoginPopupImpl;
+import de.kaniba.presenter.Utils;
 
 /**
  * @author phili
@@ -18,31 +25,43 @@ import de.kaniba.components.LoginPopupImpl;
  */
 public class LoginTest {
 	private LoginPopupImpl loginPopup;
-	
+	private FirefoxDriver driver;
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		// Create mocup of the window
+		driver = new FirefoxDriver();
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		
 		loginPopup = new LoginPopupImpl(new Window());
-		fail("Not yet implementsed");
+	}
+	
+	@After
+	public void tearDown() throws Exception {
+		driver.close();
 	}
 
 	/**
-	 * Test method for {@link de.kaniba.components.LoginPopupImpl#LoginPopupImpl(com.vaadin.ui.Window)}.
+	 * Test method for
+	 * {@link de.kaniba.components.LoginPopupImpl#LoginPopupImpl(com.vaadin.ui.Window)}
+	 * .
 	 */
 	@Test
 	public void testLoginPopupImpl() {
-		fail("Not yet implemented");
-	}
+		driver.get("localhost:8080");
+		driver.findElement(By.id("login-button")).click();
+		
+		driver.findElement(By.id("usernameTextfield")).clear();
+		driver.findElement(By.id("usernameTextfield")).sendKeys("philipp");
 
-	/**
-	 * Test method for {@link de.kaniba.components.LoginPopupImpl#setLoginName(java.lang.String)}.
-	 */
-	@Test
-	public void testSetLoginName() {
-		fail("Not yet implemented");
+		driver.findElement(By.id("passwordField")).clear();
+		driver.findElement(By.id("passwordField")).sendKeys("test");
+		
+		driver.findElement(By.id("loginPopup-submit")).click();
+
+		driver.findElement(By.id("logout-button"));
 	}
 
 }
