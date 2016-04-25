@@ -20,7 +20,11 @@
 		<junit.version>4.12</junit.version>
 		<cucumber.version>1.2.2</cucumber.version>
 		<maven.compiler.version>3.3</maven.compiler.version>
+		
+		<!-- SonarQube properties -->
 		<sonar.jacoco.itReportPath>${project.basedir}/reports/jacoco.exec</sonar.jacoco.itReportPath>
+		<sonar.host.url>http://sonarqube.it.dh-karlsruhe.de</sonar.host.url>
+		<sonar.projectName>KaNiBa</sonar.projectName>
 	</properties>
 
 	<repositories>

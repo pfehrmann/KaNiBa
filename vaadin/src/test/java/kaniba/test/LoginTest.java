@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -48,6 +49,7 @@ public class LoginTest {
 	 * {@link de.kaniba.components.LoginPopupImpl#LoginPopupImpl(com.vaadin.ui.Window)}
 	 * .
 	 */
+	@Ignore
 	@Test
 	public void testLoginPopupImpl() {
 		driver.get("localhost:8080");

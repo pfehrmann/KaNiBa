@@ -72,7 +72,7 @@ public class InternalUser extends User {
 	 */
 	public boolean ratedBar(Bar bar) {
 		try {
-			return Database.getRating(userID, bar.getBarID()).equals(null);
+			return Database.getRating(userID, bar.getBarID()) != null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
