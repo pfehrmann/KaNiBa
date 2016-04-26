@@ -14,6 +14,11 @@ public class Answer {
 		
 	};
 	
+	public Answer(Question question) {
+		this.isText = question.isText();
+		this.questionID = question.getQuestionID();
+	}
+	
 	public Answer(int answerID) throws SQLException {
 		Answer temp = Database.readAnswer(answerID);
 		this.answerBool = temp.getAnswerBool();

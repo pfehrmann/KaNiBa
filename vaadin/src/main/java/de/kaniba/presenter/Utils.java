@@ -8,14 +8,19 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.SQLException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.Position;
 import com.vaadin.tapio.googlemaps.client.LatLon;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 
 import de.kaniba.model.Bar;
@@ -118,5 +123,63 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return sb.toString();
+	}
+
+	public static Bar getBarFromParams(String params) {
+		Bar bar = null;
+	
+		if (params != null) {
+	
+			int id = -1;
+			try {
+				id = Integer.parseInt(params);
+			} catch (NumberFormatException e) {
+				// don't do anything.
+				// An invalid ID was supplied
+			}
+	
+			if (id != -1) {
+				try {
+					bar = new Bar(id);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	
+		return bar;
+	}
+
+	public static void navigateTo(String navigationState) {
+		UI.getCurrent().getNavigator().navigateTo(navigationState);
+	}
+	
+	public static void showNotification(String message) {
+		showNotification(message, Type.HUMANIZED_MESSAGE);
+	}
+	
+	public static void showNotification(String message, Type type) {
+		showNotification(message, type, 2000);
+	}
+
+	public static void showNotification(String message, Type type, int durationMs) {
+		Notification note = new Notification(message, type);
+		note.setDelayMsec(durationMs);
+		note.setPosition(Position.MIDDLE_CENTER);
+		note.show(Page.getCurrent());
+	}
+	
+	public static void navigateBack() {
+		Page.getCurrent().getJavaScript().execute("window.history.back()");
+	}
+
+	public static void navigateBack(String message) {
+		navigateBack();
+		showNotification(message);
+	}
+
+	public static void navigateBack(String message, Type type) {
+		navigateBack();
+		showNotification(message, type);
 	}
 }

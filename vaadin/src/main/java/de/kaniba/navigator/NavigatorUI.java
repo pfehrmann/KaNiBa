@@ -16,11 +16,13 @@ import de.kaniba.model.User;
 import de.kaniba.presenter.BarPresenter;
 import de.kaniba.presenter.RegisterPresenter;
 import de.kaniba.presenter.SearchPresenter;
+import de.kaniba.presenter.SurveyPresenter;
 import de.kaniba.presenter.UpdateInformationPresenter;
 import de.kaniba.view.BarView;
 import de.kaniba.view.RegisterView;
 import de.kaniba.view.RegisterViewImpl;
 import de.kaniba.view.SearchView;
+import de.kaniba.view.SurveyView;
 import de.kaniba.view.UpdateInformationVeiwImpl;
 import de.kaniba.view.UpdateInformationView;
 
@@ -58,19 +60,17 @@ public class NavigatorUI extends UI {
 		
 		BarPresenter barPresenter = new BarPresenter();
 		navigator.addView(BarView.NAME, barPresenter.getView());
+
+		RegisterPresenter registerPresenter = new RegisterPresenter(new User(), new RegisterViewImpl());
+		navigator.addView(RegisterView.NAME, registerPresenter.getView());
+
+		UpdateInformationPresenter updateInfoPresenter = new UpdateInformationPresenter(new UpdateInformationVeiwImpl());
+		navigator.addView(UpdateInformationView.NAME, updateInfoPresenter.getView());
 		
-		/*
-		 * Die Presenter werden initialisiert und Die Views werden zum Navigator
-		 * hinzugefügt. Der View mit dem namen "" ist der view, der am Anfang
-		 * angezeigt wird. Über die namen kann zwischen den Views navigiert
-		 * werden.
-		 */
-
-		RegisterPresenter rp = new RegisterPresenter(new User(), new RegisterViewImpl());
-		navigator.addView(RegisterView.NAME, rp.getView());
-
-		UpdateInformationPresenter up = new UpdateInformationPresenter(new UpdateInformationVeiwImpl());
-		navigator.addView(UpdateInformationView.NAME, up.getView());
+		SurveyView surveyView = new SurveyView();
+		SurveyPresenter surveyPresenter = new SurveyPresenter(surveyView);
+		navigator.addView(SurveyView.NAME, surveyView);
+		
 	}
 	
 	public void setMenu(Component menu) {

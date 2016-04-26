@@ -109,6 +109,14 @@ public class BarView extends BarDesign implements View {
 				presenter.sendMessage(messageTextField.getValue());
 			}
 		});
+		
+		surveyButton.addClickListener(new ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				presenter.clickedSurvey();
+			}
+		});
 	}
 
 	protected void priceRatingStarClick() {
