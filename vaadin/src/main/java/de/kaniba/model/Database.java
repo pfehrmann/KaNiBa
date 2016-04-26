@@ -72,13 +72,13 @@ public class Database {
 	
 	private static String getPassword() {
 		String password = "";
-
+		
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("/home/kanibaPassword"));
 			password = reader.readLine();
 			reader.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			// The file is not available
 		}
 
 		return password;
