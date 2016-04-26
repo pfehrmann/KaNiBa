@@ -4,6 +4,9 @@ import java.sql.DriverManager;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,8 +66,22 @@ public class Database {
             return(null);
         } 
 		//VERBINDUNG
-		Connection con = DriverManager.getConnection( "jdbc:mysql://localhost:3306/kaniba","root","" );         
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/kaniba", "root", getPassword());       
 		return con;
+	}
+	
+	private static String getPassword() {
+		String password = "";
+
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader("/home/kanibaPassword"));
+			password = reader.readLine();
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return password;
 	}
 	
 	public static Bar readBar(int barID) throws SQLException{

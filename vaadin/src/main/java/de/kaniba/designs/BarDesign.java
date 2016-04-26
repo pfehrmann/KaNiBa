@@ -39,6 +39,7 @@ public class BarDesign extends GridLayout {
 	protected RatingStars starPrice;
 	protected RatingStars starPeople;
 	protected Button rateButton;
+	protected Button surveyButton;
 
 	public BarDesign() {
 		Design.read(this);

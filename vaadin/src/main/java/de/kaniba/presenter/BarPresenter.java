@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
+import com.vaadin.ui.UI;
 
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
@@ -13,6 +14,7 @@ import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
 import de.kaniba.view.BarView;
+import de.kaniba.view.SurveyView;
 
 public class BarPresenter {
 	private Bar bar;
@@ -32,7 +34,7 @@ public class BarPresenter {
 	public void enter(ViewChangeEvent event) {
 		settingUp = true;
 		
-		bar = getBarFromParams(event.getParameters());
+		bar = Utils.getBarFromParams(event.getParameters());
 		
 		if(bar == null) {
 			settingUp = false;
@@ -61,31 +63,6 @@ public class BarPresenter {
 			view.setBarRating(bar.getDisplayRating());
 		}
 		settingUp = false;
-	}
-
-	private Bar getBarFromParams(String params) {
-		Bar bar = null;
-
-		if (params != null) {
-
-			int id = -1;
-			try {
-				id = Integer.parseInt(params);
-			} catch (NumberFormatException e) {
-				// don't do anything.
-				// An invalid ID was supplied
-			}
-
-			if (id != -1) {
-				try {
-					bar = new Bar(id);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-		return bar;
 	}
 
 	public void saveRating(Rating rating) {
@@ -154,5 +131,9 @@ public class BarPresenter {
 		Message dbMessage = new Message(user.getUserID(), bar.getBarID(), message);
 		dbMessage.save();
 		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
+	}
+
+	public void clickedSurvey() {
+		UI.getCurrent().getNavigator().navigateTo(SurveyView.NAME + "/" + bar.getBarID());
 	}
 }
