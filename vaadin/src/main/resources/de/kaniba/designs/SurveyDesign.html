@@ -5,10 +5,11 @@
   <meta charset="UTF-8" name="package-mapping" content="components:de.kaniba.components">
  </head> 
  <body> 
-  <vaadin-css-layout id="question-layout" size-full> 
-   <vaadin-form-layout responsive width-full id="question-container" _id="questionContainer">
-    <vaadin-button id="submitButton" _id="submitButton">Abschicken</vaadin-button>
-   </vaadin-form-layout> 
-  </vaadin-css-layout>  
+  <vaadin-css-layout> 
+   <vaadin-form-layout margin _id="questionContainer"></vaadin-form-layout> 
+   <vaadin-button responsive plain-text width-full id="submitButton" _id="submitButton" :center>
+    Abschicken
+   </vaadin-button> 
+  </vaadin-css-layout> 
  </body>
 </html>
