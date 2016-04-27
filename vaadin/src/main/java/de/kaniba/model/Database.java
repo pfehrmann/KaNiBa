@@ -45,6 +45,10 @@ public class Database {
 	/**
 	 * 
 	 */
+	private static final String BAR_ID_STRING = "barID";
+	/**
+	 * 
+	 */
 	private static final String MESSAGE_STRING = "message";
 	/**
 	 * 
@@ -265,7 +269,7 @@ public class Database {
 			time = rs.getTimestamp("time");
 			userID=rs.getInt(USER_ID_STRING);
 			messageID=rs.getInt("messageID");
-			barIDdb=rs.getInt("barID");
+			barIDdb=rs.getInt(BAR_ID_STRING);
 			
 			if(barID==barIDdb)
 			{
@@ -346,7 +350,7 @@ public class Database {
 		ResultSet rs = st.executeQuery("SELECT * FROM ratings");
 		while ( rs.next() )
 		{
-			barIDdb = rs.getInt("barID");
+			barIDdb = rs.getInt(BAR_ID_STRING);
 			if(barIDdb==barID)
 			{
 				generalRating += rs.getInt(GENERAL_RATING_STRING);
@@ -361,7 +365,7 @@ public class Database {
 		
 		rs = st.executeQuery("SELECT * FROM bars");
 		while (rs.next()) {
-			barIDdb = rs.getInt("barID");
+			barIDdb = rs.getInt(BAR_ID_STRING);
 			if (barIDdb == barID) {
 				generalRatingdb = rs.getInt(GENERAL_RATING_STRING);
 				pprRatingdb = rs.getInt(PPR_RATING_STRING);
@@ -417,7 +421,7 @@ public class Database {
 		
 		while (rs.next()) {
 			userID = rs.getInt(USER_ID_STRING);
-			barID = rs.getInt("barID");
+			barID = rs.getInt(BAR_ID_STRING);
 
 			if (userID == rating.getUserID() && barID == rating.getBarID()) {
 				update = 1;
@@ -543,7 +547,7 @@ public class Database {
 		while ( rs.next() )
 		{
 			userID = rs.getInt(USER_ID_STRING);
-			barIDdb = rs.getInt("barID");
+			barIDdb = rs.getInt(BAR_ID_STRING);
 			message = rs.getString(MESSAGE_STRING);
 			begin = rs.getTimestamp("begin");
 			end = rs.getTimestamp("end");
@@ -593,7 +597,7 @@ public class Database {
 		while ( rs.next() )
 		{
 			userID = rs.getInt(USER_ID_STRING);
-			barIDdb = rs.getInt("barID");
+			barIDdb = rs.getInt(BAR_ID_STRING);
 			message = rs.getString(MESSAGE_STRING);
 			begin = rs.getTimestamp("begin");
 			end = rs.getTimestamp("end");
@@ -766,7 +770,7 @@ public class Database {
 			peopleRating = rs.getInt(PEOPLE_RATING_STRING);
 			atmosphereRating = rs.getInt(ATMOSPHERE_RATING_STRING);
 			userIDdb = rs.getInt(USER_ID_STRING);
-			barIDdb = rs.getInt("barID");
+			barIDdb = rs.getInt(BAR_ID_STRING);
 			time = rs.getTimestamp("time");
 			if(barID==barIDdb && userID==userIDdb)
 			{
@@ -802,7 +806,7 @@ public class Database {
 		while ( rs.next() )
 		{
 			userIDdb = rs.getInt(USER_ID_STRING);
-			barIDdb = rs.getInt("barID");
+			barIDdb = rs.getInt(BAR_ID_STRING);
 			if(barID==barIDdb && userID==userIDdb)
 			{
 				rs.close();
@@ -947,7 +951,7 @@ public class Database {
 		
 		while(rs.next()) {
 			ret = new Question();
-			ret.setBarID(rs.getInt("barID"));
+			ret.setBarID(rs.getInt(BAR_ID_STRING));
 			ret.setMessage(rs.getString(MESSAGE_STRING));
 			ret.setQuestionID(rs.getInt("questionID"));
 			ret.setText(rs.getBoolean("text"));
@@ -1023,7 +1027,7 @@ public class Database {
 		List<Bar> ret = new ArrayList<>();
 		
 		while(rs.next()) {
-			ret.add(readBar(rs.getInt("barID")));
+			ret.add(readBar(rs.getInt(BAR_ID_STRING)));
 		}
 		rs.close();
 		st.close();

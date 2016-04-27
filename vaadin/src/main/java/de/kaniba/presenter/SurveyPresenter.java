@@ -25,31 +25,30 @@ public class SurveyPresenter {
 
 	public void enter(ViewChangeEvent event) {
 		bar = Utils.getBarFromParams(event.getParameters());
-		
-		if(!Utils.isLoggedIn()) {
+
+		if (!Utils.isLoggedIn()) {
 			Utils.navigateBack("Du musst eingeloggt sein, um abstimmen zu können.", Notification.Type.WARNING_MESSAGE);
 			return;
 		}
-		
+
 		if (bar == null) {
 			Utils.navigateBack();
 			return;
 		}
 
+		questionsForBar = null;
 		try {
 			questionsForBar = Database.getQuestionsForBar(bar.getBarID());
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Utils.exception(e);
 		}
 		
-		if(questionsForBar.isEmpty()) {
+		if (questionsForBar != null && questionsForBar.isEmpty()) {
 			Utils.navigateBack("Keine Fragebögen für diese Bar gefunden :(", Notification.Type.WARNING_MESSAGE);
 			return;
 		}
 
-		if (questionsForBar != null) {
-			view.displayQuestions(questionsForBar);
-		}
+		view.displayQuestions(questionsForBar);
 	}
 
 	public void submitForm() {
@@ -57,11 +56,10 @@ public class SurveyPresenter {
 
 		if (answers != null) {
 			for (Answer answer : answers) {
-				System.out.println("saved answer.");
 				answer.saveAnswer();
 			}
 		}
-		
+
 		Utils.navigateBack("Danke für deine Abstimmung");
 	}
 

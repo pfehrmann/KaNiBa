@@ -2,6 +2,8 @@ package de.kaniba.model;
 
 import java.sql.Timestamp;
 
+import de.kaniba.utils.Utils;
+
 public class Rating {
 	public static final int UNSET = 0;
 	
@@ -104,7 +106,7 @@ public class Rating {
 		try {
 			Database.saveBarRating(this);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utils.exception(e);
 		}
 	}
 	

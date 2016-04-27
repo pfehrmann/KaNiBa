@@ -8,6 +8,7 @@ import de.kaniba.components.SearchElement;
 import de.kaniba.components.SearchElementImpl;
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
+import de.kaniba.utils.Utils;
 import de.kaniba.view.SearchView;
 
 public class SearchPresenter {
@@ -29,11 +30,11 @@ public class SearchPresenter {
 		try {
 			resultList = Database.searchForBar(searchValue);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Utils.exception(e);
 		}
 		
 		if(resultList == null) {
-			System.out.println("Error while accesing database, will not show search results.");
+			Utils.log("Error while accesing database, will not show search results.");
 			return;
 		}
 		

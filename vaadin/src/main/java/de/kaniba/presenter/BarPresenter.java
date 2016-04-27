@@ -54,7 +54,7 @@ public class BarPresenter {
 			try {
 				userRating = Database.getRating(Utils.getUser().getUserID(), bar.getBarID());
 			} catch (SQLException e) {
-				e.printStackTrace();
+				Utils.exception(e);
 			}
 
 			if (userRating != null) {
@@ -82,9 +82,8 @@ public class BarPresenter {
 		try {
 			
 			fromDatabase = Database.getRating(user.getUserID(), bar.getBarID());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (SQLException e) {
+			Utils.exception(e);
 		}
 		
 		if(fromDatabase == null) {
@@ -119,7 +118,7 @@ public class BarPresenter {
 		try {
 			Database.saveBarRating(rating);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Utils.exception(e);
 		}
 	}
 
