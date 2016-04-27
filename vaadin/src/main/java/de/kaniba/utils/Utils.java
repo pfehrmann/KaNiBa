@@ -9,7 +9,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -32,11 +33,21 @@ import com.vaadin.ui.UI;
 import de.kaniba.model.Bar;
 import de.kaniba.model.InternalUser;
 
-public class Utils {
+public final class Utils {
 	private final static Logger logger = Logger.getLogger("KaNiBa");
 	
 	private Utils() {
 		// May not be instanciated
+	}
+	
+	public static <T> List<T> copyList(List<T> list) {
+		List<T> copy = new ArrayList<>();
+		
+		for(T element : list) {
+			copy.add(element);
+		}
+		
+		return copy;
 	}
 	
 	public static void log(String msg) {
@@ -83,12 +94,11 @@ public class Utils {
 	}
 	
 	private static String prepareAddress(Bar bar) {
-		String address = "";
-
 		if(bar == null) {
 			return null;
 		}
 		
+		String address = "";
 		address += bar.getAddress().getStreet();
 		address += " " + bar.getAddress().getNumber();
 		address += "," + bar.getAddress().getZip();

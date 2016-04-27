@@ -2,20 +2,22 @@ package de.kaniba.model;
 
 import java.sql.SQLException;
 
+import de.kaniba.utils.Utils;
+
 public class Answer {
 	private int answerID;
 	private int questionID;
 	private int userID;
 	private String answerString;
-	private boolean isText;
+	private boolean isAnswerText;
 	private boolean answerBool;
 	
 	public Answer() {
-		
+		// Nothing to initialize, only use set methods
 	};
 	
 	public Answer(Question question) {
-		this.isText = question.isText();
+		this.isAnswerText = question.isText();
 		this.questionID = question.getQuestionID();
 	}
 	
@@ -26,7 +28,7 @@ public class Answer {
 		this.questionID = temp.getQuestionID();
 		this.userID = temp.getUserID();
 		this.answerString = temp.getAnswerString();
-		this.isText = temp.isText();
+		this.isAnswerText = temp.isText();
 	}
 	
 	public int getAnswerID() {
@@ -48,10 +50,10 @@ public class Answer {
 		this.answerString = answerString;
 	}
 	public boolean isText() {
-		return isText;
+		return isAnswerText;
 	}
 	public void setText(boolean isText) {
-		this.isText = isText;
+		this.isAnswerText = isText;
 	}
 	public boolean getAnswerBool() {
 		return answerBool;
@@ -72,7 +74,7 @@ public class Answer {
 		try {
 			Database.saveAnswer(this);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Utils.exception(e);
 		}
 	}
 }

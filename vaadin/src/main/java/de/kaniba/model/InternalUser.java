@@ -3,6 +3,8 @@ package de.kaniba.model;
 import java.sql.Date;
 import java.sql.SQLException;
 
+import de.kaniba.utils.Utils;
+
 public class InternalUser extends User {
 	private String sessionID;
 	private int userID;
@@ -74,7 +76,7 @@ public class InternalUser extends User {
 		try {
 			return Database.getRating(userID, bar.getBarID()) != null;
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utils.exception(e);
 			return false;
 		}
 	}
