@@ -3,6 +3,8 @@ package de.kaniba.model;
 import java.sql.SQLException;
 import java.util.List;
 
+import de.kaniba.utils.Utils;
+
 /**
  * This Class represents a bar.
  * 
@@ -10,7 +12,7 @@ import java.util.List;
  *
  */
 public class Bar {
-	public final static int UNKNOWNBARID = -1;
+	public static final int UNKNOWNBARID = -1;
 
 	private int barID;
 	private Admin barOwner;
@@ -118,7 +120,7 @@ public class Bar {
 			try {
 				pinboard=Database.givePinboard(barID);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				Utils.exception(e);
 			}
 		}
 		return pinboard;
@@ -128,7 +130,7 @@ public class Bar {
 		try {
 			pinboard=Database.givePinboard(barID);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Utils.exception(e);
 		}
 		return pinboard;
 	}
@@ -248,6 +250,7 @@ public class Bar {
 		return description;
 	}
 
+	@Override
 	public String toString() {
 		return name + ", " + description + ", Ratings: " + countRating;
 	}

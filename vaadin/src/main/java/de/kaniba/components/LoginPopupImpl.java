@@ -62,7 +62,7 @@ public class LoginPopupImpl extends LoginPopup {
 				loggedIn = false;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utils.exception(e);
 			loggedIn = false;
 		}
 

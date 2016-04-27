@@ -2,6 +2,8 @@ package de.kaniba.model;
 
 import java.sql.SQLException;
 
+import de.kaniba.utils.Utils;
+
 public class Answer {
 	private int answerID;
 	private int questionID;
@@ -11,7 +13,7 @@ public class Answer {
 	private boolean answerBool;
 	
 	public Answer() {
-		
+		// Nothing to do here...
 	};
 	
 	public Answer(Question question) {
@@ -72,7 +74,7 @@ public class Answer {
 		try {
 			Database.saveAnswer(this);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Utils.exception(e);
 		}
 	}
 }

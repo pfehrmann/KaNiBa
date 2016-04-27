@@ -61,7 +61,7 @@ public class SearchView extends SearchDesign implements View {
 	}
 
 	private GoogleMap createMap() {
-		GoogleMap map = new GoogleMap("apiKey", null, "german");
+		map = new GoogleMap("apiKey", null, "german");
 		map.setCenter(new LatLon(49.0068901, 8.4036527));
 		map.setSizeFull();
 		map.setZoom(12);
@@ -114,7 +114,6 @@ public class SearchView extends SearchDesign implements View {
 	}
 
 	public void setSearchResults(List<SearchElement> elements) {
-		System.out.println("Set search results, " + elements.size());
 		this.resultList.removeAllComponents();
 		resultList.addComponent(searchBar);
 		for(SearchElement element : elements) {

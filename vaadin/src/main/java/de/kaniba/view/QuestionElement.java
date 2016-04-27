@@ -1,9 +1,6 @@
 package de.kaniba.view;
 
 import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.TextField;
 
 import de.kaniba.model.Question;
 

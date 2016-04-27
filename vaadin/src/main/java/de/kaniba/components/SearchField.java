@@ -17,24 +17,23 @@ public class SearchField extends CustomComponent {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private TextField searchField;
+	private TextField searchTextField;
 	private Button searchButton;
 	private GridLayout layout;
 	private List<Listener> listeners;
 
 	public SearchField() {
-		listeners = new ArrayList<Listener>();
+		listeners = new ArrayList<>();
 
 		layout = new GridLayout(2,1);
 		layout.setWidth("100%");
 		layout.setId("search-bar-layout");
-		//layout.setMargin(new MarginInfo(false, true, false, true));
 		
-		searchField = new TextField();
-		searchField.setWidth("100%");
-		searchField.addStyleName("searchField-textField");
+		searchTextField = new TextField();
+		searchTextField.setWidth("100%");
+		searchTextField.addStyleName("searchField-textField");
 		
-		searchField.addShortcutListener(new ShortcutListener(null, KeyCode.ENTER, null) {
+		searchTextField.addShortcutListener(new ShortcutListener(null, KeyCode.ENTER, null) {
 
 			private static final long serialVersionUID = -8536048045745120836L;
 
@@ -42,13 +41,13 @@ public class SearchField extends CustomComponent {
 			public void handleAction(Object sender, Object target) {
 				if (target instanceof TextField) {
 					TextField t = (TextField) target;
-					if(t.equals(searchField)) {
+					if(t.equals(searchTextField)) {
 						fireSearchEvent(null);
 					}
 				}
 			}
 		});
-		layout.addComponent(searchField);
+		layout.addComponent(searchTextField);
 		layout.setColumnExpandRatio(0, 1.0f);
 
 		searchButton = new Button();
@@ -75,7 +74,7 @@ public class SearchField extends CustomComponent {
 	}
 	
 	public String getSearchValue() {
-		return searchField.getValue();
+		return searchTextField.getValue();
 	}
 
 	public void addSearchListener(Listener listener) {

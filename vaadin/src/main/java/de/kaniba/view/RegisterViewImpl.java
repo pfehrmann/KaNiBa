@@ -40,7 +40,6 @@ public class RegisterViewImpl extends CustomComponent implements RegisterView {
 	public RegisterViewImpl() {		
 		listeners = new ArrayList<>();
 		mainPanel = new Panel();
-		//mainPanel.setWidth(width);
 		mainPanel.addStyleName("login-panel");
 		
 		FormLayout form = new FormLayout();
@@ -165,11 +164,6 @@ public class RegisterViewImpl extends CustomComponent implements RegisterView {
 		Email email = new Email(emailField.getValue());
 		java.util.Date utilDate = birthdateField.getValue();
 	    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-
-	    System.out.println("Vaadin:   " + birthdateField.getValue());
-	    System.out.println("UtilDate: " + utilDate.getTime());
-	    System.out.println("SQLDate:  " + sqlDate.getTime());
-	    System.out.println();
 	    
 		user.setFirstname(firstNameField.getValue());
 		user.setName(nameField.getValue());

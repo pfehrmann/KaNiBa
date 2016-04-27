@@ -3,7 +3,7 @@ package de.kaniba.model;
 import java.sql.Timestamp;
 
 public class Special {
-	public final static int UNKNOWNSPECIALID = -1;
+	public static final int UNKNOWNSPECIALID = -1;
 	private int specialID;
 	private int barID;
 	private int userID;
