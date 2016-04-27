@@ -8,6 +8,15 @@
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>vaadin</name>
+	<description>
+		KaNiBa ist eine kleine Website, die dabei helfen soll, Studenten am abend eine passende Bar zu finden.
+	</description>
+
+	<scm>
+		<url>https://github.com/Zuseban/KaNiBa</url>
+		<connection>scm:git:git://github.com/Zuseban/KaNiBa.git</connection>
+		<developerConnection>scm:git:git@github.com/Zuseban/KaNiBa.git</developerConnection>
+	</scm>
 
 	<properties>
 		<vaadin.version>7.5.8</vaadin.version>
@@ -20,11 +29,14 @@
 		<junit.version>4.12</junit.version>
 		<cucumber.version>1.2.2</cucumber.version>
 		<maven.compiler.version>3.3</maven.compiler.version>
-		
+
 		<!-- SonarQube properties -->
 		<sonar.jacoco.itReportPath>${project.basedir}/reports/jacoco.exec</sonar.jacoco.itReportPath>
-		<sonar.host.url>http://sonarqube.it.dh-karlsruhe.de</sonar.host.url>
+		<sonar.host.url>http://193.196.7.25</sonar.host.url>
 		<sonar.projectName>KaNiBa</sonar.projectName>
+		<sonar.scm.provider>git</sonar.scm.provider>
+		<sonar.links.scm>https://github.com/Zuseban/KaNiBa</sonar.links.scm>
+		<sonar.links.homepage>http://www.kaniba.de</sonar.links.homepage>
 	</properties>
 
 	<repositories>
@@ -148,6 +160,26 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>downloads-maven-plugin</artifactId>
+				<version>0.6</version>
+				<configuration>
+					<description>KaNiBa Build</description>
+					<override>true</override>
+					<includeAttached>true</includeAttached>
+					<server>github</server>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>upload</goal>
+						</goals>
+						<phase>install</phase>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

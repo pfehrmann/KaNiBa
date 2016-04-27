@@ -10,6 +10,7 @@ import de.kaniba.model.Answer;
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
 import de.kaniba.model.Question;
+import de.kaniba.utils.Utils;
 import de.kaniba.view.SurveyView;
 
 public class SurveyPresenter {

@@ -5,7 +5,7 @@ import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.ui.UI;
 
 import de.kaniba.model.Bar;
-import de.kaniba.presenter.Utils;
+import de.kaniba.utils.Utils;
 import de.kaniba.view.BarView;
 
 public class SearchElementImpl extends SearchElement {

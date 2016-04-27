@@ -13,6 +13,7 @@ import de.kaniba.model.DisplayRating;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
+import de.kaniba.utils.Utils;
 import de.kaniba.view.BarView;
 import de.kaniba.view.SurveyView;
 
