@@ -13,7 +13,7 @@ import de.kaniba.model.Admin;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.User;
 import de.kaniba.navigator.NavigatorUI;
-import de.kaniba.presenter.Utils;
+import de.kaniba.utils.Utils;
 
 public class LoginPopupImpl extends LoginPopup {
 

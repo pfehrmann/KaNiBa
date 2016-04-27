@@ -8,7 +8,7 @@ import com.vaadin.ui.Notification;
 
 import de.kaniba.model.User;
 import de.kaniba.navigator.NavigatorUI;
-import de.kaniba.presenter.Utils;
+import de.kaniba.utils.Utils;
 import de.kaniba.view.SearchView;
 import de.kaniba.view.UpdateInformationView;
 

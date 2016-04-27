@@ -18,7 +18,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import com.vaadin.ui.Window;
 
 import de.kaniba.components.LoginPopupImpl;
-import de.kaniba.presenter.Utils;
+import de.kaniba.utils.Utils;
 
 /**
  * @author phili

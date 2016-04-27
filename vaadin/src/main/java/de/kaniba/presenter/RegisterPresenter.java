@@ -9,6 +9,7 @@ import com.vaadin.ui.Window;
 import de.kaniba.components.LoginPopupImpl;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.User;
+import de.kaniba.utils.Utils;
 import de.kaniba.view.RegisterView;
 
 public class RegisterPresenter implements RegisterView.RegisterViewListener {
@@ -16,15 +17,15 @@ public class RegisterPresenter implements RegisterView.RegisterViewListener {
 	User model;
 	RegisterView view;
 
-	public View getView() {
-		return view;
-	}
-
 	public RegisterPresenter(User model, RegisterView view) {
 		this.model = model;
 		this.view = view;
 
 		view.addListener(this);
+	}
+	
+	public View getView() {
+		return view;
 	}
 
 	@Override
@@ -44,7 +45,7 @@ public class RegisterPresenter implements RegisterView.RegisterViewListener {
 			
 		} catch (Exception e) {
 			view.getSubmit().setComponentError(new UserError("Fehler beim speichern"));
-			e.printStackTrace();
+			Utils.exception(e);
 		}
 	}
 

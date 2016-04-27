@@ -21,7 +21,7 @@ import de.kaniba.components.SearchElement;
 import de.kaniba.designs.SearchDesign;
 import de.kaniba.model.Bar;
 import de.kaniba.presenter.SearchPresenter;
-import de.kaniba.presenter.Utils;
+import de.kaniba.utils.Utils;
 
 public class SearchView extends SearchDesign implements View {
 	public static final String NAME = "search";

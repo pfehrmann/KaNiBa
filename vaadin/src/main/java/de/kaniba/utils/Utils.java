@@ -1,4 +1,4 @@
-package de.kaniba.presenter;
+package de.kaniba.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,6 +9,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.SQLException;
+
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +33,19 @@ import de.kaniba.model.Bar;
 import de.kaniba.model.InternalUser;
 
 public class Utils {
+	private final static Logger logger = Logger.getLogger("KaNiBa");
+	
+	private Utils() {
+		// May not be instanciated
+	}
+	
+	public static void log(String msg) {
+		logger.info(msg);
+	}
+	
+	public static void exception(Exception e) {
+		logger.log(Level.WARNING, e.getMessage(), e);
+	}
 	
 	public static String getOneLineAddress(Bar bar) {
 		String address = "";
@@ -78,7 +97,7 @@ public class Utils {
 		try {
 			address = URLEncoder.encode(address, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			exception(e);
 			return null;
 		}
 
@@ -92,7 +111,7 @@ public class Utils {
 			jsonString = downloadURL(url);
 		} catch (MalformedURLException e) {
 			jsonString = "";
-			e.printStackTrace();
+			exception(e);
 		}
 		
 		try {
@@ -103,9 +122,9 @@ public class Utils {
 			double lon = result.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
 			return new LatLon(lat, lon);
 		} catch (JSONException e) {
-			e.printStackTrace();
-			System.out.println(url);
-			System.out.println(jsonString);
+			exception(e);
+			log(url);
+			log(jsonString);
 			return null;
 		}
 	}
@@ -120,7 +139,7 @@ public class Utils {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			exception(e);
 		}
 		return sb.toString();
 	}
@@ -142,7 +161,7 @@ public class Utils {
 				try {
 					bar = new Bar(id);
 				} catch (SQLException e) {
-					e.printStackTrace();
+					exception(e);
 				}
 			}
 		}

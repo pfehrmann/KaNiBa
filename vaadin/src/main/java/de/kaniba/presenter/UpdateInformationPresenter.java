@@ -1,16 +1,14 @@
 package de.kaniba.presenter;
 
-import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.UI;
 
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
-import de.kaniba.navigator.NavigatorUI;
+import de.kaniba.utils.Utils;
 import de.kaniba.view.UpdateInformationView;
 
 public class UpdateInformationPresenter implements UpdateInformationView.UpdateInformationViewListener {
@@ -19,29 +17,20 @@ public class UpdateInformationPresenter implements UpdateInformationView.UpdateI
 	UpdateInformationView view;
 	VaadinSession session;
 
-	public View getView() {
-		return view;
-	}
-
 	public UpdateInformationPresenter(UpdateInformationView view) {
-		this.model = model;
 		this.view = view;
 
-		session = ((NavigatorUI) UI.getCurrent()).getSession();
-		Navigator navigator = ((NavigatorUI) UI.getCurrent()).getNavigator();
-
-		Object loggedInObj = session.getAttribute("loggedIn");
-		boolean loggedIn = false;
-		if (loggedInObj != null) {
-			loggedIn = (boolean) loggedInObj;
-		}
-		
-		this.model = (InternalUser) session.getAttribute("user");
+		session = Utils.getSession();
+		model = Utils.getUser();
 
 		if(model != null) {
 			view.setUser(model);
 		}
 		view.addListener(this);
+	}
+	
+	public View getView() {
+		return view;
 	}
 
 	@Override
@@ -77,27 +66,20 @@ public class UpdateInformationPresenter implements UpdateInformationView.UpdateI
 			model.saveUser();
 			view.getSubmit().setComponentError(null);
 			
-			//geänderte Daten Speichern
 			session.setAttribute("user", model);
 			Notification.show("Daten geändert.");
 		} catch (Exception e) {
 			view.getSubmit().setComponentError(new UserError("Fehler beim speichern"));
-			e.printStackTrace();
+			Utils.exception(e);
 		}
 	}
 	
 	public void enter() {
-		this.model = (InternalUser) session.getAttribute("user");
-		
-		Object loggedInObj = session.getAttribute("loggedIn");
-		boolean loggedIn = false;
-		if (loggedInObj != null) {
-			loggedIn = (boolean) loggedInObj;
-		}
+		this.model = Utils.getUser();
 
-		if (!loggedIn) {
+		if (!Utils.isLoggedIn()) {
 			Notification.show("Um deine Daten zu ändern, musst du eingeloggt sein.");
-			UI.getCurrent().getNavigator().navigateTo("");
+			Utils.navigateBack();
 			return;
 		}
 		
