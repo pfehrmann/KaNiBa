@@ -1,4 +1,4 @@
-﻿package de.kaniba.model;
+package de.kaniba.model;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
