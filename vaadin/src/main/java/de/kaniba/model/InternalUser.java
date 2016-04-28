@@ -3,6 +3,8 @@
 import java.sql.Date;
 import java.sql.SQLException;
 
+import com.vaadin.server.VaadinSession;
+
 import de.kaniba.utils.Utils;
 
 public class InternalUser extends User {
