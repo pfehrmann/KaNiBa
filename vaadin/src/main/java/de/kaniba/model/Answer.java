@@ -9,15 +9,15 @@ public class Answer {
 	private int questionID;
 	private int userID;
 	private String answerString;
-	private boolean isText;
+	private boolean isAnswerText;
 	private boolean answerBool;
 	
 	public Answer() {
-		// Nothing to do here...
+		// Nothing to initialize, only use set methods
 	};
 	
 	public Answer(Question question) {
-		this.isText = question.isText();
+		this.isAnswerText = question.isText();
 		this.questionID = question.getQuestionID();
 	}
 	
@@ -28,7 +28,7 @@ public class Answer {
 		this.questionID = temp.getQuestionID();
 		this.userID = temp.getUserID();
 		this.answerString = temp.getAnswerString();
-		this.isText = temp.isText();
+		this.isAnswerText = temp.isText();
 	}
 	
 	public int getAnswerID() {
@@ -50,10 +50,10 @@ public class Answer {
 		this.answerString = answerString;
 	}
 	public boolean isText() {
-		return isText;
+		return isAnswerText;
 	}
 	public void setText(boolean isText) {
-		this.isText = isText;
+		this.isAnswerText = isText;
 	}
 	public boolean getAnswerBool() {
 		return answerBool;

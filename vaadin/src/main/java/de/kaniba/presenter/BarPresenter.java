@@ -13,6 +13,7 @@ import de.kaniba.model.DisplayRating;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
+import de.kaniba.utils.BarUtils;
 import de.kaniba.utils.Utils;
 import de.kaniba.view.BarView;
 import de.kaniba.view.SurveyView;
@@ -35,7 +36,7 @@ public class BarPresenter {
 	public void enter(ViewChangeEvent event) {
 		settingUp = true;
 		
-		bar = Utils.getBarFromParams(event.getParameters());
+		bar = BarUtils.getBarFromParams(event.getParameters());
 		
 		if(bar == null) {
 			settingUp = false;
@@ -43,16 +44,16 @@ public class BarPresenter {
 			//TODO: Show 404 - Bar not found page
 			return;
 		}
-		view.setMapCoords(Utils.getLatLon(bar));
+		view.setMapCoords(BarUtils.getLatLon(bar));
 		view.setBarName(bar.getName());
-		view.setBarAddress(Utils.getOneLineAddress(bar));
+		view.setBarAddress(BarUtils.getOneLineAddress(bar));
 		view.setBarDescription(bar.getDescription());
 		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
 		
 		if (Utils.isLoggedIn()) {
 			Rating userRating = null;
 			try {
-				userRating = Database.getRating(Utils.getUser().getUserID(), bar.getBarID());
+				userRating = Database.getRating(InternalUser.getUser().getUserID(), bar.getBarID());
 			} catch (SQLException e) {
 				Utils.exception(e);
 			}
@@ -76,7 +77,7 @@ public class BarPresenter {
 			return;
 		}
 
-		InternalUser user = Utils.getUser();
+		InternalUser user = InternalUser.getUser();
 
 		Rating fromDatabase = null;
 		try {
@@ -87,7 +88,7 @@ public class BarPresenter {
 		}
 		
 		if(fromDatabase == null) {
-			fromDatabase = new Rating(-1, Utils.getUser().getUserID(), bar.getBarID(), 0, 0, 0, 0, 0, null);
+			fromDatabase = new Rating(-1, InternalUser.getUser().getUserID(), bar.getBarID(), 0, 0, 0, 0, 0, null);
 		}
 
 		rating.setUserID(user.getUserID());
@@ -127,7 +128,7 @@ public class BarPresenter {
 			Notification.show("Um eine Message zu senden muss du eingeloggt sein!");
 			return;
 		}
-		InternalUser user = Utils.getUser();
+		InternalUser user = InternalUser.getUser();
 		Message dbMessage = new Message(user.getUserID(), bar.getBarID(), message);
 		dbMessage.save();
 		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());

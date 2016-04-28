@@ -199,20 +199,20 @@ public class Bar {
 	// laufen, z.B. beim anzeigen der specials für den normalen User.
 	public List<Special> getCurrentSpecials() throws SQLException {
 		if (currentSpecials != null) {
-			return currentSpecials;
+			return Utils.copyList(currentSpecials);
 		} else {
 			currentSpecials = Database.readCurrentSpecials(barID);
-			return currentSpecials;
+			return Utils.copyList(currentSpecials);
 		}
 	}
 
 	// Zeigt alle Specials an, hilfreich für Admins
 	public List<Special> getAllSpecials() throws SQLException {
 		if (allSpecials != null) {
-			return allSpecials;
+			return Utils.copyList(allSpecials);
 		} else {
 			allSpecials = Database.readCurrentSpecials(barID);
-			return allSpecials;
+			return Utils.copyList(allSpecials);
 		}
 	}
 
@@ -231,7 +231,11 @@ public class Bar {
 	 * der kontinuierlichen Zählung der Ratings gibt
 	 */
 	public void updateRating() {
-		throw new RuntimeException("implement me");
+		try {
+			Database.checkRatings(barID);
+		} catch (SQLException e) {
+			Utils.exception(e);
+		}
 	}
 
 	public void setName(String name) {
