@@ -7,6 +7,13 @@ import java.util.List;
 public class Admin extends InternalUser {
 	private List<Bar> ownedBars;
 	
+	public Admin() {
+		super();
+	}
+	public Admin(InternalUser user) {
+		super();
+	}
+	
 	public void createBar(Bar bar) throws SQLException {
 		Database.saveBar(bar);
 	}
@@ -30,12 +37,5 @@ public class Admin extends InternalUser {
 		for(Bar bar : bars) {
 			ownedBars.add(bar);
 		}
-	}
-
-	public Admin() {
-		super();
-	}
-	public Admin(InternalUser user) {
-		super();
 	}
 }

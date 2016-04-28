@@ -12,7 +12,7 @@ import de.kaniba.utils.Utils;
  *
  */
 public class Bar {
-	public final static int UNKNOWNBARID = -1;
+	public static final int UNKNOWNBARID = -1;
 
 	private int barID;
 	private Admin barOwner;

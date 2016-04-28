@@ -30,6 +30,7 @@ import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
 import de.kaniba.model.User;
 import de.kaniba.presenter.BarPresenter;
+import de.kaniba.utils.Utils;
 
 public class BarView extends BarDesign implements View {
 	public static final String NAME = "bar";
@@ -163,10 +164,6 @@ public class BarView extends BarDesign implements View {
 		this.presenter = presenter;
 	}
 
-	public void setUserRating(User user) {
-
-	}
-
 	public void setBarMessageBoard(List<Message> messages) {
 		
 		final List<Component> components = new ArrayList<>();
@@ -176,14 +173,14 @@ public class BarView extends BarDesign implements View {
 			try {
 				user = Database.giveUser(element.getUserID());
 			} catch (Exception e) {
-				e.printStackTrace();
+				Utils.exception(e);
 			}
 			
 			if(user != null) {
 				String text = "";
 				text += element.getTime().getDate() + "." + element.getTime().getMonth() + "." + (element.getTime().getYear()+1900) + "";
 				text += " <b>" + user.getFirstname() + " " + user.getName().substring(0, 1) + "." + "</b>: ";
-				text += element.getMessage();
+				text += element.getMessageText();
 				CssLayout layout = new CssLayout();
 				Label component = new Label(text, ContentMode.HTML);
 				layout.addComponent(component);

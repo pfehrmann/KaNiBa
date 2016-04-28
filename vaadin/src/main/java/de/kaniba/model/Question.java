@@ -9,7 +9,7 @@ public class Question {
 	private String message;
 	
 	public Question() {
-		
+		// nothing to do here
 	};
 	
 	public Question(int questionID) throws SQLException{

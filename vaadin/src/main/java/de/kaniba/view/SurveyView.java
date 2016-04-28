@@ -16,22 +16,21 @@ import de.kaniba.model.Answer;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Question;
 import de.kaniba.presenter.SurveyPresenter;
-import de.kaniba.utils.Utils;
 
 public class SurveyView extends SurveyDesign implements View {
-	public static String NAME = "survey";
+	public static final String NAME = "survey";
 
-	private List<SurveyPresenter> presenter;
+	private List<SurveyPresenter> presenters;
 	private List<QuestionElement> questionElements;
 
 	public SurveyView() {
-		this.presenter = new ArrayList<>();
+		this.presenters = new ArrayList<>();
 
 		submitButton.addClickListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				for (SurveyPresenter presenter : presenter) {
+				for (SurveyPresenter presenter : presenters) {
 					presenter.submitForm();
 				}
 			}
@@ -40,17 +39,17 @@ public class SurveyView extends SurveyDesign implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		for (SurveyPresenter presenter : presenter) {
+		for (SurveyPresenter presenter : presenters) {
 			presenter.enter(event);
 		}
 	}
 
 	public List<Answer> getAnswers() {
 		List<Answer> answers = new ArrayList<>();
-		InternalUser user = Utils.getUser();
+		InternalUser user = InternalUser.getUser();
 
 		if (user == null) {
-			return null;
+			return answers;
 		}
 
 		for (QuestionElement questionElement : questionElements) {
@@ -75,7 +74,7 @@ public class SurveyView extends SurveyDesign implements View {
 	}
 
 	public void addPresenter(SurveyPresenter presenter) {
-		this.presenter.add(presenter);
+		this.presenters.add(presenter);
 	}
 
 	public void displayQuestions(List<Question> questions) {

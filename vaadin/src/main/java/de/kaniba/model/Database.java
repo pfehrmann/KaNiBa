@@ -1,4 +1,4 @@
-package de.kaniba.model;
+﻿package de.kaniba.model;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -820,7 +820,7 @@ public final class Database {
 		Statement st = con.createStatement();
 		Integer messageID = -1;
 		st.executeUpdate("INSERT INTO message (userID,barID,message)" + " VALUES ('" + message.getUserID() + "','"
-				+ message.getBarID() + "','" + message.getMessage() + "');");
+				+ message.getBarID() + "','" + message.getMessageText() + "');");
 		ResultSet rs = st.executeQuery("select last_insert_id() as last_id from message");
 		if (rs.next()) {
 			messageID = rs.getInt("last_id");
