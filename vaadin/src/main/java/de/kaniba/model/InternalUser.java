@@ -3,6 +3,8 @@ package de.kaniba.model;
 import java.sql.Date;
 import java.sql.SQLException;
 
+import com.vaadin.server.VaadinSession;
+
 import de.kaniba.utils.Utils;
 
 public class InternalUser extends User {
@@ -75,7 +77,7 @@ public class InternalUser extends User {
 	public boolean ratedBar(Bar bar) {
 		try {
 			return Database.getRating(userID, bar.getBarID()) != null;
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			Utils.exception(e);
 			return false;
 		}
@@ -148,6 +150,11 @@ public class InternalUser extends User {
 	
 	public void saveUser() throws SQLException{
 		this.userID = Database.saveUser(this);
+	}
+
+	public static InternalUser getUser() {
+		VaadinSession session = Utils.getSession();
+		return (InternalUser) session.getAttribute("user");
 	}
 
 }

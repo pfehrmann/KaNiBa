@@ -16,7 +16,6 @@ import de.kaniba.model.Answer;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Question;
 import de.kaniba.presenter.SurveyPresenter;
-import de.kaniba.utils.Utils;
 
 public class SurveyView extends SurveyDesign implements View {
 	public static String NAME = "survey";
@@ -47,7 +46,7 @@ public class SurveyView extends SurveyDesign implements View {
 
 	public List<Answer> getAnswers() {
 		List<Answer> answers = new ArrayList<>();
-		InternalUser user = Utils.getUser();
+		InternalUser user = InternalUser.getUser();
 
 		if (user == null) {
 			return null;

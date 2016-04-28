@@ -21,7 +21,7 @@ import de.kaniba.components.SearchElement;
 import de.kaniba.designs.SearchDesign;
 import de.kaniba.model.Bar;
 import de.kaniba.presenter.SearchPresenter;
-import de.kaniba.utils.Utils;
+import de.kaniba.utils.BarUtils;
 
 public class SearchView extends SearchDesign implements View {
 	public static final String NAME = "search";
@@ -100,7 +100,7 @@ public class SearchView extends SearchDesign implements View {
 		}
 
 		for (Bar b : bars) {
-			LatLon latLon = Utils.getLatLon(b);
+			LatLon latLon = BarUtils.getLatLon(b);
 			GoogleMapMarker marker = new GoogleMapMarker(b.getName(), latLon, false);
 			marker.setId(b.getBarID());
 			map.addMarker(marker);

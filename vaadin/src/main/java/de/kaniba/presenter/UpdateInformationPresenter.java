@@ -21,7 +21,7 @@ public class UpdateInformationPresenter implements UpdateInformationView.UpdateI
 		this.view = view;
 
 		session = Utils.getSession();
-		model = Utils.getUser();
+		model = InternalUser.getUser();
 
 		if(model != null) {
 			view.setUser(model);
@@ -75,7 +75,7 @@ public class UpdateInformationPresenter implements UpdateInformationView.UpdateI
 	}
 	
 	public void enter() {
-		this.model = Utils.getUser();
+		this.model = InternalUser.getUser();
 
 		if (!Utils.isLoggedIn()) {
 			Notification.show("Um deine Daten zu ändern, musst du eingeloggt sein.");
