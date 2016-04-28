@@ -910,9 +910,9 @@ public final class Database {
 	public static List<Bar> searchForBar(String bar) throws SQLException {
 
 		Connection con = verbindung();
-		String query = "SELECT barID FROM bars WHERE name LIKE '%?%';";
+		String query = "SELECT barID FROM bars WHERE name LIKE ?";
 		PreparedStatement prepareStatement = con.prepareStatement(query);
-		prepareStatement.setString(1, bar);
+		prepareStatement.setString(1, "%" + bar + "%");
 		ResultSet rs = prepareStatement.executeQuery();
 		List<Bar> ret = new ArrayList<>();
 

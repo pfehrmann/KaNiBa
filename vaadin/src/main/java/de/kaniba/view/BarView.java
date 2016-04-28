@@ -12,6 +12,7 @@ import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.tapio.googlemaps.GoogleMap;
+import com.vaadin.tapio.googlemaps.client.GoogleMapControl;
 import com.vaadin.tapio.googlemaps.client.LatLon;
 import com.vaadin.tapio.googlemaps.client.overlays.GoogleMapMarker;
 import com.vaadin.ui.Label;
@@ -47,6 +48,9 @@ public class BarView extends BarDesign implements View {
 		infoPanel.setContent(new Label("Keine Beschreibung verfügbar", ContentMode.HTML));
 		map = new GoogleMap("apiKey", null, "german");
 		map.setSizeFull();
+		map.setZoom(14);
+		map.removeControl(GoogleMapControl.MapType);
+		map.removeControl(GoogleMapControl.StreetView);
 		setRowExpandRatio(0, 1.0f);
 		addComponent(map, 1, 0);
 
@@ -240,6 +244,15 @@ public class BarView extends BarDesign implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		removeComponent(map);
+		map = new GoogleMap("apiKey", null, "german");
+		map.setSizeFull();
+		map.setZoom(15);
+		map.removeControl(GoogleMapControl.MapType);
+		map.removeControl(GoogleMapControl.StreetView);
+		setRowExpandRatio(0, 1.0f);
+		addComponent(map, 1, 0);
+		
 		presenter.enter(event);
 	}
 }
