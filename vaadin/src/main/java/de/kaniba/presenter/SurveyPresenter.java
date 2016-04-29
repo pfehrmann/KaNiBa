@@ -3,6 +3,7 @@ package de.kaniba.presenter;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Notification;
 
@@ -62,6 +63,10 @@ public class SurveyPresenter {
 		}
 
 		Utils.navigateBack("Danke für deine Abstimmung");
+	}
+
+	public View getView() {
+		return view;
 	}
 
 }

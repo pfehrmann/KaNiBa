@@ -11,7 +11,7 @@ import de.kaniba.model.InternalUser;
 import de.kaniba.utils.Utils;
 import de.kaniba.view.UpdateInformationView;
 
-public class UpdateInformationPresenter implements UpdateInformationView.UpdateInformationViewListener {
+public class UpdateInformationPresenter {
 
 	InternalUser model;
 	UpdateInformationView view;
@@ -26,14 +26,13 @@ public class UpdateInformationPresenter implements UpdateInformationView.UpdateI
 		if(model != null) {
 			view.setUser(model);
 		}
-		view.addListener(this);
+		view.addPresenter(this);
 	}
 	
-	public View getView() {
+	public UpdateInformationView getView() {
 		return view;
 	}
 
-	@Override
 	public void updateClickListener(ClickEvent event) {
 		String passwordOld = model.getPassword();
 		String passwordNew = view.getPasswordField().getValue();

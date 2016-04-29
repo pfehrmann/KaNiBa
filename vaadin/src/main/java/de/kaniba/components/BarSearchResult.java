@@ -25,6 +25,8 @@ public class BarSearchResult extends CustomComponent {
 
 		Link name = new Link(bar.getName(), new ExternalResource("#!bar/" + bar.getBarID()));
 		layout.addComponent(name);
+		
+		super.setId("result-" + bar.getBarID());
 
 		super.setCompositionRoot(layout);
 	}
