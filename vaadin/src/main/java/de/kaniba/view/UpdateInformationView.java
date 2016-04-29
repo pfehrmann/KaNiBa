@@ -19,29 +19,17 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 
+import de.kaniba.designs.UpdateInformationDesign;
 import de.kaniba.model.Address;
 import de.kaniba.model.InternalUser;
 import de.kaniba.presenter.UpdateInformationPresenter;
 
-public class UpdateInformationView extends CustomComponent implements View {
+public class UpdateInformationView extends UpdateInformationDesign implements View {
 	private static final long serialVersionUID = 1L;
 
-	public static final String NAME = "updateInformations";
+	public static final String NAME = "updateInformation";
 	
 	private List<UpdateInformationPresenter> presenters;
-	private Panel mainPanel;
-	private TextField nameField;
-	private TextField firstNameField;
-	private PasswordField oldPasswordField;
-	private PasswordField passwordField;
-	private PasswordField repeatPasswordField;
-	private DateField birthdateField;
-	private TextField cityField;
-	private TextField streetField;
-	private TextField numberField;
-	private TextField zipField;
-	private Button submit;
-	private String width = "100%";
 	
 	/**
 	 * Setup the view.
@@ -50,25 +38,9 @@ public class UpdateInformationView extends CustomComponent implements View {
 		Page.getCurrent().setTitle("Informationen aktualisieren");
 		
 		presenters = new ArrayList<>();
-		mainPanel = new Panel();
-		mainPanel.setWidth(width);
-		mainPanel.addStyleName("login-panel");
 		
 		FormLayout form = new FormLayout();
 		
-		nameField = new TextField("Nachname");
-		form.addComponent(nameField);
-
-		firstNameField = new TextField("Vorname");
-		form.addComponent(firstNameField);
-
-		oldPasswordField = new PasswordField("Altes Passwort");
-		form.addComponent(oldPasswordField);
-		
-		passwordField = new PasswordField("Passwort");
-		form.addComponent(passwordField);
-
-		repeatPasswordField = new PasswordField("Passwort wiederholen");
 		repeatPasswordField.addTextChangeListener(new FieldEvents.TextChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -83,24 +55,7 @@ public class UpdateInformationView extends CustomComponent implements View {
 				}
 			}
 		});
-		form.addComponent(repeatPasswordField);
-
-		birthdateField = new DateField("Geburtsdatum");
-		form.addComponent(birthdateField);
-
-		cityField = new TextField("Stadt");
-		form.addComponent(cityField);
-
-		zipField = new TextField("PLZ");
-		form.addComponent(zipField);
-
-		streetField = new TextField("Straße");
-		form.addComponent(streetField);
-
-		numberField = new TextField("Hausnummer");
-		form.addComponent(numberField);
-
-		submit = new Button("Aktualisieren");
+		
 		submit.addClickListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -111,22 +66,6 @@ public class UpdateInformationView extends CustomComponent implements View {
 				}
 			}
 		});
-		form.addComponent(submit);
-
-		for(int i = 0; i < form.getComponentCount(); i++) {
-			form.getComponent(i).setWidth("100%");
-		}
-		
-		mainPanel.setContent(form);
-		super.setCompositionRoot(mainPanel);
-	}
-
-	public TextField getNameField() {
-		return nameField;
-	}
-
-	public TextField getFirstNameField() {
-		return firstNameField;
 	}
 
 	public PasswordField getOldPasswordField() {
@@ -141,26 +80,6 @@ public class UpdateInformationView extends CustomComponent implements View {
 		return repeatPasswordField;
 	}
 
-	public DateField getBirthdateField() {
-		return birthdateField;
-	}
-
-	public TextField getCityField() {
-		return cityField;
-	}
-
-	public TextField getStreetField() {
-		return streetField;
-	}
-
-	public TextField getNumberField() {
-		return numberField;
-	}
-
-	public TextField getZipField() {
-		return zipField;
-	}
-
 	public Button getSubmit() {
 		return submit;
 	}
@@ -168,9 +87,7 @@ public class UpdateInformationView extends CustomComponent implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		UI.getCurrent().getPage().setTitle("Informationen aktualisieren");
-		System.out.println("Presenters: " + presenters.size());
 		for(UpdateInformationPresenter presenter: presenters) {
-			System.out.println(presenter);
 			presenter.enter();
 		}
 
@@ -201,15 +118,6 @@ public class UpdateInformationView extends CustomComponent implements View {
 		streetField.setValue(user.getAddress().getStreet());
 		numberField.setValue(user.getAddress().getNumber());
 		zipField.setValue(user.getAddress().getZip());
-	}
-
-	public void setFormWidth(String width) {
-		this.width = width;
-		mainPanel.setWidth(width);
-	}
-
-	public String getFormWidth() {
-		return width;
 	}
 
 	/**

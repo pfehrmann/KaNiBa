@@ -13,7 +13,7 @@ import de.kaniba.view.UpdateInformationView;
 
 public class UpdateInformationPresenter {
 
-	InternalUser model;
+	InternalUser user;
 	UpdateInformationView view;
 	VaadinSession session;
 
@@ -21,10 +21,10 @@ public class UpdateInformationPresenter {
 		this.view = view;
 
 		session = Utils.getSession();
-		model = InternalUser.getUser();
+		user = InternalUser.getUser();
 
-		if(model != null) {
-			view.setUser(model);
+		if(user != null) {
+			view.setUser(user);
 		}
 		view.addPresenter(this);
 	}
@@ -34,19 +34,19 @@ public class UpdateInformationPresenter {
 	}
 
 	public void updateClickListener(ClickEvent event) {
-		String passwordOld = model.getPassword();
+		String passwordOld = user.getPassword();
 		String passwordNew = view.getPasswordField().getValue();
 		String passwordNewRepeat = view.getRepeatPasswordField().getValue();
-		Email emailOld = model.getEmail();
+		Email emailOld = user.getEmail();
 		
-		model = view.getUser();
+		user = view.getUser();
 
 		if ("".equals(passwordNew)) {
-			model.setPassword(passwordOld);
+			user.setPassword(passwordOld);
 		} else {
 			if (passwordNew.equals(passwordNewRepeat)) {
 				if (passwordOld.equals(view.getOldPasswordField().getValue())) {
-					model.setPassword(passwordNew);
+					user.setPassword(passwordNew);
 					view.getOldPasswordField().setComponentError(null);
 				} else {
 					view.getOldPasswordField().setComponentError(new UserError("Bitte das alte Passwort eingeben"));
@@ -59,13 +59,13 @@ public class UpdateInformationPresenter {
 			}
 		}
 		
-		model.setEmail(emailOld);
+		user.setEmail(emailOld);
 
 		try {
-			model.saveUser();
+			user.saveUser();
 			view.getSubmit().setComponentError(null);
 			
-			session.setAttribute("user", model);
+			session.setAttribute("user", user);
 			Notification.show("Daten geändert.");
 		} catch (Exception e) {
 			view.getSubmit().setComponentError(new UserError("Fehler beim speichern"));
@@ -74,7 +74,7 @@ public class UpdateInformationPresenter {
 	}
 	
 	public void enter() {
-		this.model = InternalUser.getUser();
+		this.user = InternalUser.getUser();
 
 		if (!Utils.isLoggedIn()) {
 			Notification.show("Um deine Daten zu ändern, musst du eingeloggt sein.");
@@ -82,7 +82,7 @@ public class UpdateInformationPresenter {
 			return;
 		}
 		
-		view.setUser(model);
+		view.setUser(user);
 	}
 
 }
