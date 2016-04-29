@@ -251,7 +251,7 @@ public final class Database {
 				statement.setString(4, bar.getAddress().getZip());
 				statement.setString(5, bar.getDescription());
 				statement.setString(6, bar.getName());
-				statement.setDate(7, new Date( Calendar.getInstance().getTimeInMillis()));
+				statement.setDate(7, new Date(Calendar.getInstance().getTimeInMillis()));
 				statement.setInt(8, bar.getBarID());
 				statement.executeUpdate();
 			}
@@ -618,38 +618,36 @@ public final class Database {
 	 * @throws SQLException
 	 */
 	public static InternalUser logUserIn(String useremail, String password) throws SQLException {
-
-		String useremaildb;
-		String userpassworddb;
 		int isadmin;
 		int userid;
-		Connection con = verbindung();
-		Statement st = con.createStatement();
 
-		String sql = "SELECT * FROM user WHERE email = '" + useremail + "' AND password = '" + password + "' ";
-		ResultSet rs = st.executeQuery(sql);
-
-		while (rs.next()) {
-			isadmin = rs.getInt("isAdmin");
-			userid = rs.getInt(USER_ID_STRING);
-			if (isadmin == 0) {
-				InternalUser user = giveUser(userid);
-				rs.close();
-				st.close();
-				con.close();
-				return user;
-			} else {
-				Admin user = new Admin(giveUser(userid));
-				rs.close();
-				st.close();
-				con.close();
-				return user;
+		String sql = "SELECT * FROM user WHERE email = ? AND password = ? ";
+		try (Connection con = verbindung();
+				PreparedStatement st = con.prepareStatement(sql);
+				ResultSet rs = st.executeQuery(sql);) {
+			st.setString(1, useremail);
+			st.setString(2, password);
+			
+			while (rs.next()) {
+				isadmin = rs.getInt("isAdmin");
+				userid = rs.getInt(USER_ID_STRING);
+				if (isadmin == 0) {
+					InternalUser user = giveUser(userid);
+					rs.close();
+					st.close();
+					con.close();
+					return user;
+				} else {
+					Admin user = new Admin(giveUser(userid));
+					rs.close();
+					st.close();
+					con.close();
+					return user;
+				}
 			}
 		}
-		rs.close();
-		st.close();
-		con.close();
 		return null;
+
 	}
 
 	/**
