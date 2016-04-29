@@ -35,8 +35,6 @@ public class UpdateInformationView extends UpdateInformationDesign implements Vi
 	 * Setup the view.
 	 */
 	public UpdateInformationView() {
-		Page.getCurrent().setTitle("Informationen aktualisieren");
-		
 		presenters = new ArrayList<>();
 		
 		FormLayout form = new FormLayout();
@@ -86,6 +84,8 @@ public class UpdateInformationView extends UpdateInformationDesign implements Vi
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		Page.getCurrent().setTitle("Informationen aktualisieren");
+		
 		UI.getCurrent().getPage().setTitle("Informationen aktualisieren");
 		for(UpdateInformationPresenter presenter: presenters) {
 			presenter.enter();
