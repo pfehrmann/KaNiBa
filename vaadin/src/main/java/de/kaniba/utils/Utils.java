@@ -19,39 +19,66 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 
+/**
+ * Utility class for various purposes.
+ * @author Philipp
+ *
+ */
 public final class Utils {
-	private final static Logger logger = Logger.getLogger("KaNiBa");
-	
+	private static final int DEFAULT_NOTIFICATION_DELAY = 2000;
+	private static final Logger LOGGER = Logger.getLogger("KaNiBa");
+
 	private Utils() {
 		// May not be instanciated
 	}
-	
+
+	/**
+	 * Copys a list. Note that the elements are not duplicated, so all the
+	 * elements are still equal (listA.get(1) == listB.get(1)), but the lists
+	 * are not equal (listA != listB).
+	 * 
+	 * @param list The list to copy.
+	 * @return Returns a copy of the list.
+	 */
 	public static <T> List<T> copyList(List<T> list) {
 		List<T> copy = new ArrayList<>();
-		
-		for(T element : list) {
+
+		for (T element : list) {
 			copy.add(element);
 		}
-		
+
 		return copy;
 	}
-	
+
+	/**
+	 * Loggs a message.
+	 * 
+	 * @param msg
+	 */
 	public static void log(String msg) {
-		logger.info(msg);
+		LOGGER.info(msg);
 	}
-	
+
+	/**
+	 * Logs an exception.
+	 * 
+	 * @param e
+	 */
 	public static void exception(Exception e) {
-		logger.log(Level.WARNING, e.getMessage(), e);
+		LOGGER.log(Level.WARNING, e.getMessage(), e);
 	}
-	
+
+	/**
+	 * @return Returns the basepath of the vaadin app.
+	 */
 	public static String basepath() {
 		return VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 	}
-	
+
 	public static VaadinSession getSession() {
 		return UI.getCurrent().getSession();
 	}
-	
+
 	public static boolean isLoggedIn() {
 		VaadinSession session = getSession();
 		Object loggedInObj = session.getAttribute("loggedIn");
@@ -59,10 +86,19 @@ public final class Utils {
 		if (loggedInObj != null) {
 			loggedIn = (boolean) loggedInObj;
 		}
-		
+
 		return loggedIn;
 	}
-	
+
+	/**
+	 * Doenloads a given website
+	 * 
+	 * @param url
+	 *            The website to download
+	 * @return Returns the website as string
+	 * @throws MalformedURLException
+	 *             This is thrown, if the supplied url was invalid.
+	 */
 	public static String downloadURL(String url) throws MalformedURLException {
 		URL website = new URL(url);
 		StringBuilder sb = new StringBuilder();
@@ -78,34 +114,73 @@ public final class Utils {
 		return sb.toString();
 	}
 
+	/**
+	 * Navigates to a given state.
+	 * 
+	 * @param navigationState
+	 */
 	public static void navigateTo(String navigationState) {
 		UI.getCurrent().getNavigator().navigateTo(navigationState);
 	}
-	
+
+	/**
+	 * Shows a notification with the given message. The notification will be
+	 * visible for 2000ms.
+	 * 
+	 * @param message
+	 */
 	public static void showNotification(String message) {
 		showNotification(message, Type.HUMANIZED_MESSAGE);
 	}
-	
+
+	/**
+	 * Shows a notfication.
+	 * 
+	 * @param message
+	 * @param type
+	 */
 	public static void showNotification(String message, Type type) {
-		showNotification(message, type, 2000);
+		showNotification(message, type, DEFAULT_NOTIFICATION_DELAY);
 	}
 
+	/**
+	 * Shows a notification
+	 * 
+	 * @param message
+	 * @param type
+	 * @param durationMs
+	 */
 	public static void showNotification(String message, Type type, int durationMs) {
 		Notification note = new Notification(message, type);
 		note.setDelayMsec(durationMs);
 		note.setPosition(Position.MIDDLE_CENTER);
 		note.show(Page.getCurrent());
 	}
-	
+
+	/**
+	 * Navigates to the previous page.
+	 */
 	public static void navigateBack() {
 		Page.getCurrent().getJavaScript().execute("window.history.back()");
 	}
 
+	/**
+	 * Navigates to the previous page and shows a message.
+	 * 
+	 * @param message
+	 */
 	public static void navigateBack(String message) {
 		navigateBack();
 		showNotification(message);
 	}
 
+	/**
+	 * Navigates back and shows a message of a specific type. Useful for error
+	 * messages.
+	 * 
+	 * @param message
+	 * @param type
+	 */
 	public static void navigateBack(String message, Type type) {
 		navigateBack();
 		showNotification(message, type);

@@ -20,10 +20,10 @@ import de.kaniba.presenter.SurveyPresenter;
 import de.kaniba.presenter.UpdateInformationPresenter;
 import de.kaniba.view.BarView;
 import de.kaniba.view.RegisterView;
-import de.kaniba.view.RegisterViewImpl;
+import de.kaniba.view.RegisterView;
 import de.kaniba.view.SearchView;
 import de.kaniba.view.SurveyView;
-import de.kaniba.view.UpdateInformationVeiwImpl;
+import de.kaniba.view.UpdateInformationView;
 import de.kaniba.view.UpdateInformationView;
 
 /**
@@ -56,20 +56,20 @@ public class NavigatorUI extends UI {
 		SearchView searchView = new SearchView();
 		SearchPresenter searchPresenter = new SearchPresenter(searchView);
 		navigator.addView("", searchView);
-		navigator.addView(SearchView.NAME, searchView);
+		navigator.addView(SearchView.NAME, searchPresenter.getView());
 		
 		BarPresenter barPresenter = new BarPresenter();
 		navigator.addView(BarView.NAME, barPresenter.getView());
 
-		RegisterPresenter registerPresenter = new RegisterPresenter(new User(), new RegisterViewImpl());
+		RegisterPresenter registerPresenter = new RegisterPresenter(new User(), new RegisterView());
 		navigator.addView(RegisterView.NAME, registerPresenter.getView());
 
-		UpdateInformationPresenter updateInfoPresenter = new UpdateInformationPresenter(new UpdateInformationVeiwImpl());
+		UpdateInformationPresenter updateInfoPresenter = new UpdateInformationPresenter(new UpdateInformationView());
 		navigator.addView(UpdateInformationView.NAME, updateInfoPresenter.getView());
 		
 		SurveyView surveyView = new SurveyView();
 		SurveyPresenter surveyPresenter = new SurveyPresenter(surveyView);
-		navigator.addView(SurveyView.NAME, surveyView);
+		navigator.addView(SurveyView.NAME, surveyPresenter.getView());
 		
 	}
 	

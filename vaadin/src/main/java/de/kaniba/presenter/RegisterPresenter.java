@@ -12,7 +12,7 @@ import de.kaniba.model.User;
 import de.kaniba.utils.Utils;
 import de.kaniba.view.RegisterView;
 
-public class RegisterPresenter implements RegisterView.RegisterViewListener {
+public class RegisterPresenter {
 
 	User model;
 	RegisterView view;
@@ -28,8 +28,11 @@ public class RegisterPresenter implements RegisterView.RegisterViewListener {
 		return view;
 	}
 
-	@Override
-	public void registerClickListener(ClickEvent event) {
+	/**
+	 * This is calles, when the Register button is clicked.
+	 * @param event
+	 */
+	public void registerClick() {
 		model = view.getUser();
 		try {
 			((InternalUser) model).saveUser();
