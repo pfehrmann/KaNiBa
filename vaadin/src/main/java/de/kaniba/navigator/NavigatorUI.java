@@ -14,11 +14,14 @@ import com.vaadin.ui.UI;
 
 import de.kaniba.model.User;
 import de.kaniba.presenter.BarPresenter;
+import de.kaniba.presenter.EditBarPresenter;
 import de.kaniba.presenter.RegisterPresenter;
 import de.kaniba.presenter.SearchPresenter;
 import de.kaniba.presenter.SurveyPresenter;
 import de.kaniba.presenter.UpdateInformationPresenter;
 import de.kaniba.view.BarView;
+import de.kaniba.view.EditBarView;
+import de.kaniba.view.MyBarsView;
 import de.kaniba.view.RegisterView;
 import de.kaniba.view.RegisterView;
 import de.kaniba.view.SearchView;
@@ -71,6 +74,12 @@ public class NavigatorUI extends UI {
 		SurveyPresenter surveyPresenter = new SurveyPresenter(surveyView);
 		navigator.addView(SurveyView.NAME, surveyPresenter.getView());
 		
+		EditBarView editBarView = new EditBarView();
+		EditBarPresenter editBarPresenter = new EditBarPresenter(editBarView);
+		navigator.addView(EditBarView.NAME, editBarPresenter.getView());
+		
+		MyBarsView myBarsView = new MyBarsView();
+		navigator.addView(MyBarsView.NAME, myBarsView);
 	}
 	
 	public void setMenu(Component menu) {

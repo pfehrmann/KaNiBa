@@ -19,6 +19,10 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 
+import de.kaniba.components.ExternalMenuImpl;
+import de.kaniba.model.User;
+import de.kaniba.navigator.NavigatorUI;
+
 /**
  * Utility class for various purposes.
  * @author Philipp
@@ -43,6 +47,10 @@ public final class Utils {
 	public static <T> List<T> copyList(List<T> list) {
 		List<T> copy = new ArrayList<>();
 
+		if(list == null) {
+			return copy;
+		}
+		
 		for (T element : list) {
 			copy.add(element);
 		}
@@ -74,6 +82,10 @@ public final class Utils {
 	public static String basepath() {
 		return VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 	}
+	
+	public static String getBarLogoBasePath() {
+		return basepath() + "/WEB-INF/images/";
+	}
 
 	public static VaadinSession getSession() {
 		return UI.getCurrent().getSession();
@@ -88,6 +100,17 @@ public final class Utils {
 		}
 
 		return loggedIn;
+	}
+	
+	public static boolean isAdmin() {
+		VaadinSession session = getSession();
+		Object adminObj = session.getAttribute("admin");
+		boolean admin = false;
+		if (adminObj != null) {
+			admin = true;
+		}
+
+		return admin && isLoggedIn();
 	}
 
 	/**
@@ -184,5 +207,14 @@ public final class Utils {
 	public static void navigateBack(String message, Type type) {
 		navigateBack();
 		showNotification(message, type);
+	}
+
+	public static void logout() {
+		VaadinSession session = getSession();
+		session.setAttribute("loggedIn", false);
+		session.setAttribute("model", new User());
+		session.setAttribute("admin", null);
+		((NavigatorUI) UI.getCurrent()).setMenu(new ExternalMenuImpl());
+		Notification.show("Erfolgreich ausgeloggt.");
 	}
 }

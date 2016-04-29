@@ -7,8 +7,17 @@ import com.vaadin.ui.Button.ClickListener;
 
 import de.kaniba.view.SearchView;
 
+/**
+ * The menu for external visitors
+ * @author Philipp
+ *
+ */
 public class ExternalMenuImpl extends ExternalMenu {
-	
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Sets up the menu
+	 */
 	public ExternalMenuImpl() {
 		loginButton.addClickListener(new ClickListener() {
 			

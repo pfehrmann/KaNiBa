@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -240,6 +241,22 @@ public final class Database {
 	 * @throws SQLException
 	 */
 	public static boolean saveBar(Bar bar) throws SQLException {
+
+		if (bar.getBarID() != Bar.UNKNOWNBARID) {
+			String sql = "UPDATE bars SET city=?, street=?, number=?, zip=?, description=?, name=?, lastUpdated=? WHERE barID=?";
+			try (Connection con = verbindung(); PreparedStatement statement = con.prepareStatement(sql);) {
+				statement.setString(1, bar.getAddress().getCity());
+				statement.setString(2, bar.getAddress().getStreet());
+				statement.setString(3, bar.getAddress().getNumber());
+				statement.setString(4, bar.getAddress().getZip());
+				statement.setString(5, bar.getDescription());
+				statement.setString(6, bar.getName());
+				statement.setDate(7, new Date( Calendar.getInstance().getTimeInMillis()));
+				statement.setInt(8, bar.getBarID());
+				statement.executeUpdate();
+			}
+			return true;
+		}
 		try (Connection con = verbindung(); Statement st = con.createStatement();) {
 			Address address = bar.getAddress();
 			java.util.Date date = new java.util.Date();
@@ -609,27 +626,24 @@ public final class Database {
 		Connection con = verbindung();
 		Statement st = con.createStatement();
 
-		ResultSet rs = st.executeQuery("SELECT * FROM user");
+		String sql = "SELECT * FROM user WHERE email = '" + useremail + "' AND password = '" + password + "' ";
+		ResultSet rs = st.executeQuery(sql);
 
 		while (rs.next()) {
-			useremaildb = rs.getString(EMAIL_STRING);
-			userpassworddb = rs.getString("password");
 			isadmin = rs.getInt("isAdmin");
 			userid = rs.getInt(USER_ID_STRING);
-			if (useremaildb.equalsIgnoreCase(useremail) && userpassworddb.equals(password)) {
-				if (isadmin == 0) {
-					InternalUser user = giveUser(userid);
-					rs.close();
-					st.close();
-					con.close();
-					return user;
-				} else {
-					Admin user = new Admin(giveUser(userid));
-					rs.close();
-					st.close();
-					con.close();
-					return user;
-				}
+			if (isadmin == 0) {
+				InternalUser user = giveUser(userid);
+				rs.close();
+				st.close();
+				con.close();
+				return user;
+			} else {
+				Admin user = new Admin(giveUser(userid));
+				rs.close();
+				st.close();
+				con.close();
+				return user;
 			}
 		}
 		rs.close();

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.vaadin.tapio.googlemaps.client.LatLon;
 
 import de.kaniba.model.Bar;
+import de.kaniba.model.Database;
 
 /**
  * Util Class that uses bars.
@@ -19,6 +20,10 @@ import de.kaniba.model.Bar;
  *
  */
 public class BarUtils {
+	
+	private BarUtils() {
+		// May not be instanciated.
+	}
 
 	/**
 	 * Tries to find a bar from a parameter. The paramater is expected to be one single number.
@@ -40,13 +45,13 @@ public class BarUtils {
 	
 			if (id != -1) {
 				try {
-					bar = new Bar(id);
+					bar = Database.readBar(id);
 				} catch (SQLException e) {
-					Utils.exception(e);
+					// don't do anything.
+					// An invalid ID was supplied
 				}
 			}
 		}
-	
 		return bar;
 	}
 
