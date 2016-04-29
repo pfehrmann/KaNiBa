@@ -13,8 +13,18 @@ import com.vaadin.tapio.googlemaps.client.LatLon;
 
 import de.kaniba.model.Bar;
 
+/**
+ * Util Class that uses bars.
+ * @author Philipp
+ *
+ */
 public class BarUtils {
 
+	/**
+	 * Tries to find a bar from a parameter. The paramater is expected to be one single number.
+	 * @param params The param string.
+	 * @return Returns a bar or null if none was found.
+	 */
 	public static Bar getBarFromParams(String params) {
 		Bar bar = null;
 	
@@ -61,6 +71,11 @@ public class BarUtils {
 		return address;
 	}
 
+	/**
+	 * Returns the coordinates of a bar.
+	 * @param bar The bar to search for
+	 * @return Returns the coordinates.
+	 */
 	public static LatLon getLatLon(Bar bar) {
 		String jsonString;
 		String url = "http://maps.google.com/maps/api/geocode/json?address=" + prepareAddress(bar) + "&sensor=false";
@@ -86,6 +101,11 @@ public class BarUtils {
 		}
 	}
 
+	/**
+	 * Returns a one line representation of a bar.
+	 * @param bar The bar to format
+	 * @return Returns the formatted address.
+	 */
 	public static String getOneLineAddress(Bar bar) {
 		String address = "";
 	

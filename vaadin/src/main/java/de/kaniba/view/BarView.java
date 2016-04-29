@@ -1,6 +1,7 @@
 package de.kaniba.view;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,31 +30,42 @@ import de.kaniba.model.DisplayRating;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
-import de.kaniba.model.User;
 import de.kaniba.presenter.BarPresenter;
 import de.kaniba.utils.Utils;
 
+/**
+ * The view of a bar.
+ * @author Philipp
+ *
+ */
 public class BarView extends BarDesign implements View {
+	private static final int DEFAULT_ZOOM = 15;
+
+	private static final long serialVersionUID = 1L;
+
 	public static final String NAME = "bar";
 	
 	protected GoogleMap map;
 
 	private BarPresenter presenter;
 
+	/**
+	 * Sets up the basic layout and tries to fix it.
+	 */
 	public BarView() {
 
 		// Resize the grid
-		removeComponent(leftGrid);
-		addComponent(leftGrid, 0, 0, 0, 1);
+		super.removeComponent(leftGrid);
+		super.addComponent(leftGrid, 0, 0, 0, 1);
 
 		infoPanel.setContent(new Label("Keine Beschreibung verfügbar", ContentMode.HTML));
 		map = new GoogleMap("apiKey", null, "german");
 		map.setSizeFull();
-		map.setZoom(14);
+		map.setZoom(DEFAULT_ZOOM);
 		map.removeControl(GoogleMapControl.MapType);
 		map.removeControl(GoogleMapControl.StreetView);
-		setRowExpandRatio(0, 1.0f);
-		addComponent(map, 1, 0);
+		super.setRowExpandRatio(0, 1.0F);
+		super.addComponent(map, 1, 0);
 
 		String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 		FileResource resource = new FileResource(new File(basepath + "/WEB-INF/images/stoevchen.png"));
@@ -61,6 +73,8 @@ public class BarView extends BarDesign implements View {
 		barImage.setSource(resource);
 
 		rateButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				saveRatingClick();
@@ -68,7 +82,8 @@ public class BarView extends BarDesign implements View {
 		});
 
 		starTotal.addValueChangeListener(new ValueChangeListener() {
-
+			private static final long serialVersionUID = 1L;
+			
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				generalRatingStarClick();
@@ -76,7 +91,8 @@ public class BarView extends BarDesign implements View {
 		});
 
 		starPeople.addValueChangeListener(new ValueChangeListener() {
-
+			private static final long serialVersionUID = 1L;
+			
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				peopleRatingStarClick();
@@ -84,7 +100,8 @@ public class BarView extends BarDesign implements View {
 		});
 
 		starAtmosphere.addValueChangeListener(new ValueChangeListener() {
-
+			private static final long serialVersionUID = 1L;
+			
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				atmosphereRatingStarClick();
@@ -92,7 +109,8 @@ public class BarView extends BarDesign implements View {
 		});
 
 		starMusic.addValueChangeListener(new ValueChangeListener() {
-
+			private static final long serialVersionUID = 1L;
+			
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				musicRatingStarClick();
@@ -100,7 +118,8 @@ public class BarView extends BarDesign implements View {
 		});
 
 		starPrice.addValueChangeListener(new ValueChangeListener() {
-
+			private static final long serialVersionUID = 1L;
+			
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				priceRatingStarClick();
@@ -108,6 +127,7 @@ public class BarView extends BarDesign implements View {
 		});
 		
 		sendMessageButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -116,6 +136,7 @@ public class BarView extends BarDesign implements View {
 		});
 		
 		surveyButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -124,25 +145,25 @@ public class BarView extends BarDesign implements View {
 		});
 	}
 
-	protected void priceRatingStarClick() {
+	private void priceRatingStarClick() {
 		Rating rating = new Rating(-1, -1, -1, 0, 0, 0, 0, 0, null);
 		rating.setPprRating(starPrice.getValue().intValue());
 		presenter.saveRating(rating);
 	}
 
-	protected void musicRatingStarClick() {
+	private void musicRatingStarClick() {
 		Rating rating = new Rating(-1, -1, -1, 0, 0, 0, 0, 0, null);
 		rating.setMusicRating(starMusic.getValue().intValue());
 		presenter.saveRating(rating);
 	}
 
-	protected void atmosphereRatingStarClick() {
+	private void atmosphereRatingStarClick() {
 		Rating rating = new Rating(-1, -1, -1, 0, 0, 0, 0, 0, null);
 		rating.setAtmosphereRating(starAtmosphere.getValue().intValue());
 		presenter.saveRating(rating);
 	}
 
-	protected void peopleRatingStarClick() {
+	private void peopleRatingStarClick() {
 		Rating rating = new Rating(-1, -1, -1, 0, 0, 0, 0, 0, null);
 		rating.setPeopleRating(starPeople.getValue().intValue());
 		presenter.saveRating(rating);
@@ -176,17 +197,17 @@ public class BarView extends BarDesign implements View {
 			InternalUser user = null;
 			try {
 				user = Database.giveUser(element.getUserID());
-			} catch (Exception e) {
+			} catch (SQLException e) {
 				Utils.exception(e);
 			}
 			
 			if(user != null) {
-				String text = "";
-				text += element.getTime().getDate() + "." + element.getTime().getMonth() + "." + (element.getTime().getYear()+1900) + "";
-				text += " <b>" + user.getFirstname() + " " + user.getName().substring(0, 1) + "." + "</b>: ";
-				text += element.getMessageText();
+				StringBuilder text = new StringBuilder("");
+				text.append(element.getTime().getDate() + "." + element.getTime().getMonth() + "." + (element.getTime().getYear()+1900) + "");
+				text.append(" <b>" + user.getFirstname() + " " + user.getName().substring(0, 1) + "." + "</b>: ");
+				text.append(element.getMessageText());
 				CssLayout layout = new CssLayout();
-				Label component = new Label(text, ContentMode.HTML);
+				Label component = new Label(text.toString(), ContentMode.HTML);
 				layout.addComponent(component);
 				layout.setWidth("100%");
 				components.add(component);
@@ -244,10 +265,10 @@ public class BarView extends BarDesign implements View {
 		removeComponent(map);
 		map = new GoogleMap("apiKey", null, "german");
 		map.setSizeFull();
-		map.setZoom(15);
+		map.setZoom(DEFAULT_ZOOM);
 		map.removeControl(GoogleMapControl.MapType);
 		map.removeControl(GoogleMapControl.StreetView);
-		setRowExpandRatio(0, 1.0f);
+		setRowExpandRatio(0, 1.0F);
 		addComponent(map, 1, 0);
 		
 		presenter.enter(event);
