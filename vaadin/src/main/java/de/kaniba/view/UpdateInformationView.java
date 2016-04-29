@@ -10,12 +10,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.DateField;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 
@@ -24,6 +19,11 @@ import de.kaniba.model.Address;
 import de.kaniba.model.InternalUser;
 import de.kaniba.presenter.UpdateInformationPresenter;
 
+/**
+ * The view for updating personal informations
+ * @author Philipp
+ *
+ */
 public class UpdateInformationView extends UpdateInformationDesign implements View {
 	private static final long serialVersionUID = 1L;
 
@@ -36,8 +36,6 @@ public class UpdateInformationView extends UpdateInformationDesign implements Vi
 	 */
 	public UpdateInformationView() {
 		presenters = new ArrayList<>();
-		
-		FormLayout form = new FormLayout();
 		
 		repeatPasswordField.addTextChangeListener(new FieldEvents.TextChangeListener() {
 			private static final long serialVersionUID = 1L;

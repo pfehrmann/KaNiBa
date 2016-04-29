@@ -6,12 +6,13 @@ import java.util.List;
 
 import de.kaniba.utils.Utils;
 
+/**
+ * This class represents an admin.
+ * @author Philipp
+ *
+ */
 public class Admin extends InternalUser {
 	private List<Bar> ownedBars;
-	
-	private Admin() {
-		// may not be instanciated without an user
-	}
 	
 	/**
 	 * Create a new Admin from an existing user.

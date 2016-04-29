@@ -190,13 +190,11 @@ public class BarView extends BarDesign implements View {
 	}
 
 	public void setBarMessageBoard(List<Message> messages) {
-		
-		final List<Component> components = new ArrayList<>();
-		
 		if(messages == null) {
 			return;
 		}
 		
+		final List<Component> components = new ArrayList<>();
 		for(Message element : messages) {
 			InternalUser user = null;
 			try {

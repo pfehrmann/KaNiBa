@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchField extends CustomComponent {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private TextField searchTextField;
 	private Button searchButton;

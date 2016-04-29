@@ -244,7 +244,6 @@ public final class Database {
 
 		if (bar.getBarID() != Bar.UNKNOWNBARID) {
 			String sql = "UPDATE bars SET city=?, street=?, number=?, zip=?, description=?, name=?, lastUpdated=? WHERE barID=?";
-			System.out.println("Update");
 			try (Connection con = verbindung(); PreparedStatement statement = con.prepareStatement(sql);) {
 				statement.setString(1, bar.getAddress().getCity());
 				statement.setString(2, bar.getAddress().getStreet());
@@ -254,7 +253,6 @@ public final class Database {
 				statement.setString(6, bar.getName());
 				statement.setDate(7, new Date( Calendar.getInstance().getTimeInMillis()));
 				statement.setInt(8, bar.getBarID());
-				System.out.println(statement.toString());
 				statement.executeUpdate();
 			}
 			return true;

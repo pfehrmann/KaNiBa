@@ -1,10 +1,9 @@
 package de.kaniba.view;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-
-import org.apache.commons.io.FilenameUtils;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -18,17 +17,27 @@ import de.kaniba.designs.EditBarDesign;
 import de.kaniba.model.Address;
 import de.kaniba.model.Bar;
 import de.kaniba.presenter.EditBarPresenter;
-import de.kaniba.utils.BarUtils;
 import de.kaniba.utils.Utils;
 
+/**
+ * The for editing bars
+ * @author Philipp
+ *
+ */
 public class EditBarView extends EditBarDesign implements View {
+	private static final long serialVersionUID = 1L;
+
 	public static final String NAME = "editBar";
 
 	private EditBarPresenter presenter;
 
+	/**
+	 * Create the view. Adds an click listener
+	 */
 	public EditBarView() {
 		submitButton.addClickListener(new ClickListener() {
-			
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.saveBar();
@@ -36,6 +45,10 @@ public class EditBarView extends EditBarDesign implements View {
 		});
 	}
 	
+	/**
+	 * Returns the Bar.
+	 * @return
+	 */
 	public Bar getBar() {
 		Bar bar = new Bar();
 		
@@ -63,6 +76,7 @@ public class EditBarView extends EditBarDesign implements View {
 		descriptionArea.setValue(bar.getDescription());
 		
 		logoUpload.setReceiver(new Receiver() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public OutputStream receiveUpload(String filename, String mimeType) {
@@ -70,9 +84,10 @@ public class EditBarView extends EditBarDesign implements View {
 				try {
 					File file = new File(Utils.getBarLogoBasePath() + bar.getBarID() + ".png");
 					fos = new FileOutputStream(file);
-				} catch (final java.io.FileNotFoundException e) {
+				} catch (final FileNotFoundException e) {
 					new Notification("Could not open file<br/>", e.getMessage(), Notification.Type.ERROR_MESSAGE)
 							.show(Page.getCurrent());
+					Utils.exception(e);
 					return null;
 				}
 				return fos;
