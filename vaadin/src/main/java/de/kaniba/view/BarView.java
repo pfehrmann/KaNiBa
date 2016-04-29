@@ -193,6 +193,10 @@ public class BarView extends BarDesign implements View {
 		
 		final List<Component> components = new ArrayList<>();
 		
+		if(messages == null) {
+			return;
+		}
+		
 		for(Message element : messages) {
 			InternalUser user = null;
 			try {
@@ -239,8 +243,14 @@ public class BarView extends BarDesign implements View {
 	}
 
 	public void setBarLogo(Bar bar) {
-		// TODO Auto-generated method stub
-
+		File image = new File(Utils.getBarLogoBasePath() + bar.getBarID() + ".png");
+		
+		if(!image.exists()) {
+			image = new File(Utils.getBarLogoBasePath() + "logo.png");
+		}
+		
+		FileResource resource = new FileResource(image);
+		barImage.setSource(resource);
 	}
 
 	public void setMapCoords(LatLon coords) {

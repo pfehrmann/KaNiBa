@@ -162,7 +162,14 @@ public class InternalUser extends User {
 	 */
 	public static InternalUser getUser() {
 		VaadinSession session = Utils.getSession();
-		return (InternalUser) session.getAttribute("user");
+		Admin admin = session.getAttribute(Admin.class);
+		InternalUser internalUser = (InternalUser) session.getAttribute("user");
+		
+		if (admin != null) {
+			return new Admin(internalUser);
+		}
+
+		return internalUser;
 	}
 
 }

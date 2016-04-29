@@ -49,6 +49,7 @@ public class BarPresenter {
 		view.setBarAddress(BarUtils.getOneLineAddress(bar));
 		view.setBarDescription(bar.getDescription());
 		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
+		view.setBarLogo(bar);
 		
 		if (Utils.isLoggedIn()) {
 			Rating userRating = null;
