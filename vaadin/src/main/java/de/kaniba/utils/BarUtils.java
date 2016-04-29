@@ -20,6 +20,10 @@ import de.kaniba.model.Database;
  *
  */
 public class BarUtils {
+	
+	private BarUtils() {
+		// May not be instanciated.
+	}
 
 	/**
 	 * Tries to find a bar from a parameter. The paramater is expected to be one single number.

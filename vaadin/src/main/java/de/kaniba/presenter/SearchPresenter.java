@@ -11,6 +11,11 @@ import de.kaniba.model.Database;
 import de.kaniba.utils.Utils;
 import de.kaniba.view.SearchView;
 
+/**
+ * Logic for the search
+ * @author Philipp
+ *
+ */
 public class SearchPresenter {
 	
 	private SearchView view;
@@ -24,6 +29,10 @@ public class SearchPresenter {
 		return view;
 	}
 
+	/**
+	 * Searches the database
+	 * @param searchValue The string to search for
+	 */
 	public void updateSearchView(String searchValue) {
 
 		List<Bar> resultList = null;
