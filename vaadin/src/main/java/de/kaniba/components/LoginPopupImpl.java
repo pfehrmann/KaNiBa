@@ -31,8 +31,6 @@ public class LoginPopupImpl extends LoginPopup {
 	}
 
 	private void loginButtonClick() {
-		// Session holen
-		VaadinSession session = Utils.getSession();
 
 		// Wenn der User bereits eingeloggt ist, kann er sich nicht erneut
 		// einloggen
@@ -53,7 +51,8 @@ public class LoginPopupImpl extends LoginPopup {
 
 		User model = new User();
 		try {
-			InternalUser temp = model.login(username, password);
+			model = model.login(username, password);
+			InternalUser temp = (InternalUser) model;
 			if (temp != null) {
 				model = temp;
 				user = temp;
@@ -67,11 +66,12 @@ public class LoginPopupImpl extends LoginPopup {
 		}
 
 		// Prüfen, ob das einloggen geklappt hat und ob der User admin ist
-		boolean admin = false;
+		Admin admin = null;
 		if (loggedIn) {
 			((NavigatorUI) UI.getCurrent()).setMenu(new InternalMenuImpl());
 			if (model.getClass().equals(Admin.class)) {
-				admin = true;
+				admin = (Admin) model;
+				((NavigatorUI) UI.getCurrent()).setMenu(new BarAdminMenuImpl());
 			}
 			// Bestätigung für den User anzeigen
 			Notification.show("Erfolgreich eingeloggt.");
@@ -89,6 +89,7 @@ public class LoginPopupImpl extends LoginPopup {
 		}
 
 		// Werte in die Session schreiben
+		VaadinSession session = Utils.getSession();
 		session.setAttribute("user", user);
 		session.setAttribute("admin", admin);
 		session.setAttribute("loggedIn", loggedIn);

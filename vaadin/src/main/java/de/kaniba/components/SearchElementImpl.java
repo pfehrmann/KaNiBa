@@ -23,4 +23,24 @@ public class SearchElementImpl extends SearchElement {
 			}
 		});
 	}
+	
+	/**
+	 * A more generic approach.
+	 * @param title The title of the element (like the barname)
+	 * @param subtitle The subtile (like the address)
+	 * @param navigationState The link to navigate to
+	 */
+	public SearchElementImpl (final String title, final String subtitle, final String navigationState) {
+		addressLabel.setValue(subtitle);
+		nameLabel.setValue(title);
+		
+		addStyleName("search-element");
+		addLayoutClickListener(new LayoutClickListener() {
+			
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				UI.getCurrent().getNavigator().navigateTo(navigationState);
+			}
+		});
+	}
 }
