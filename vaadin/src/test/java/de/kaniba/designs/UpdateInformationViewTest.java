@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.sql.Date;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import de.kaniba.model.Address;
@@ -12,7 +13,13 @@ import de.kaniba.model.InternalUser;
 import de.kaniba.view.UpdateInformationView;
 
 public class UpdateInformationViewTest {
-
+	private UpdateInformationView view;
+	
+	@Before
+	public void setUp() {
+		view = new UpdateInformationView();
+	}
+	
 	@Test
 	public void testUpdateInformationView() {
 		fail("Not yet implemented");
@@ -35,7 +42,7 @@ public class UpdateInformationViewTest {
 
 	@Test
 	public void testGetSubmit() {
-		fail("Not yet implemented");
+		assertNotEquals("No submit button was created", null, view.getSubmit());
 	}
 
 	@Test
@@ -54,7 +61,6 @@ public class UpdateInformationViewTest {
 		user.setPassword("testPass");
 		user.setUserID(5);
 		
-		UpdateInformationView view = new UpdateInformationView();
 		view.setUser(user);
 		
 		InternalUser read = view.getUser();
