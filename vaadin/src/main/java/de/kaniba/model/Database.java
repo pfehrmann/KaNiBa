@@ -621,12 +621,13 @@ public final class Database {
 		int isadmin;
 		int userid;
 
-		String sql = "SELECT * FROM user WHERE email = ? AND password = ? ";
+		String sql = "SELECT * FROM user WHERE email=? AND password=? ";
 		try (Connection con = verbindung();
-				PreparedStatement st = con.prepareStatement(sql);
-				ResultSet rs = st.executeQuery(sql);) {
+				PreparedStatement st = con.prepareStatement(sql);) {
 			st.setString(1, useremail);
 			st.setString(2, password);
+			
+			ResultSet rs = st.executeQuery();
 			
 			while (rs.next()) {
 				isadmin = rs.getInt("isAdmin");
@@ -645,6 +646,7 @@ public final class Database {
 					return user;
 				}
 			}
+			rs.close();
 		}
 		return null;
 
