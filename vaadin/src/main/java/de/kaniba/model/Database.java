@@ -170,7 +170,7 @@ public final class Database {
 
 		try (Connection con = verbindung();
 				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM User WHERE userID = " + userID + ";");) {
+				ResultSet rs = st.executeQuery("SELECT * FROM user WHERE userID = " + userID + ";");) {
 			while (rs.next()) {
 				String name = rs.getString("name");
 				String firstname = rs.getString("firstname");
@@ -213,7 +213,7 @@ public final class Database {
 
 		try (Connection con = verbindung();
 				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM Message WHERE barID = " + barID + ";");) {
+				ResultSet rs = st.executeQuery("SELECT * FROM message WHERE barID = " + barID + ";");) {
 			while (rs.next()) {
 				String messageString = rs.getString(MESSAGE_STRING);
 				Timestamp time = rs.getTimestamp("time");
@@ -673,7 +673,7 @@ public final class Database {
 		Connection con = verbindung();
 		Statement st = con.createStatement();
 
-		ResultSet rs = st.executeQuery("SELECT * FROM Ratings");
+		ResultSet rs = st.executeQuery("SELECT * FROM ratings");
 
 		while (rs.next()) {
 			ratingID = rs.getInt("ratingID");
