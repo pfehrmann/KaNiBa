@@ -30,7 +30,7 @@ import de.kaniba.model.DisplayRating;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
-import de.kaniba.presenter.BarPresenter;
+import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 
 /**
@@ -47,7 +47,7 @@ public class BarView extends BarDesign implements View {
 	
 	protected GoogleMap map;
 
-	private BarPresenter presenter;
+	private BarInterface presenter;
 
 	/**
 	 * Sets up the basic layout and tries to fix it.
@@ -185,7 +185,7 @@ public class BarView extends BarDesign implements View {
 		presenter.saveRating(rating);
 	}
 
-	public void setPresenter(BarPresenter presenter) {
+	public void setPresenter(BarInterface presenter) {
 		this.presenter = presenter;
 	}
 
@@ -200,7 +200,7 @@ public class BarView extends BarDesign implements View {
 			try {
 				user = Database.giveUser(element.getUserID());
 			} catch (SQLException e) {
-				Utils.exception(e);
+				LoggingUtils.exception(e);
 			}
 			
 			if(user != null) {

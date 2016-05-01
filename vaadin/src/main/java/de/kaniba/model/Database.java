@@ -14,7 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Date;
-import de.kaniba.utils.Utils;
+
+import de.kaniba.utils.LoggingUtils;
 
 /**
  * Eine Klasse, die Zugriff auf die Datenbak abstrahiert. Die Zugriffe sind alle
@@ -73,8 +74,8 @@ public final class Database {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			Utils.log("Fehler bei MySQL-JDBC-Bridge: ");
-			Utils.exception(e);
+			LoggingUtils.log("Fehler bei MySQL-JDBC-Bridge: ");
+			LoggingUtils.exception(e);
 			return null;
 		}
 		// VERBINDUNG
@@ -89,7 +90,7 @@ public final class Database {
 			password = reader.readLine();
 			reader.close();
 		} catch (IOException e) {
-			Utils.log("Password not available, will use standard password.");
+			LoggingUtils.log("Password not available, will use standard password.");
 		}
 
 		return password;

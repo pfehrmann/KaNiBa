@@ -2,7 +2,7 @@ package de.kaniba.model;
 
 import java.sql.SQLException;
 
-import de.kaniba.utils.Utils;
+import de.kaniba.utils.LoggingUtils;
 
 public class Answer {
 	private int answerID;
@@ -74,7 +74,7 @@ public class Answer {
 		try {
 			Database.saveAnswer(this);
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 	}
 }

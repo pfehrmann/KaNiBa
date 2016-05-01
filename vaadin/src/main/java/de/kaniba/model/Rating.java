@@ -2,7 +2,7 @@ package de.kaniba.model;
 
 import java.sql.Timestamp;
 
-import de.kaniba.utils.Utils;
+import de.kaniba.utils.LoggingUtils;
 
 public class Rating {
 	public static final int UNSET = 0;
@@ -106,7 +106,7 @@ public class Rating {
 		try {
 			Database.saveBarRating(this);
 		} catch (Exception e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 	}
 	

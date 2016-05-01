@@ -8,10 +8,12 @@ import com.vaadin.ui.Notification;
 
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
+import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
+import de.kaniba.view.UpdateInformationInterface;
 import de.kaniba.view.UpdateInformationView;
 
-public class UpdateInformationPresenter {
+public class UpdateInformationPresenter implements UpdateInformationInterface {
 
 	InternalUser user;
 	UpdateInformationView view;
@@ -33,6 +35,10 @@ public class UpdateInformationPresenter {
 		return view;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.UpdateInformationInterface#updateClickListener(com.vaadin.ui.Button.ClickEvent)
+	 */
+	@Override
 	public void updateClickListener(ClickEvent event) {
 		String passwordOld = user.getPassword();
 		String passwordNew = view.getPasswordField().getValue();
@@ -69,10 +75,14 @@ public class UpdateInformationPresenter {
 			Notification.show("Daten geändert.");
 		} catch (Exception e) {
 			view.getSubmit().setComponentError(new UserError("Fehler beim speichern"));
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.UpdateInformationInterface#enter()
+	 */
+	@Override
 	public void enter() {
 		this.user = InternalUser.getUser();
 

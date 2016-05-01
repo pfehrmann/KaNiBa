@@ -9,10 +9,11 @@ import com.vaadin.ui.Window;
 import de.kaniba.components.LoginPopupImpl;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.User;
-import de.kaniba.utils.Utils;
+import de.kaniba.utils.LoggingUtils;
+import de.kaniba.view.RegisterInterface;
 import de.kaniba.view.RegisterView;
 
-public class RegisterPresenter {
+public class RegisterPresenter implements RegisterInterface {
 
 	User model;
 	RegisterView view;
@@ -28,10 +29,10 @@ public class RegisterPresenter {
 		return view;
 	}
 
-	/**
-	 * This is calles, when the Register button is clicked.
-	 * @param event
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.RegisterInterface#registerClick()
 	 */
+	@Override
 	public void registerClick() {
 		model = view.getUser();
 		try {
@@ -48,7 +49,7 @@ public class RegisterPresenter {
 			
 		} catch (Exception e) {
 			view.getSubmit().setComponentError(new UserError("Fehler beim speichern"));
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 	}
 

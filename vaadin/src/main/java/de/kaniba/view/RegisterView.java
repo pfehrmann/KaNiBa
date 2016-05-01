@@ -100,7 +100,7 @@ public class RegisterView extends CustomComponent implements View {
 		submit.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				for (RegisterPresenter presenter : presenters) {
+				for (RegisterInterface presenter : presenters) {
 					presenter.registerClick();
 				}
 			}

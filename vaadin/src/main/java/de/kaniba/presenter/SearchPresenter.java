@@ -8,7 +8,8 @@ import de.kaniba.components.SearchElement;
 import de.kaniba.components.SearchElementImpl;
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
-import de.kaniba.utils.Utils;
+import de.kaniba.utils.LoggingUtils;
+import de.kaniba.view.SearchInterface;
 import de.kaniba.view.SearchView;
 
 /**
@@ -16,7 +17,7 @@ import de.kaniba.view.SearchView;
  * @author Philipp
  *
  */
-public class SearchPresenter {
+public class SearchPresenter implements SearchInterface {
 	
 	private SearchView view;
 
@@ -29,21 +30,21 @@ public class SearchPresenter {
 		return view;
 	}
 
-	/**
-	 * Searches the database
-	 * @param searchValue The string to search for
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.SearchInterface#updateSearchView(java.lang.String)
 	 */
+	@Override
 	public void updateSearchView(String searchValue) {
 
 		List<Bar> resultList = null;
 		try {
 			resultList = Database.searchForBar(searchValue);
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 		
 		if(resultList == null) {
-			Utils.log("Error while accesing database, will not show search results.");
+			LoggingUtils.log("Error while accesing database, will not show search results.");
 			return;
 		}
 		
