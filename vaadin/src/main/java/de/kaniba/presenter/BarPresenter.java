@@ -15,10 +15,11 @@ import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
 import de.kaniba.utils.BarUtils;
 import de.kaniba.utils.Utils;
+import de.kaniba.view.BarInterface;
 import de.kaniba.view.BarView;
 import de.kaniba.view.SurveyView;
 
-public class BarPresenter {
+public class BarPresenter implements BarInterface {
 	private Bar bar;
 	private BarView view;
 	private boolean settingUp;
@@ -33,6 +34,10 @@ public class BarPresenter {
 		return view;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.BarPresenterInterface#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
+	 */
+	@Override
 	public void enter(ViewChangeEvent event) {
 		settingUp = true;
 		
@@ -68,6 +73,10 @@ public class BarPresenter {
 		settingUp = false;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.BarPresenterInterface#saveRating(de.kaniba.model.Rating)
+	 */
+	@Override
 	public void saveRating(Rating rating) {
 		if (settingUp) {
 			return;
@@ -124,6 +133,10 @@ public class BarPresenter {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.BarPresenterInterface#sendMessage(java.lang.String)
+	 */
+	@Override
 	public void sendMessage(String message) {
 		if (!Utils.isLoggedIn()) {
 			Notification.show("Um eine Message zu senden muss du eingeloggt sein!");
@@ -135,6 +148,10 @@ public class BarPresenter {
 		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.BarPresenterInterface#clickedSurvey()
+	 */
+	@Override
 	public void clickedSurvey() {
 		UI.getCurrent().getNavigator().navigateTo(SurveyView.NAME + "/" + bar.getBarID());
 	}

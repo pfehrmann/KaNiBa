@@ -10,6 +10,7 @@ import de.kaniba.model.Bar;
 import de.kaniba.utils.BarUtils;
 import de.kaniba.utils.Utils;
 import de.kaniba.view.BarView;
+import de.kaniba.view.EditBarInterface;
 import de.kaniba.view.EditBarView;
 
 /**
@@ -17,7 +18,7 @@ import de.kaniba.view.EditBarView;
  * @author Philipp
  *
  */
-public class EditBarPresenter {
+public class EditBarPresenter implements EditBarInterface {
 	private EditBarView view;
 	private Bar bar;
 	
@@ -33,9 +34,10 @@ public class EditBarPresenter {
 		return view;
 	}
 
-	/**
-	 * Save a bar from the view
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.EditBarInterface#saveBar()
 	 */
+	@Override
 	public void saveBar() {
 		Bar read = view.getBar();
 		bar.setAddress(read.getAddress());
@@ -50,11 +52,10 @@ public class EditBarPresenter {
 		}
 	}
 
-	/**
-	 * To be called on enter
-	 * @param event The event containing the parmeters
-	 * @return Returns true, if everything is fine.
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.EditBarInterface#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
 	 */
+	@Override
 	public boolean enter(ViewChangeEvent event) {
 		bar = BarUtils.getBarFromParams(event.getParameters());
 		view.setBar(bar);

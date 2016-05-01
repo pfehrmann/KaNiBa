@@ -57,7 +57,7 @@ public class UpdateInformationView extends UpdateInformationDesign implements Vi
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				for (UpdateInformationPresenter presenter : presenters) {
+				for (UpdateInformationInterface presenter : presenters) {
 					presenter.updateClickListener(event);
 				}
 			}
@@ -85,7 +85,7 @@ public class UpdateInformationView extends UpdateInformationDesign implements Vi
 		Page.getCurrent().setTitle("Informationen aktualisieren");
 		
 		UI.getCurrent().getPage().setTitle("Informationen aktualisieren");
-		for(UpdateInformationPresenter presenter: presenters) {
+		for(UpdateInformationInterface presenter: presenters) {
 			presenter.enter();
 		}
 

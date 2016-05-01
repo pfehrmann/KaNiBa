@@ -16,7 +16,6 @@ import com.vaadin.ui.Upload.Receiver;
 import de.kaniba.designs.EditBarDesign;
 import de.kaniba.model.Address;
 import de.kaniba.model.Bar;
-import de.kaniba.presenter.EditBarPresenter;
 import de.kaniba.utils.Utils;
 
 /**
@@ -29,7 +28,7 @@ public class EditBarView extends EditBarDesign implements View {
 
 	public static final String NAME = "editBar";
 
-	private EditBarPresenter presenter;
+	private EditBarInterface presenter;
 
 	/**
 	 * Create the view. Adds an click listener
@@ -101,7 +100,7 @@ public class EditBarView extends EditBarDesign implements View {
 		
 	}
 
-	public void setPresenter(EditBarPresenter presenter) {
+	public void setPresenter(EditBarInterface presenter) {
 		this.presenter = presenter;
 	}
 

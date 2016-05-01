@@ -108,7 +108,7 @@ public class SearchView extends SearchDesign implements View {
 	}
 
 	private void firePresenter() {
-		for (SearchPresenter presenter : presenterList) {
+		for (SearchInterface presenter : presenterList) {
 			presenter.updateSearchView(searchBar.getSearchValue());
 		}
 	}

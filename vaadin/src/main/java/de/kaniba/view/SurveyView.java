@@ -44,7 +44,7 @@ public class SurveyView extends SurveyDesign implements View {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				for (SurveyPresenter presenter : presenters) {
+				for (SurveyInterface presenter : presenters) {
 					presenter.submitForm();
 				}
 			}
@@ -53,7 +53,7 @@ public class SurveyView extends SurveyDesign implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		for (SurveyPresenter presenter : presenters) {
+		for (SurveyInterface presenter : presenters) {
 			presenter.enter(event);
 		}
 	}
