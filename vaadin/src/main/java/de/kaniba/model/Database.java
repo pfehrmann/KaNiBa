@@ -170,7 +170,7 @@ public final class Database {
 
 		try (Connection con = verbindung();
 				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM User WHERE userID = " + userID + ";");) {
+				ResultSet rs = st.executeQuery("SELECT * FROM user WHERE userID = " + userID + ";");) {
 			while (rs.next()) {
 				String name = rs.getString("name");
 				String firstname = rs.getString("firstname");
@@ -213,7 +213,7 @@ public final class Database {
 
 		try (Connection con = verbindung();
 				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM Message WHERE barID = " + barID + ";");) {
+				ResultSet rs = st.executeQuery("SELECT * FROM message WHERE barID = " + barID + ";");) {
 			while (rs.next()) {
 				String messageString = rs.getString(MESSAGE_STRING);
 				Timestamp time = rs.getTimestamp("time");
@@ -621,12 +621,13 @@ public final class Database {
 		int isadmin;
 		int userid;
 
-		String sql = "SELECT * FROM user WHERE email = ? AND password = ? ";
+		String sql = "SELECT * FROM user WHERE email=? AND password=? ";
 		try (Connection con = verbindung();
-				PreparedStatement st = con.prepareStatement(sql);
-				ResultSet rs = st.executeQuery(sql);) {
+				PreparedStatement st = con.prepareStatement(sql);) {
 			st.setString(1, useremail);
 			st.setString(2, password);
+			
+			ResultSet rs = st.executeQuery();
 			
 			while (rs.next()) {
 				isadmin = rs.getInt("isAdmin");
@@ -645,6 +646,7 @@ public final class Database {
 					return user;
 				}
 			}
+			rs.close();
 		}
 		return null;
 
@@ -673,7 +675,7 @@ public final class Database {
 		Connection con = verbindung();
 		Statement st = con.createStatement();
 
-		ResultSet rs = st.executeQuery("SELECT * FROM Ratings");
+		ResultSet rs = st.executeQuery("SELECT * FROM ratings");
 
 		while (rs.next()) {
 			ratingID = rs.getInt("ratingID");
