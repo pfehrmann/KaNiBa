@@ -7,7 +7,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Notification.Type;
 
 import de.kaniba.model.Bar;
-import de.kaniba.utils.BarUtils;
+import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 import de.kaniba.view.BarView;
 import de.kaniba.view.EditBarInterface;
@@ -48,7 +48,7 @@ public class EditBarPresenter implements EditBarInterface {
 			Utils.navigateTo(BarView.NAME + "/" + bar.getBarID());
 			Utils.showNotification("Die Änderungen wurden erfolgreich gespeichert.");
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 	}
 
@@ -57,7 +57,7 @@ public class EditBarPresenter implements EditBarInterface {
 	 */
 	@Override
 	public boolean enter(ViewChangeEvent event) {
-		bar = BarUtils.getBarFromParams(event.getParameters());
+		bar = Bar.getBarFromParams(event.getParameters());
 		view.setBar(bar);
 		
 		if(!Utils.isAdmin()) {

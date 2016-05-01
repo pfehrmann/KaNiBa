@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import com.vaadin.server.VaadinSession;
 
+import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 
 public class InternalUser extends User {
@@ -78,7 +79,7 @@ public class InternalUser extends User {
 		try {
 			return Database.getRating(userID, bar.getBarID()) != null;
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 			return false;
 		}
 	}

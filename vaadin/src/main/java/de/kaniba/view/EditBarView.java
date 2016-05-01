@@ -16,6 +16,7 @@ import com.vaadin.ui.Upload.Receiver;
 import de.kaniba.designs.EditBarDesign;
 import de.kaniba.model.Address;
 import de.kaniba.model.Bar;
+import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 
 /**
@@ -86,7 +87,7 @@ public class EditBarView extends EditBarDesign implements View {
 				} catch (final FileNotFoundException e) {
 					new Notification("Could not open file<br/>", e.getMessage(), Notification.Type.ERROR_MESSAGE)
 							.show(Page.getCurrent());
-					Utils.exception(e);
+					LoggingUtils.exception(e);
 					return null;
 				}
 				return fos;

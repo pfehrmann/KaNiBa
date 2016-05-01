@@ -3,7 +3,7 @@ package de.kaniba.model;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-import de.kaniba.utils.Utils;
+import de.kaniba.utils.LoggingUtils;
 
 public class Message {
 	private int messageID;
@@ -68,7 +68,7 @@ public class Message {
 		try {
 			Database.saveMessage(this);
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 		
 	}

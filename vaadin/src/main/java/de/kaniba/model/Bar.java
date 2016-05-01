@@ -1,8 +1,18 @@
 package de.kaniba.model;
 
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.vaadin.tapio.googlemaps.client.LatLon;
+
+import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 
 /**
@@ -120,7 +130,7 @@ public class Bar {
 			try {
 				pinboard=Database.givePinboard(barID);
 			} catch (SQLException e) {
-				Utils.exception(e);
+				LoggingUtils.exception(e);
 			}
 		}
 		return pinboard;
@@ -130,7 +140,7 @@ public class Bar {
 		try {
 			pinboard=Database.givePinboard(barID);
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 		return pinboard;
 	}
@@ -234,7 +244,7 @@ public class Bar {
 		try {
 			Database.checkRatings(barID);
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 	}
 
@@ -257,5 +267,99 @@ public class Bar {
 	@Override
 	public String toString() {
 		return name + ", " + description + ", Ratings: " + countRating;
+	}
+
+	/**
+	 * Returns a one line representation of a bar.
+	 * @param bar The bar to format
+	 * @return Returns the formatted address.
+	 */
+	public String getOneLineAddress() {
+		String address = "";
+	
+		address += getAddress().getStreet();
+		address += " " + getAddress().getNumber();
+		address += ", " + getAddress().getZip();
+		address += " " + getAddress().getCity();
+	
+		return address;
+	}
+
+	/**
+	 * Returns the coordinates of a bar.
+	 * @param bar The bar to search for
+	 * @return Returns the coordinates.
+	 */
+	public LatLon getLatLon() {
+		String jsonString;
+		String url = "http://maps.google.com/maps/api/geocode/json?address=" + prepareAddressForGoogle() + "&sensor=false";
+		try {
+			jsonString = Utils.downloadURL(url);
+		} catch (MalformedURLException e) {
+			jsonString = "";
+			LoggingUtils.exception(e);
+		}
+		
+		try {
+			JSONArray results = new JSONObject(jsonString).getJSONArray("results");
+			JSONObject result = (JSONObject) results.get(0);
+	
+			double lat = result.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+			double lon = result.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+			return new LatLon(lat, lon);
+		} catch (JSONException e) {
+			LoggingUtils.exception(e);
+			LoggingUtils.log(url);
+			LoggingUtils.log(jsonString);
+			return null;
+		}
+	}
+
+	private String prepareAddressForGoogle() {
+		
+		String address = "";
+		address += getAddress().getStreet();
+		address += " " + getAddress().getNumber();
+		address += "," + getAddress().getZip();
+		address += " " + getAddress().getCity();
+	
+		try {
+			address = URLEncoder.encode(address, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			LoggingUtils.exception(e);
+			return null;
+		}
+	
+		return address;
+	}
+
+	/**
+	 * Tries to find a bar from a parameter. The paramater is expected to be one single number.
+	 * @param params The param string.
+	 * @return Returns a bar or null if none was found.
+	 */
+	public static Bar getBarFromParams(String params) {
+		Bar bar = null;
+	
+		if (params != null) {
+	
+			int id = -1;
+			try {
+				id = Integer.parseInt(params);
+			} catch (NumberFormatException e) {
+				// don't do anything.
+				// An invalid ID was supplied
+			}
+	
+			if (id != -1) {
+				try {
+					bar = Database.readBar(id);
+				} catch (SQLException e) {
+					// don't do anything.
+					// An invalid ID was supplied
+				}
+			}
+		}
+		return bar;
 	}
 }

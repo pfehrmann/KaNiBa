@@ -8,6 +8,7 @@ import com.vaadin.ui.Notification;
 
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
+import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 import de.kaniba.view.UpdateInformationInterface;
 import de.kaniba.view.UpdateInformationView;
@@ -74,7 +75,7 @@ public class UpdateInformationPresenter implements UpdateInformationInterface {
 			Notification.show("Daten geändert.");
 		} catch (Exception e) {
 			view.getSubmit().setComponentError(new UserError("Fehler beim speichern"));
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 	}
 	

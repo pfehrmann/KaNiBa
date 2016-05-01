@@ -8,7 +8,6 @@ import de.kaniba.designs.MyBarsDesign;
 import de.kaniba.model.Admin;
 import de.kaniba.model.Bar;
 import de.kaniba.model.InternalUser;
-import de.kaniba.utils.BarUtils;
 import de.kaniba.utils.Utils;
 
 /**
@@ -40,7 +39,7 @@ public class MyBarsView extends MyBarsDesign implements View {
 
 		barResultContainer.removeAllComponents();
 		for (Bar bar : admin.getOwnedBars()) {
-			SearchElementImpl result = new SearchElementImpl(bar.getName(), BarUtils.getOneLineAddress(bar),
+			SearchElementImpl result = new SearchElementImpl(bar.getName(), bar.getOneLineAddress(),
 					EditBarView.NAME + "/" + bar.getBarID());
 			barResultContainer.addComponent(result);
 		}

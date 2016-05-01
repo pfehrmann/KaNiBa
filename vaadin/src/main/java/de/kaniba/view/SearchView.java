@@ -21,7 +21,6 @@ import de.kaniba.components.SearchElement;
 import de.kaniba.designs.SearchDesign;
 import de.kaniba.model.Bar;
 import de.kaniba.presenter.SearchPresenter;
-import de.kaniba.utils.BarUtils;
 
 public class SearchView extends SearchDesign implements View {
 	public static final String NAME = "search";
@@ -100,7 +99,7 @@ public class SearchView extends SearchDesign implements View {
 		}
 
 		for (Bar b : bars) {
-			LatLon latLon = BarUtils.getLatLon(b);
+			LatLon latLon = b.getLatLon();
 			GoogleMapMarker marker = new GoogleMapMarker(b.getName(), latLon, false);
 			marker.setId(b.getBarID());
 			map.addMarker(marker);
@@ -121,6 +120,10 @@ public class SearchView extends SearchDesign implements View {
 		}
 	}
 
+	/**
+	 * Add an presenter to the list of presenters. It will be called on various events.
+	 * @param presenter
+	 */
 	public void registerPresenter(SearchPresenter presenter) {
 		this.presenterList.add(presenter);
 

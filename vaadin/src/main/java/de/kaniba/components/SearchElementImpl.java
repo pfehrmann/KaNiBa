@@ -5,7 +5,6 @@ import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.ui.UI;
 
 import de.kaniba.model.Bar;
-import de.kaniba.utils.BarUtils;
 import de.kaniba.view.BarView;
 
 /**
@@ -24,7 +23,7 @@ public class SearchElementImpl extends SearchElement {
 	 * @param bar
 	 */
 	public SearchElementImpl(final Bar bar) {
-		this(bar.getName(), BarUtils.getOneLineAddress(bar), BarView.NAME + "/" + bar.getBarID());
+		this(bar.getName(), bar.getOneLineAddress(), BarView.NAME + "/" + bar.getBarID());
 	}
 
 	/**

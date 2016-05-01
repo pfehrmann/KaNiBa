@@ -13,7 +13,7 @@ import de.kaniba.model.DisplayRating;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
-import de.kaniba.utils.BarUtils;
+import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 import de.kaniba.view.BarInterface;
 import de.kaniba.view.BarView;
@@ -41,7 +41,7 @@ public class BarPresenter implements BarInterface {
 	public void enter(ViewChangeEvent event) {
 		settingUp = true;
 		
-		bar = BarUtils.getBarFromParams(event.getParameters());
+		bar = Bar.getBarFromParams(event.getParameters());
 		
 		if(bar == null) {
 			settingUp = false;
@@ -49,9 +49,9 @@ public class BarPresenter implements BarInterface {
 			//TODO: Show 404 - Bar not found page
 			return;
 		}
-		view.setMapCoords(BarUtils.getLatLon(bar));
+		view.setMapCoords(bar.getLatLon());
 		view.setBarName(bar.getName());
-		view.setBarAddress(BarUtils.getOneLineAddress(bar));
+		view.setBarAddress(bar.getOneLineAddress());
 		view.setBarDescription(bar.getDescription());
 		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
 		view.setBarLogo(bar);
@@ -61,7 +61,7 @@ public class BarPresenter implements BarInterface {
 			try {
 				userRating = Database.getRating(InternalUser.getUser().getUserID(), bar.getBarID());
 			} catch (SQLException e) {
-				Utils.exception(e);
+				LoggingUtils.exception(e);
 			}
 
 			if (userRating != null) {
@@ -94,7 +94,7 @@ public class BarPresenter implements BarInterface {
 			
 			fromDatabase = Database.getRating(user.getUserID(), bar.getBarID());
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 		
 		if(fromDatabase == null) {
@@ -129,7 +129,7 @@ public class BarPresenter implements BarInterface {
 		try {
 			Database.saveBarRating(rating);
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 	}
 

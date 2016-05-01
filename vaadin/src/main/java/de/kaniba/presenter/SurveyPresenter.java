@@ -11,7 +11,7 @@ import de.kaniba.model.Answer;
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
 import de.kaniba.model.Question;
-import de.kaniba.utils.BarUtils;
+import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 import de.kaniba.view.SurveyInterface;
 import de.kaniba.view.SurveyView;
@@ -31,7 +31,7 @@ public class SurveyPresenter implements SurveyInterface {
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
-		bar = BarUtils.getBarFromParams(event.getParameters());
+		bar = Bar.getBarFromParams(event.getParameters());
 
 		if (!Utils.isLoggedIn()) {
 			Utils.navigateBack("Du musst eingeloggt sein, um abstimmen zu können.", Notification.Type.WARNING_MESSAGE);
@@ -47,7 +47,7 @@ public class SurveyPresenter implements SurveyInterface {
 		try {
 			questionsForBar = Database.getQuestionsForBar(bar.getBarID());
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 		
 		if (questionsForBar != null && questionsForBar.isEmpty()) {

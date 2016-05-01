@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 
 /**
@@ -43,7 +44,7 @@ public class Admin extends InternalUser {
 		try {
 			return Utils.copyList(Database.searchForBar(""));
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 		return new ArrayList<>();
 	}
