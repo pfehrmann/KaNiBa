@@ -6,6 +6,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+/**
+ * This class handles the logging.
+ * @author Philipp
+ *
+ */
 public class LoggingUtils {
 	private static final int LOG_FILES = 10;
 	private static final int LOG_LINES = 200000;
@@ -24,6 +29,10 @@ public class LoggingUtils {
 		} catch (SecurityException | IOException e) {
 			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
+	}
+	
+	private LoggingUtils() {
+		// This is just a static utility class, no constructor needed.
 	}
 
 	/**
