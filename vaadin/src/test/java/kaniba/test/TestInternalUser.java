@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.kaniba.model.Bar;
@@ -17,6 +18,11 @@ import de.kaniba.model.Rating;
 public class TestInternalUser {
 	private InternalUser user;
 	private InternalUser original;
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		Utils.prepareDatabaseForTests();
+	}
 	
 	@Before
 	public void setUp() throws Exception {

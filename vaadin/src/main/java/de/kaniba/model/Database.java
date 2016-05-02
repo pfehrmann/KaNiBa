@@ -57,6 +57,8 @@ public final class Database {
 	private static final String MUSIC_RATING_STRING = "musicRating";
 	private static final String PPR_RATING_STRING = "pprRating";
 	private static final String GENERAL_RATING_STRING = "generalRating";
+	
+	private static ConnectionCreater connectionCreater = null;
 
 	private Database() {
 		// May not be instanciated
@@ -70,6 +72,10 @@ public final class Database {
 	 * @throws SQLException
 	 */
 	public static Connection verbindung() throws SQLException {
+		if(connectionCreater != null) {
+			return connectionCreater.verbindung();
+		}
+		
 		// TREIBER
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -80,6 +86,10 @@ public final class Database {
 		}
 		// VERBINDUNG
 		return DriverManager.getConnection("jdbc:mysql://localhost:3306/kaniba", "root", getPassword());
+	}
+	
+	public static void setConnectionCreater(ConnectionCreater connectionCreater) {
+		Database.connectionCreater = connectionCreater;
 	}
 
 	private static String getPassword() {
