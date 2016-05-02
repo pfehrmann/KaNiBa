@@ -26,6 +26,6 @@ public class TestDatabase {
 	@Test
 	public void testReadBar() throws SQLException {
 		Bar bar = Database.readBar(1);
-		System.out.println(bar.getDescription());
+		assertEquals("Descriptions differ", bar.getDescription(), "Eine hübsche kleine Bar im Herzen Karlsruhes.");
 	}
 }
