@@ -1,7 +1,10 @@
 package de.kaniba.view;
 
+import java.util.List;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Label;
 
 import de.kaniba.components.SearchElementImpl;
 import de.kaniba.designs.MyBarsDesign;
@@ -38,10 +41,15 @@ public class MyBarsView extends MyBarsDesign implements View {
 		admin = (Admin) InternalUser.getUser();
 
 		barResultContainer.removeAllComponents();
-		for (Bar bar : admin.getOwnedBars()) {
+		List<Bar> ownedBars = admin.getOwnedBars();
+		for (Bar bar : ownedBars) {
 			SearchElementImpl result = new SearchElementImpl(bar.getName(), bar.getOneLineAddress(),
 					EditBarView.NAME + "/" + bar.getBarID());
 			barResultContainer.addComponent(result);
+		}
+		
+		if(ownedBars.isEmpty()) {
+			barResultContainer.addComponent(new Label("Du kannst leider keine Bars administrieren, weil die keine zugwiesen wurden. Wenn das ein Fehler ist, schreib uns bitte einfach an, wir kümmern uns dann darum."));
 		}
 	}
 

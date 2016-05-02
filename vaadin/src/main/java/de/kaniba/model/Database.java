@@ -652,6 +652,30 @@ public final class Database {
 		return null;
 
 	}
+	
+	public static List<Bar> getBarsOfAdmin(int userID) throws SQLException {
+		List<Bar> bars = new ArrayList<>();
+
+		String sql = "SELECT barID FROM bars WHERE userID=?";
+
+		ResultSet rs = null;
+		try (Connection con = verbindung(); PreparedStatement statement = con.prepareStatement(sql);) {
+			statement.setInt(1, userID);
+			rs = statement.executeQuery();
+
+			while (rs.next()) {
+				bars.add(readBar(rs.getInt("barID")));
+			}
+
+			rs.close();
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+		}
+
+		return bars;
+	}
 
 	/**
 	 * Methode, um ein Rating von einem User zu einer Bar zu finden
