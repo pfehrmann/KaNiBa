@@ -1,7 +1,7 @@
 /**
  * 
  */
-package kaniba.test;
+package de.kaniba.model;
 
 import static org.junit.Assert.*;
 

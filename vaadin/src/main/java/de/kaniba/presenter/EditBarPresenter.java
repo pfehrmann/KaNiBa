@@ -7,6 +7,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Notification.Type;
 
 import de.kaniba.model.Bar;
+import de.kaniba.model.User;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 import de.kaniba.view.BarView;
@@ -60,7 +61,7 @@ public class EditBarPresenter implements EditBarInterface {
 		bar = Bar.getBarFromParams(event.getParameters());
 		view.setBar(bar);
 		
-		if(!Utils.isAdmin()) {
+		if(!User.isAdmin()) {
 			Utils.navigateBack("Um eine Bar bearbeiten zu können, musst du ein Bar Admin sein.", Type.ERROR_MESSAGE);
 			return false;
 		}

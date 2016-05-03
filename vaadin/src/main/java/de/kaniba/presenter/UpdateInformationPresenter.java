@@ -8,6 +8,7 @@ import com.vaadin.ui.Notification;
 
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
+import de.kaniba.model.User;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 import de.kaniba.view.UpdateInformationInterface;
@@ -86,7 +87,7 @@ public class UpdateInformationPresenter implements UpdateInformationInterface {
 	public void enter() {
 		this.user = InternalUser.getUser();
 
-		if (!Utils.isLoggedIn()) {
+		if (!User.isLoggedIn()) {
 			Notification.show("Um deine Daten zu ändern, musst du eingeloggt sein.");
 			Utils.navigateBack();
 			return;

@@ -13,8 +13,8 @@ import de.kaniba.model.DisplayRating;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
+import de.kaniba.model.User;
 import de.kaniba.utils.LoggingUtils;
-import de.kaniba.utils.Utils;
 import de.kaniba.view.BarInterface;
 import de.kaniba.view.BarView;
 import de.kaniba.view.SurveyView;
@@ -56,7 +56,7 @@ public class BarPresenter implements BarInterface {
 		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
 		view.setBarLogo(bar);
 		
-		if (Utils.isLoggedIn()) {
+		if (User.isLoggedIn()) {
 			Rating userRating = null;
 			try {
 				userRating = Database.getRating(InternalUser.getUser().getUserID(), bar.getBarID());
@@ -81,7 +81,7 @@ public class BarPresenter implements BarInterface {
 		if (settingUp) {
 			return;
 		}
-		boolean loggedIn = Utils.isLoggedIn();
+		boolean loggedIn = User.isLoggedIn();
 		if (!loggedIn) {
 			Notification.show("Um abzustimmen muss du eingeloggt sein.", Type.WARNING_MESSAGE);
 			return;
@@ -138,7 +138,7 @@ public class BarPresenter implements BarInterface {
 	 */
 	@Override
 	public void sendMessage(String message) {
-		if (!Utils.isLoggedIn()) {
+		if (!User.isLoggedIn()) {
 			Notification.show("Um eine Message zu senden muss du eingeloggt sein!");
 			return;
 		}

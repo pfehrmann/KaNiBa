@@ -2,9 +2,7 @@ package de.kaniba.view;
 
 import static org.junit.Assert.*;
 
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.kaniba.model.Bar;
@@ -62,11 +60,6 @@ public class BarViewTest {
 	@Test
 	public void testSetMapCoordsNull() {
 		view.setMapCoords(null);
-	}
-
-	@Test
-	public void testEnter() {
-		fail("Not yet implemented");
 	}
 
 }

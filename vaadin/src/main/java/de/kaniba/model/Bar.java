@@ -47,28 +47,6 @@ public class Bar {
 	}
 
 	/**
-	 * Reads a bar from the database. If the bar does not exisist, this throws a null pointer exception.
-	 * @param barID The ID of the bar. Must be a valid one.
-	 * @throws SQLException
-	 */
-	public Bar(int barID) throws SQLException {
-		Bar t = Database.readBar(barID);
-
-		this.barID = barID;
-		this.barOwner = t.getBarOwner();
-		this.pinboard = t.getPinboard();
-		this.address = t.getAddress();
-		this.sumAtmosphereRating = t.getSumAtmosphereRating();
-		this.sumGeneralRating = t.getSumGeneralRating();
-		this.sumMusicRating = t.getSumMusicRating();
-		this.sumPeopleRating = t.getSumPeopleRating();
-		this.sumPprRating = t.getSumPprRating();
-		this.countRating = t.getCountRating();
-		this.name = t.getName();
-		this.description = t.getDescription();
-	}
-
-	/**
 	 * Writes the bar to the database. If the bar is already in the database, it
 	 * is just updated.
 	 * 

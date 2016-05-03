@@ -1,4 +1,4 @@
-package kaniba.test;
+package de.kaniba.model;
 
 import static org.junit.Assert.*;
 
@@ -14,6 +14,7 @@ import de.kaniba.model.Database;
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Rating;
+import kaniba.test.Utils;
 
 public class TestInternalUser {
 	private InternalUser user;
@@ -80,6 +81,12 @@ public class TestInternalUser {
 		if(!succsess) {
 			fail("Namen stimmen nicht überein.");
 		}
+	}
+	
+	@Test
+	public void testLogin() throws SQLException {
+		InternalUser user = (InternalUser) original.login("philipp", "test");
+		assertEquals("philipp", user.getEmail().getMail());
 	}
 
 }

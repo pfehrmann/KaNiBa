@@ -35,7 +35,7 @@ public class LoginPopupImpl extends LoginPopup {
 
 		// Wenn der User bereits eingeloggt ist, kann er sich nicht erneut
 		// einloggen
-		boolean loggedIn = Utils.isLoggedIn();
+		boolean loggedIn = User.isLoggedIn();
 		if(loggedIn) {
 			return;
 		}
@@ -98,6 +98,5 @@ public class LoginPopupImpl extends LoginPopup {
 
 	public void setLoginName(String username) {
 		usernameTextfield.setValue(username);
-		
 	}
 }
