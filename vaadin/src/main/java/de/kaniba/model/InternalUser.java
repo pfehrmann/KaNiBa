@@ -3,6 +3,11 @@ package de.kaniba.model;
 import java.sql.Date;
 import java.sql.SQLException;
 
+import com.vaadin.server.VaadinSession;
+
+import de.kaniba.utils.LoggingUtils;
+import de.kaniba.utils.Utils;
+
 public class InternalUser extends User {
 	private String sessionID;
 	private int userID;
@@ -20,7 +25,7 @@ public class InternalUser extends User {
 	public int getUserID() {
 		return userID;
 	}
-	
+
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
@@ -32,7 +37,7 @@ public class InternalUser extends User {
 	 *            Die Bar, die bewertet werden soll.
 	 * @param rating
 	 *            Das Ratig, das abgegeben wird.
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public void rateBar(Bar bar, Rating rating) throws SQLException {
 		if (ratedBar(bar)) {
@@ -72,9 +77,9 @@ public class InternalUser extends User {
 	 */
 	public boolean ratedBar(Bar bar) {
 		try {
-			return Database.getRating(userID, bar.getBarID()).equals(null);
-		} catch (Exception e) {
-			e.printStackTrace();
+			return Database.getRating(userID, bar.getBarID()) != null;
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
 			return false;
 		}
 	}
@@ -86,12 +91,12 @@ public class InternalUser extends User {
 	 *            Die Bar, von der das Rating abgefragt wird
 	 * @return Gibt das Rating zurück, oder null falls die Bar noch nicht
 	 *         bewertet wurde.
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public Rating getRating(int barID) throws SQLException {
 		return Database.getRating(userID, barID);
 	}
-	
+
 	public Email getEmail() {
 		return email;
 	}
@@ -143,9 +148,29 @@ public class InternalUser extends User {
 	public Address getAddress() {
 		return this.address;
 	}
-	
-	public void saveUser() throws SQLException{
+
+	public void saveUser() throws SQLException {
 		this.userID = Database.saveUser(this);
+	}
+
+	/**
+	 * This returns the user, that is stored in the ession. If the user
+	 * informations change from somwhere elese than this users view, the changes
+	 * will not be reflected in this user. If this is the case read the user
+	 * from database.
+	 * 
+	 * @return The user in the session
+	 */
+	public static InternalUser getUser() {
+		VaadinSession session = Utils.getSession();
+		Admin admin = session.getAttribute(Admin.class);
+		InternalUser internalUser = (InternalUser) session.getAttribute("user");
+		
+		if (admin != null) {
+			return new Admin(internalUser);
+		}
+
+		return internalUser;
 	}
 
 }

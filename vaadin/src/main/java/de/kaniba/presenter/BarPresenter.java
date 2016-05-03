@@ -2,96 +2,157 @@ package de.kaniba.presenter;
 
 import java.sql.SQLException;
 
-import com.google.gwt.dom.client.ModElement;
-import com.vaadin.navigator.View;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
+import de.kaniba.model.DisplayRating;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
-import de.kaniba.navigator.NavigatorUI;
+import de.kaniba.utils.LoggingUtils;
+import de.kaniba.utils.Utils;
+import de.kaniba.view.BarInterface;
 import de.kaniba.view.BarView;
-import de.kaniba.view.LoginView;
+import de.kaniba.view.SurveyView;
 
-public class BarPresenter implements BarView.BarViewListener{
+public class BarPresenter implements BarInterface {
+	private Bar bar;
+	private BarView view;
+	private boolean settingUp;
 
-	Bar barModel;
-	Rating ratingModel;
-	BarView view;
-	InternalUser iUModel;
-	VaadinSession session;
-	
+	public BarPresenter() {
+		view = new BarView();
+		view.setPresenter(this);
+		settingUp = false;
+	}
 
-	public View getView() {
+	public BarView getView() {
 		return view;
 	}
-	
-	 public BarPresenter(Bar bmodel,BarView view/*,Rating rmodel*/) {
-		 this.barModel = bmodel;
-		 /*this.ratingModel = rmodel;*/
-		 this.view = view;
-		 
-		 view.addRatingButtonClickListener(this);
-		
-		 view.setBarDescription(barModel.getDescription());
-		 view.setMessageBoardStrings(barModel.getPinboard().getMessages());
-		 session=UI.getCurrent().getSession();
-	}
 
-
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.BarPresenterInterface#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
+	 */
 	@Override
-	public void ratingButtonClick(Rating rating) {
-		this.iUModel = (InternalUser) session.getAttribute("user");
-		Object loggedInObj = session.getAttribute("loggedIn");
-		boolean loggedIn = false;
-		if (loggedInObj != null) {
-			loggedIn = (boolean) loggedInObj;
-		}
-		if (!loggedIn) {
-			Notification.show("Bitte logg dich ein um abzustimmen");
+	public void enter(ViewChangeEvent event) {
+		settingUp = true;
+		
+		bar = Bar.getBarFromParams(event.getParameters());
+		
+		if(bar == null) {
+			settingUp = false;
 			
+			//TODO: Show 404 - Bar not found page
 			return;
 		}
-		rating.setBarID(barModel.getBarID());
-		rating.setUserID(iUModel.getUserID());
-		rating.saveRating();
-		Notification.show("Danke das du abgestimmt hast");
-		try {
-			barModel= Database.readBar(barModel.getBarID());
-		} catch (SQLException e) {
-			e.printStackTrace();
+		view.setMapCoords(bar.getLatLon());
+		view.setBarName(bar.getName());
+		view.setBarAddress(bar.getOneLineAddress());
+		view.setBarDescription(bar.getDescription());
+		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
+		view.setBarLogo(bar);
+		
+		if (Utils.isLoggedIn()) {
+			Rating userRating = null;
+			try {
+				userRating = Database.getRating(InternalUser.getUser().getUserID(), bar.getBarID());
+			} catch (SQLException e) {
+				LoggingUtils.exception(e);
+			}
+
+			if (userRating != null) {
+				view.setBarRating(new DisplayRating(userRating));
+			}
+		} else {
+			view.setBarRating(bar.getDisplayRating());
 		}
-		view.setRating(barModel);
+		settingUp = false;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.BarPresenterInterface#saveRating(de.kaniba.model.Rating)
+	 */
+	@Override
+	public void saveRating(Rating rating) {
+		if (settingUp) {
+			return;
+		}
+		boolean loggedIn = Utils.isLoggedIn();
+		if (!loggedIn) {
+			Notification.show("Um abzustimmen muss du eingeloggt sein.", Type.WARNING_MESSAGE);
+			return;
+		}
+
+		InternalUser user = InternalUser.getUser();
+
+		Rating fromDatabase = null;
+		try {
+			
+			fromDatabase = Database.getRating(user.getUserID(), bar.getBarID());
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
+		}
+		
+		if(fromDatabase == null) {
+			fromDatabase = new Rating(-1, InternalUser.getUser().getUserID(), bar.getBarID(), 0, 0, 0, 0, 0, null);
+		}
+
+		rating.setUserID(user.getUserID());
+		rating.setBarID(bar.getBarID());
+
+		// Check if a value is 0. If so, replace that value with the last rating
+		// of the user. If no former rating exists, set all to 0.
+		if (rating.getAtmosphereRating() == 0) {
+			rating.setAtmosphereRating(fromDatabase.getAtmosphereRating());
+		}
+
+		if (rating.getPeopleRating() == 0) {
+			rating.setPeopleRating(fromDatabase.getPeopleRating());
+		}
+
+		if (rating.getPprRating() == 0) {
+			rating.setPprRating(fromDatabase.getPprRating());
+		}
+
+		if (rating.getGeneralRating() == 0) {
+			rating.setGeneralRating(fromDatabase.getGeneralRating());
+		}
+
+		if (rating.getMusicRating() == 0) {
+			rating.setMusicRating(fromDatabase.getMusicRating());
+		}
+
+		try {
+			Database.saveBarRating(rating);
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.BarPresenterInterface#sendMessage(java.lang.String)
+	 */
 	@Override
 	public void sendMessage(String message) {
-		// TODO Auto-generated method stub
-		session = ((NavigatorUI) UI.getCurrent()).getSession();
-	
-		Object loggedInObj = session.getAttribute("loggedIn");
-		boolean loggedIn = false;
-		if (loggedInObj != null) {
-			loggedIn = (boolean) loggedInObj;
-		}
-		if (!loggedIn) {
+		if (!Utils.isLoggedIn()) {
 			Notification.show("Um eine Message zu senden muss du eingeloggt sein!");
 			return;
 		}
-		this.iUModel = (InternalUser) session.getAttribute("user");
-		Message dbMessage = new Message( iUModel.getUserID(), barModel.getBarID(), message);
+		InternalUser user = InternalUser.getUser();
+		Message dbMessage = new Message(user.getUserID(), bar.getBarID(), message);
 		dbMessage.save();
-		view.setMessageBoardStrings(barModel.forceGetPinboard().getMessages());
+		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.BarPresenterInterface#clickedSurvey()
+	 */
 	@Override
-	public void enter() {
-		
-		view.setRating(barModel);
-		UI.getCurrent().getPage().setTitle(barModel.getName());
-	
-	}}
+	public void clickedSurvey() {
+		UI.getCurrent().getNavigator().navigateTo(SurveyView.NAME + "/" + bar.getBarID());
+	}
+}
