@@ -555,7 +555,7 @@ public final class Database {
 	 *            Das Special, as ausgelesen werden soll
 	 * @return Gibt das ausgelesene Special zurück.
 	 */
-	public static Special readSpecial(int specialID) throws Exception {
+	public static Special readSpecial(int specialID) throws SQLException {
 		if (specialID < 0) {
 			throw new IllegalArgumentException("Invalid special ID");
 		}
