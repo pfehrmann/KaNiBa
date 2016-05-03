@@ -58,11 +58,11 @@ public class Message {
 	}
 	
 	public Timestamp getTime() {
-		return time;
+		return new Timestamp(time.getTime());
 	}
 	
 	public void setTime(Timestamp time) {
-		this.time = time;
+		this.time = new Timestamp(time.getTime());
 	}
 	public void save() {
 		try {

@@ -1,5 +1,7 @@
 package de.kaniba.components;
 
+import java.sql.SQLException;
+
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinSession;
@@ -16,10 +18,21 @@ import de.kaniba.navigator.NavigatorUI;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 
+/**
+ * Popup for the login.
+ * @author Philipp
+ *
+ */
 public class LoginPopupImpl extends LoginPopup {
+	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Creates a loginpopup with a window, that is closed on login.
+	 * @param window
+	 */
 	public LoginPopupImpl(final Window window) {
 		loginButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -61,7 +74,7 @@ public class LoginPopupImpl extends LoginPopup {
 			} else {
 				loggedIn = false;
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			LoggingUtils.exception(e);
 			loggedIn = false;
 		}

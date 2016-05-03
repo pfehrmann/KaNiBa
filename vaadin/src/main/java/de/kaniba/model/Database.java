@@ -239,7 +239,7 @@ public final class Database {
 			return pinboard;
 		}
 
-		pinboard.messages = messages;
+		pinboard.setMessages(messages);
 		return pinboard;
 	}
 
