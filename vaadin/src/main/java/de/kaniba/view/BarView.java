@@ -267,7 +267,7 @@ public class BarView extends BarDesign implements View {
 	public void setBarDescription(String description) {
 		infoPanel.setContent(new Label(description, ContentMode.HTML));
 	}
-
+	
 	@Override
 	public void enter(ViewChangeEvent event) {
 		removeComponent(map);
