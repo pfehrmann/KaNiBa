@@ -32,6 +32,7 @@ import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
 import de.kaniba.model.Tag;
+import de.kaniba.utils.Callback;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 

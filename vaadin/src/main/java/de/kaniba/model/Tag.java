@@ -13,12 +13,13 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
+import de.kaniba.utils.Callback;
 import de.kaniba.utils.Utils;
-import de.kaniba.view.Callback;
 import de.kaniba.view.SearchView;
 
 /**
  * Class to represent a tag.
+ * 
  * @author Philipp
  *
  */
@@ -29,14 +30,14 @@ public class Tag {
 	private int barID;
 	private String name;
 	private Date created;
-	
+
 	/**
 	 * Create a tag and initialize it to an unknown id.
 	 */
 	public Tag() {
 		this.tagID = INVALID_TAG_ID;
 	}
-	
+
 	public int getBarID() {
 		return barID;
 	}
@@ -58,7 +59,7 @@ public class Tag {
 	}
 
 	public void setCreated(Date created) {
-		this.created = created;
+		this.created = new Date(created.getTime());
 	}
 
 	public int getTagID() {
@@ -74,9 +75,9 @@ public class Tag {
 	}
 
 	public Date getCreated() {
-		return created;
+		return new Date(created.getTime());
 	}
-	
+
 	public void saveTag() {
 		Database.saveTag(this);
 	}
@@ -84,26 +85,40 @@ public class Tag {
 	public Component getComponent() {
 		return new Link(getName(), new ExternalResource("#!" + SearchView.NAME + "/" + getName()));
 	}
-	
+
+	/**
+	 * This method opens a new window to add a new tag. When the user hits
+	 * "Hinzufügen" or similar, then the tag will be created and written to the
+	 * database. After that the success method of the callback object is called.
+	 * 
+	 * @param barID
+	 * @param callback
+	 */
 	public static void createNewTag(final int barID, final Callback callback) {
-		if(!User.isLoggedIn()) {
+		
+		// Only logged in users may add tags.
+		if (!User.isLoggedIn()) {
 			Utils.showNotification("Um Tags setzen zu können, musst du eingeloggt sein.");
 			return;
 		}
+		
+		// Setup the components
 		final Window window = new Window("Neuen Tag erstellen");
-		
 		HorizontalLayout layout = new HorizontalLayout();
-		
+
+		// The text field. The name of the tag will be read from here
 		final TextField textField = new TextField();
 		layout.addComponent(textField);
 		layout.setExpandRatio(textField, 1.0F);
-		
+
 		Button button = new Button("Speichern");
 		button.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
+				
+				// Create and save the tag
 				Tag tag = new Tag();
 				tag.setBarID(barID);
 				tag.setName(textField.getValue());
@@ -114,6 +129,8 @@ public class Tag {
 			}
 		});
 		layout.addComponent(button);
+		
+		// Setup the window and display it
 		window.setContent(layout);
 		window.setModal(true);
 		window.setWidth("300px");

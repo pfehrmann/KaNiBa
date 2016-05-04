@@ -14,27 +14,37 @@ import de.kaniba.model.ConnectionCreater;
 import de.kaniba.utils.LoggingUtils;
 
 /**
- * @author phili
+ * This class returns a connection to either the database on kaniba or a local
+ * database. If used on a local machine, make sure the mysql server is running.
+ * 
+ * @author Philipp
  *
  */
 final class DefaultDatabaseConnectionCreater implements ConnectionCreater {
 	@Override
 	public Connection verbindung() throws SQLException {
 		// TREIBER
-				try {
-					Class.forName("com.mysql.jdbc.Driver");
-				} catch (ClassNotFoundException e) {
-					LoggingUtils.log("Fehler bei MySQL-JDBC-Bridge: ");
-					LoggingUtils.exception(e);
-					return null;
-				}
-				// VERBINDUNG
-				return DriverManager.getConnection("jdbc:mysql://localhost:3306/kaniba", "root", getPassword());
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			LoggingUtils.log("Fehler bei MySQL-JDBC-Bridge: ");
+			LoggingUtils.exception(e);
+			return null;
+		}
+		// VERBINDUNG
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/kaniba", "root", getPassword());
 	}
-	
+
+	/**
+	 * This method generated / raeds the password.
+	 * 
+	 * @return Returns the password, if dound on the filesystem or returns ""
+	 */
 	private static String getPassword() {
+		// Default password for local tests
 		String password = "";
 
+		// try to find the password file
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("/home/kanibaPassword"));
 			password = reader.readLine();
