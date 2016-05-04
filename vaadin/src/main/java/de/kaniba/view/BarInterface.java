@@ -14,4 +14,6 @@ public interface BarInterface {
 
 	void clickedSurvey();
 
+	void updateTagList();
+
 }

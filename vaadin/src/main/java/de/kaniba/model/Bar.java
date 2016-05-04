@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -381,5 +382,14 @@ public class Bar {
 			}
 		}
 		return bar;
+	}
+
+	public List<Tag> getTags() {
+		try {
+			return Database.getTagsForBar(getBarID());
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
+		}
+		return new ArrayList<>();
 	}
 }

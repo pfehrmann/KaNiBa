@@ -199,14 +199,13 @@ public final class Database {
 			return;
 		}
 		
-		String sql = "UPDATE tags SET userID=?, barID=?, name=? WHERE tagID=?";
+		String sql = "INSERT INTO tags SET userID=?, barID=?, name=?";
 
 		try (Connection con = verbindung(); PreparedStatement prepareStatement = con.prepareStatement(sql);) {
 			prepareStatement.setInt(1, tag.getUserID());
 			prepareStatement.setInt(2, tag.getBarID());
 			prepareStatement.setString(3, tag.getName());
-			prepareStatement.setInt(4, tag.getTagID());
-			prepareStatement.executeQuery();
+			prepareStatement.executeUpdate();
 		} catch (SQLException e) {
 			LoggingUtils.exception(e);
 		}
@@ -1035,5 +1034,22 @@ public final class Database {
 		con.close();
 
 		return ret;
+	}
+
+	public static List<Bar> getBarsForTag(String tag) throws SQLException {
+		String sql = "SELECT barID FROM tags WHERE name=?";
+		List<Bar> bars = new ArrayList<>();
+		
+		try (Connection con = verbindung(); PreparedStatement statement = con.prepareStatement(sql);) {
+			statement.setString(1, tag);
+
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				bars.add(readBar(rs.getInt(BAR_ID_STRING)));
+			}
+			rs.close();
+		}
+		
+		return bars;
 	}
 }

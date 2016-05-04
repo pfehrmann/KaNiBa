@@ -25,7 +25,7 @@ import de.kaniba.presenter.SearchPresenter;
 public class SearchView extends SearchDesign implements View {
 	public static final String NAME = "search";
 	protected GoogleMap map;
-	private List<SearchPresenter> presenterList;
+	private List<SearchInterface> presenterList;
 
 	public SearchView() {
 		presenterList = new ArrayList<>();
@@ -132,6 +132,9 @@ public class SearchView extends SearchDesign implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		Page.getCurrent().setTitle("Suchen...");
+		for(SearchInterface presenter : presenterList) {
+			presenter.enter(event);
+		}
 	}
 
 }

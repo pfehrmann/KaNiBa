@@ -55,6 +55,7 @@ public class BarPresenter implements BarInterface {
 		view.setBarDescription(bar.getDescription());
 		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
 		view.setBarLogo(bar);
+		view.setTags(bar.getTags(), bar.getBarID());
 		
 		if (User.isLoggedIn()) {
 			Rating userRating = null;
@@ -154,5 +155,10 @@ public class BarPresenter implements BarInterface {
 	@Override
 	public void clickedSurvey() {
 		UI.getCurrent().getNavigator().navigateTo(SurveyView.NAME + "/" + bar.getBarID());
+	}
+
+	@Override
+	public void updateTagList() {
+		view.setTags(bar.getTags(), bar.getBarID());
 	}
 }
