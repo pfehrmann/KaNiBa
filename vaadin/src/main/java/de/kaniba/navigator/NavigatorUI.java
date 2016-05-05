@@ -12,7 +12,6 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
-import de.kaniba.model.User;
 import de.kaniba.presenter.BarPresenter;
 import de.kaniba.presenter.EditBarPresenter;
 import de.kaniba.presenter.RegisterPresenter;
@@ -23,20 +22,27 @@ import de.kaniba.view.BarView;
 import de.kaniba.view.EditBarView;
 import de.kaniba.view.MyBarsView;
 import de.kaniba.view.RegisterView;
-import de.kaniba.view.RegisterView;
 import de.kaniba.view.SearchView;
 import de.kaniba.view.SurveyView;
 import de.kaniba.view.UpdateInformationView;
-import de.kaniba.view.UpdateInformationView;
 
 /**
- *
+ * The main UI
  */
 @Theme("mytheme")
 @Widgetset("de.kaniba.vaadin.MyAppWidgetset")
 @PreserveOnRefresh
 public class NavigatorUI extends UI {
+	private static final long serialVersionUID = 1L;
+	
 	private FrameDesign design;
+	
+	/**
+	 * Create the navigator ui
+	 */
+	public NavigatorUI() {
+		super();
+	}
 	
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
@@ -64,7 +70,7 @@ public class NavigatorUI extends UI {
 		BarPresenter barPresenter = new BarPresenter();
 		navigator.addView(BarView.NAME, barPresenter.getView());
 
-		RegisterPresenter registerPresenter = new RegisterPresenter(new User(), new RegisterView());
+		RegisterPresenter registerPresenter = new RegisterPresenter(new RegisterView());
 		navigator.addView(RegisterView.NAME, registerPresenter.getView());
 
 		UpdateInformationPresenter updateInfoPresenter = new UpdateInformationPresenter(new UpdateInformationView());

@@ -4,7 +4,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
-import de.kaniba.utils.Utils;
+import de.kaniba.model.User;
 import de.kaniba.view.SearchView;
 import de.kaniba.view.UpdateInformationView;
 
@@ -34,7 +34,7 @@ public class InternalMenuImpl extends InternalMenu {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				Utils.logout();
+				User.logout();
 			}
 		});
 		

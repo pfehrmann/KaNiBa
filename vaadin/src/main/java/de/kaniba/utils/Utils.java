@@ -17,10 +17,6 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 
-import de.kaniba.components.ExternalMenuImpl;
-import de.kaniba.model.User;
-import de.kaniba.navigator.NavigatorUI;
-
 /**
  * Utility class for various purposes.
  * @author Philipp
@@ -68,28 +64,6 @@ public final class Utils {
 
 	public static VaadinSession getSession() {
 		return UI.getCurrent().getSession();
-	}
-
-	public static boolean isLoggedIn() {
-		VaadinSession session = getSession();
-		Object loggedInObj = session.getAttribute("loggedIn");
-		boolean loggedIn = false;
-		if (loggedInObj != null) {
-			loggedIn = (boolean) loggedInObj;
-		}
-
-		return loggedIn;
-	}
-	
-	public static boolean isAdmin() {
-		VaadinSession session = getSession();
-		Object adminObj = session.getAttribute("admin");
-		boolean admin = false;
-		if (adminObj != null) {
-			admin = true;
-		}
-
-		return admin && isLoggedIn();
 	}
 
 	/**
@@ -186,14 +160,5 @@ public final class Utils {
 	public static void navigateBack(String message, Type type) {
 		navigateBack();
 		showNotification(message, type);
-	}
-
-	public static void logout() {
-		VaadinSession session = getSession();
-		session.setAttribute("loggedIn", false);
-		session.setAttribute("model", new User());
-		session.setAttribute("admin", null);
-		((NavigatorUI) UI.getCurrent()).setMenu(new ExternalMenuImpl());
-		Notification.show("Erfolgreich ausgeloggt.");
 	}
 }

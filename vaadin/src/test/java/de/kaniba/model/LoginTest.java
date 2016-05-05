@@ -1,14 +1,13 @@
 /**
  * 
  */
-package kaniba.test;
+package de.kaniba.model;
 
 import static org.junit.Assert.*;
 
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -18,7 +17,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import com.vaadin.ui.Window;
 
 import de.kaniba.components.LoginPopupImpl;
-import de.kaniba.utils.Utils;
 
 /**
  * @author phili
@@ -63,7 +61,7 @@ public class LoginTest {
 		
 		driver.findElement(By.id("loginPopup-submit")).click();
 
-		driver.findElement(By.id("logout-button"));
+		assertNotNull("No logout button found, not logged in?", driver.findElement(By.id("logout-button")));
 	}
 
 }
