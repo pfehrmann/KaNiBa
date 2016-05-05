@@ -1,7 +1,5 @@
 package de.kaniba.utils;
 
-import java.util.Stack;
-
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
@@ -13,12 +11,11 @@ import com.vaadin.ui.UI;
 
 /**
  * Utils for navigation.
+ * 
  * @author Philipp
  *
  */
-public class NavigationUtils {
-	private static final Stack<String> history = new Stack<>();
-
+public final class NavigationUtils {
 	public static final ViewChangeListener viewChangeListener = new ViewChangeListener() {
 		private static final long serialVersionUID = 1L;
 
@@ -29,26 +26,26 @@ public class NavigationUtils {
 
 		@Override
 		public void afterViewChange(ViewChangeEvent event) {
-			history.push(event.toString());
+			// Nothing to do, only interested in the before event
 		}
-		
+
 	};
-	
+
+	private NavigationUtils() {
+		// May not be instantiated
+	}
+
 	private static boolean checkView(View view, String parameters) {
-		if(view instanceof SecuredView) {
+		if (view instanceof SecuredView) {
 			return checkSecuredView((SecuredView) view, parameters);
 		}
 		return true;
 	}
-	
+
 	private static boolean checkSecuredView(SecuredView view, String parameters) {
 		return view.checkRights(parameters);
 	}
 
-	private NavigationUtils () {
-		// May not be instanciated
-	}
-	
 	/**
 	 * Navigates to a given state.
 	 * 
@@ -85,6 +82,17 @@ public class NavigationUtils {
 	public static void navigateBack(String message, Type type) {
 		navigateBack();
 		NotificationUtils.showNotification(message, type);
+	}
+
+	/**
+	 * Navigates to a state displaying a message
+	 * 
+	 * @param state
+	 * @param message
+	 */
+	public static void navigateTo(String state, String message) {
+		navigateTo(state);
+		NotificationUtils.showNotification(message);
 	}
 
 }
