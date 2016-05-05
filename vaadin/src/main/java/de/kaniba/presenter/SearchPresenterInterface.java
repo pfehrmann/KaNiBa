@@ -1,6 +1,6 @@
-package de.kaniba.view;
+package de.kaniba.presenter;
 
-public interface SearchInterface {
+public interface SearchPresenterInterface {
 
 	/**
 	 * Searches the database

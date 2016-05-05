@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.ui.Notification;
@@ -16,6 +15,7 @@ import com.vaadin.ui.Upload.Receiver;
 import de.kaniba.designs.EditBarDesign;
 import de.kaniba.model.Address;
 import de.kaniba.model.Bar;
+import de.kaniba.presenter.EditBarPresenterInterface;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 
@@ -24,12 +24,12 @@ import de.kaniba.utils.Utils;
  * @author Philipp
  *
  */
-public class EditBarView extends EditBarDesign implements View {
+public class EditBarView extends EditBarDesign implements SecuredView {
 	private static final long serialVersionUID = 1L;
 
 	public static final String NAME = "editBar";
 
-	private EditBarInterface presenter;
+	private EditBarPresenterInterface presenter;
 
 	/**
 	 * Create the view. Adds an click listener
@@ -98,11 +98,15 @@ public class EditBarView extends EditBarDesign implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		presenter.enter(event);
-		
 	}
 
-	public void setPresenter(EditBarInterface presenter) {
+	public void setPresenter(EditBarPresenterInterface presenter) {
 		this.presenter = presenter;
+	}
+
+	@Override
+	public boolean checkRights(String parameters) {
+		return presenter.checkRights(parameters);
 	}
 
 }

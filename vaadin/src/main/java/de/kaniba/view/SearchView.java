@@ -21,6 +21,7 @@ import de.kaniba.components.SearchElement;
 import de.kaniba.designs.SearchDesign;
 import de.kaniba.model.Bar;
 import de.kaniba.presenter.SearchPresenter;
+import de.kaniba.presenter.SearchPresenterInterface;
 
 public class SearchView extends SearchDesign implements View {
 	public static final String NAME = "search";
@@ -107,7 +108,7 @@ public class SearchView extends SearchDesign implements View {
 	}
 
 	private void firePresenter() {
-		for (SearchInterface presenter : presenterList) {
+		for (SearchPresenterInterface presenter : presenterList) {
 			presenter.updateSearchView(searchBar.getSearchValue());
 		}
 	}

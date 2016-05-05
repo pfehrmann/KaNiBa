@@ -1,5 +1,6 @@
 package de.kaniba.components;
 
+import com.vaadin.server.Page;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -20,7 +21,8 @@ public class ExternalMenuImpl extends ExternalMenu {
 	 */
 	public ExternalMenuImpl() {
 		loginButton.addClickListener(new ClickListener() {
-			
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				Window loginWindow = new Window("Login");
@@ -33,10 +35,20 @@ public class ExternalMenuImpl extends ExternalMenu {
 			}
 		});
 		searchButton.addClickListener(new ClickListener() {
-			
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				UI.getCurrent().getNavigator().navigateTo(SearchView.NAME);
+			}
+		});
+		
+		aboutButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Page.getCurrent().open("https://kanibablog.wordpress.com/", "KaNiBa - Blog");
 			}
 		});
 	}

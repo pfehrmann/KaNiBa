@@ -3,7 +3,6 @@ package de.kaniba.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.AbstractField;
@@ -16,13 +15,14 @@ import de.kaniba.model.Answer;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Question;
 import de.kaniba.presenter.SurveyPresenter;
+import de.kaniba.presenter.SurveyPresenterInterface;
 
 /**
  * This class represents the view of a survey.
  * @author Philipp
  *
  */
-public class SurveyView extends SurveyDesign implements View {
+public class SurveyView extends SurveyDesign implements SecuredView {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -31,31 +31,26 @@ public class SurveyView extends SurveyDesign implements View {
 	 */
 	public static final String NAME = "survey";
 
-	private List<SurveyPresenter> presenters;
+	private SurveyPresenterInterface presenter;
 	private List<QuestionElement> questionElements;
 
 	/**
 	 * Creates the view. All the clicklisteners are created.
 	 */
 	public SurveyView() {
-		this.presenters = new ArrayList<>();
-
 		submitButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				for (SurveyInterface presenter : presenters) {
-					presenter.submitForm();
-				}
+				presenter.submitForm();
 			}
 		});
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		for (SurveyInterface presenter : presenters) {
-			presenter.enter(event);
-		}
+		presenter.enter(event);
 	}
 
 	/**
@@ -101,10 +96,8 @@ public class SurveyView extends SurveyDesign implements View {
 	 *            The presenter to add. The presenters are called on enter and
 	 *            on button clicks.
 	 */
-	public void addPresenter(SurveyPresenter presenter) {
-		if (presenter != null) {
-			this.presenters.add(presenter);
-		}
+	public void setPresenter(SurveyPresenterInterface presenter) {
+		this.presenter = presenter;
 	}
 
 	/**
@@ -160,5 +153,10 @@ public class SurveyView extends SurveyDesign implements View {
 		field.setWidth("100%");
 
 		return field;
+	}
+
+	@Override
+	public boolean checkRights(String parameters) {
+		return presenter.checkRights(parameters);
 	}
 }

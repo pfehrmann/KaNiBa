@@ -1,8 +1,8 @@
-package de.kaniba.view;
+package de.kaniba.presenter;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 
-public interface EditBarInterface {
+public interface EditBarPresenterInterface extends SecuredPresenter {
 
 	/**
 	 * Save a bar from the view

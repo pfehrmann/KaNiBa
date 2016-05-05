@@ -1,10 +1,10 @@
-package de.kaniba.view;
+package de.kaniba.presenter;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 
 import de.kaniba.model.Rating;
 
-public interface BarInterface {
+public interface BarPresenterInterface {
 
 	void enter(ViewChangeEvent event);
 

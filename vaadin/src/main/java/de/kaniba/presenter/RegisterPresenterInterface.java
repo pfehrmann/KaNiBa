@@ -1,6 +1,6 @@
-package de.kaniba.view;
+package de.kaniba.presenter;
 
-public interface RegisterInterface {
+public interface RegisterPresenterInterface extends SecuredPresenter {
 
 	/**
 	 * This is calles, when the Register button is clicked.

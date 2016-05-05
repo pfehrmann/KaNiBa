@@ -18,25 +18,24 @@ import de.kaniba.designs.UpdateInformationDesign;
 import de.kaniba.model.Address;
 import de.kaniba.model.InternalUser;
 import de.kaniba.presenter.UpdateInformationPresenter;
+import de.kaniba.presenter.UpdateInformationPresenterInterface;
 
 /**
  * The view for updating personal informations
  * @author Philipp
  *
  */
-public class UpdateInformationView extends UpdateInformationDesign implements View {
+public class UpdateInformationView extends UpdateInformationDesign implements SecuredView {
 	private static final long serialVersionUID = 1L;
 
 	public static final String NAME = "updateInformation";
 	
-	private List<UpdateInformationPresenter> presenters;
+	private UpdateInformationPresenterInterface presenter;
 	
 	/**
 	 * Setup the view.
 	 */
 	public UpdateInformationView() {
-		presenters = new ArrayList<>();
-		
 		repeatPasswordField.addTextChangeListener(new FieldEvents.TextChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -57,9 +56,7 @@ public class UpdateInformationView extends UpdateInformationDesign implements Vi
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				for (UpdateInformationInterface presenter : presenters) {
-					presenter.updateClickListener(event);
-				}
+				presenter.updateClickListener(event);
 			}
 		});
 	}
@@ -85,9 +82,7 @@ public class UpdateInformationView extends UpdateInformationDesign implements Vi
 		Page.getCurrent().setTitle("Informationen aktualisieren");
 		
 		UI.getCurrent().getPage().setTitle("Informationen aktualisieren");
-		for(UpdateInformationInterface presenter: presenters) {
-			presenter.enter();
-		}
+		presenter.enter();
 
 	}
 
@@ -122,8 +117,13 @@ public class UpdateInformationView extends UpdateInformationDesign implements Vi
 	 * Add a presenter to the list of presenters
 	 * @param presenter
 	 */
-	public void addPresenter(UpdateInformationPresenter presenter) {
-		presenters.add(presenter);
+	public void setPresenter(UpdateInformationPresenterInterface presenter) {
+		this.presenter = presenter;
+	}
+
+	@Override
+	public boolean checkRights(String parameters) {
+		return presenter.checkRights(parameters);
 	}
 
 }

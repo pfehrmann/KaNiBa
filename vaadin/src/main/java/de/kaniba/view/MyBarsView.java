@@ -2,56 +2,54 @@ package de.kaniba.view;
 
 import java.util.List;
 
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.Component;
 
-import de.kaniba.components.SearchElementImpl;
 import de.kaniba.designs.MyBarsDesign;
-import de.kaniba.model.Admin;
-import de.kaniba.model.Bar;
-import de.kaniba.model.InternalUser;
-import de.kaniba.model.User;
-import de.kaniba.utils.Utils;
+import de.kaniba.presenter.MyBarsPresenterInterface;
 
 /**
  * This view is used to display all the bars, one admin can administrate.
  * @author Philipp
  *
  */
-public class MyBarsView extends MyBarsDesign implements View {
+public class MyBarsView extends MyBarsDesign implements SecuredView {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String NAME = "myBars";
-	private Admin admin;
+	private MyBarsPresenterInterface presenter;
 	
 	/**
-	 * Does nothig, setting the view up is done when entering is
+	 * Does nothing, setting the view up is done when entering is
 	 */
 	public MyBarsView() {
 		super();
 	}
+	
+	/**
+	 * Set the presenter for this view.
+	 * @param presenter
+	 */
+	public void setPresenter(MyBarsPresenterInterface presenter) {
+		this.presenter = presenter;
+	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		if(!User.isAdmin()) {
-			Utils.navigateBack();
-			return;
-		}
-		
-		admin = (Admin) InternalUser.getUser();
-
+		presenter.enter(event);
+	}
+	
+	public void setResults(List<Component> components) {
 		barResultContainer.removeAllComponents();
-		List<Bar> ownedBars = admin.getOwnedBars();
-		for (Bar bar : ownedBars) {
-			SearchElementImpl result = new SearchElementImpl(bar.getName(), bar.getOneLineAddress(),
-					EditBarView.NAME + "/" + bar.getBarID());
-			barResultContainer.addComponent(result);
-		}
 		
-		if(ownedBars.isEmpty()) {
-			barResultContainer.addComponent(new Label("Du kannst leider keine Bars administrieren, weil die keine zugwiesen wurden. Wenn das ein Fehler ist, schreib uns bitte einfach an, wir kümmern uns dann darum."));
+		for(Component component : components) {
+			barResultContainer.addComponent(component);
 		}
+	}
+
+	@Override
+	public boolean checkRights(String parameters) {
+		return presenter.checkRights(parameters);
 	}
 
 }
