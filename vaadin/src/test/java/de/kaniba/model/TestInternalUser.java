@@ -1,4 +1,4 @@
-package kaniba.test;
+package de.kaniba.model;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.kaniba.model.Bar;
@@ -13,10 +14,16 @@ import de.kaniba.model.Database;
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Rating;
+import kaniba.test.Utils;
 
 public class TestInternalUser {
 	private InternalUser user;
 	private InternalUser original;
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		Utils.prepareDatabaseForTests();
+	}
 	
 	@Before
 	public void setUp() throws Exception {
@@ -74,6 +81,12 @@ public class TestInternalUser {
 		if(!succsess) {
 			fail("Namen stimmen nicht überein.");
 		}
+	}
+	
+	@Test
+	public void testLogin() throws SQLException {
+		InternalUser user = (InternalUser) original.login("philipp", "test");
+		assertEquals("philipp", user.getEmail().getMail());
 	}
 
 }

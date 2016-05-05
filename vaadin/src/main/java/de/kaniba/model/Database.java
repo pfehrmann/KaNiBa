@@ -57,6 +57,8 @@ public final class Database {
 	private static final String MUSIC_RATING_STRING = "musicRating";
 	private static final String PPR_RATING_STRING = "pprRating";
 	private static final String GENERAL_RATING_STRING = "generalRating";
+	
+	private static ConnectionCreater connectionCreater = null;
 
 	private Database() {
 		// May not be instanciated
@@ -70,6 +72,10 @@ public final class Database {
 	 * @throws SQLException
 	 */
 	public static Connection verbindung() throws SQLException {
+		if(connectionCreater != null) {
+			return connectionCreater.verbindung();
+		}
+		
 		// TREIBER
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -80,6 +86,10 @@ public final class Database {
 		}
 		// VERBINDUNG
 		return DriverManager.getConnection("jdbc:mysql://localhost:3306/kaniba", "root", getPassword());
+	}
+	
+	public static void setConnectionCreater(ConnectionCreater connectionCreater) {
+		Database.connectionCreater = connectionCreater;
 	}
 
 	private static String getPassword() {
@@ -229,7 +239,7 @@ public final class Database {
 			return pinboard;
 		}
 
-		pinboard.messages = messages;
+		pinboard.setMessages(messages);
 		return pinboard;
 	}
 
@@ -545,7 +555,7 @@ public final class Database {
 	 *            Das Special, as ausgelesen werden soll
 	 * @return Gibt das ausgelesene Special zurück.
 	 */
-	public static Special readSpecial(int specialID) throws Exception {
+	public static Special readSpecial(int specialID) throws SQLException {
 		if (specialID < 0) {
 			throw new IllegalArgumentException("Invalid special ID");
 		}
@@ -651,6 +661,30 @@ public final class Database {
 		}
 		return null;
 
+	}
+	
+	public static List<Bar> getBarsOfAdmin(int userID) throws SQLException {
+		List<Bar> bars = new ArrayList<>();
+
+		String sql = "SELECT barID FROM bars WHERE userID=?";
+
+		ResultSet rs = null;
+		try (Connection con = verbindung(); PreparedStatement statement = con.prepareStatement(sql);) {
+			statement.setInt(1, userID);
+			rs = statement.executeQuery();
+
+			while (rs.next()) {
+				bars.add(readBar(rs.getInt("barID")));
+			}
+
+			rs.close();
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+		}
+
+		return bars;
 	}
 
 	/**

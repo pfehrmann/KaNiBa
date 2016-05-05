@@ -39,10 +39,14 @@ public class Admin extends InternalUser {
 		Database.saveSpecial(special);
 	}
 	
+	/**
+	 * Reads the list of bars owned by this admin from the database and returns it.
+	 * @return The list of bars, an admin may edit.
+	 */
 	public List<Bar> getOwnedBars() {
 		// FIX: Die Daten müssen schon drinstehen...
 		try {
-			return Utils.copyList(Database.searchForBar(""));
+			return Utils.copyList(Database.getBarsOfAdmin(getUserID()));
 		} catch (SQLException e) {
 			LoggingUtils.exception(e);
 		}

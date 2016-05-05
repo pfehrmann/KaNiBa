@@ -1,8 +1,9 @@
 package de.kaniba.presenter;
 
+import java.sql.SQLException;
+
 import com.vaadin.navigator.View;
 import com.vaadin.server.UserError;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
@@ -15,11 +16,14 @@ import de.kaniba.view.RegisterView;
 
 public class RegisterPresenter implements RegisterInterface {
 
-	User model;
-	RegisterView view;
+	private RegisterView view;
 
-	public RegisterPresenter(User model, RegisterView view) {
-		this.model = model;
+	/**
+	 * Sets everything up.
+	 * @param model
+	 * @param view
+	 */
+	public RegisterPresenter(RegisterView view) {
 		this.view = view;
 
 		view.addListener(this);
@@ -34,20 +38,25 @@ public class RegisterPresenter implements RegisterInterface {
 	 */
 	@Override
 	public void registerClick() {
-		model = view.getUser();
+		User user = view.getUser();
 		try {
-			((InternalUser) model).saveUser();
+			((InternalUser) user).saveUser();
 			view.getSubmit().setComponentError(null);
 			
 			UI.getCurrent().getNavigator().navigateTo("");
 			
-			Window loginWindow = new Window();
+			Window loginWindow = new Window("Login");
 			LoginPopupImpl popup = new LoginPopupImpl(loginWindow);
 			loginWindow.setContent(popup);
-			popup.setLoginName(((InternalUser) model).getEmail().getMail());
+			loginWindow.setWidth("450px");
+			loginWindow.setResizable(false);
+			loginWindow.setModal(true);
+			loginWindow.setDraggable(false);
+			loginWindow.setContent(popup);
+			popup.setLoginName(((InternalUser) user).getEmail().getMail());
 			UI.getCurrent().addWindow(loginWindow);
 			
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			view.getSubmit().setComponentError(new UserError("Fehler beim speichern"));
 			LoggingUtils.exception(e);
 		}
