@@ -29,7 +29,7 @@ public class UpdateInformationView extends UpdateInformationDesign implements Vi
 
 	public static final String NAME = "updateInformation";
 	
-	private List<UpdateInformationPresenter> presenters;
+	private List<UpdateInformationInterface> presenters;
 	
 	/**
 	 * Setup the view.

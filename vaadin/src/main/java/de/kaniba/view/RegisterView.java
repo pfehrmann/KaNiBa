@@ -28,7 +28,7 @@ public class RegisterView extends CustomComponent implements View {
 
 	public static final String NAME = "register";
 	
-	private List<RegisterPresenter> presenters;
+	private List<RegisterInterface> presenters;
 	private Panel mainPanel;
 	private TextField nameField;
 	private TextField firstNameField;
@@ -67,6 +67,7 @@ public class RegisterView extends CustomComponent implements View {
 
 		repeatPasswordField = new PasswordField("Passwort wiederholen");
 		repeatPasswordField.addTextChangeListener(new FieldEvents.TextChangeListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void textChange(TextChangeEvent event) {
@@ -98,6 +99,8 @@ public class RegisterView extends CustomComponent implements View {
 
 		submit = new Button("Registrieren");
 		submit.addClickListener(new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				for (RegisterInterface presenter : presenters) {

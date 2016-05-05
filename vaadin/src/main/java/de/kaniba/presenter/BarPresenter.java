@@ -20,6 +20,8 @@ import de.kaniba.view.BarView;
 import de.kaniba.view.SurveyView;
 
 public class BarPresenter implements BarInterface {
+	private static final long serialVersionUID = 1L;
+
 	private Bar bar;
 	private BarView view;
 	private boolean settingUp;

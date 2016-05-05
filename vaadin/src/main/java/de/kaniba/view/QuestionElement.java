@@ -1,10 +1,14 @@
 package de.kaniba.view;
 
+import java.io.Serializable;
+
 import com.vaadin.ui.AbstractField;
 
 import de.kaniba.model.Question;
 
-public class QuestionElement {
+public class QuestionElement implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private AbstractField component;
 	private Question question;
 	

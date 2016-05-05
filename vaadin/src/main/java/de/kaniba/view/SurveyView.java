@@ -41,6 +41,7 @@ public class SurveyView extends SurveyDesign implements View {
 		this.presenters = new ArrayList<>();
 
 		submitButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {

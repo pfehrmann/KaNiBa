@@ -15,7 +15,8 @@ import de.kaniba.view.RegisterInterface;
 import de.kaniba.view.RegisterView;
 
 public class RegisterPresenter implements RegisterInterface {
-
+	private static final long serialVersionUID = 1L;
+	
 	private RegisterView view;
 
 	/**

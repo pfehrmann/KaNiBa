@@ -1,8 +1,10 @@
 package de.kaniba.view;
 
+import java.io.Serializable;
+
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 
-public interface EditBarInterface {
+public interface EditBarInterface extends Serializable {
 
 	/**
 	 * Save a bar from the view

@@ -1,5 +1,6 @@
 package de.kaniba.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.SQLException;
 
@@ -8,7 +9,16 @@ import com.vaadin.server.VaadinSession;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 
-public class InternalUser extends User {
+/**
+ * This class represents an InternalUser. A user becomes an InternalUser by
+ * logging in.
+ * 
+ * @author Philipp
+ *
+ */
+public class InternalUser extends User implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private String sessionID;
 	private int userID;
 	private Email email;
@@ -165,7 +175,7 @@ public class InternalUser extends User {
 		VaadinSession session = Utils.getSession();
 		Admin admin = session.getAttribute(Admin.class);
 		InternalUser internalUser = (InternalUser) session.getAttribute("user");
-		
+
 		if (admin != null) {
 			return new Admin(internalUser);
 		}

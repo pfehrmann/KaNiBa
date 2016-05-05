@@ -1,5 +1,6 @@
 package de.kaniba.model;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
@@ -22,7 +23,9 @@ import de.kaniba.utils.Utils;
  * @author philipp
  *
  */
-public class Bar {
+public class Bar implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	public static final int UNKNOWNBARID = -1;
 
 	private int barID;

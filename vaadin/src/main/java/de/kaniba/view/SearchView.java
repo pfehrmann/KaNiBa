@@ -3,7 +3,6 @@ package de.kaniba.view;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -22,7 +21,13 @@ import de.kaniba.designs.SearchDesign;
 import de.kaniba.model.Bar;
 import de.kaniba.presenter.SearchPresenter;
 
+/**
+ * The View for Searching
+ * @author Philipp
+ *
+ */
 public class SearchView extends SearchDesign implements View {
+	private static final long serialVersionUID = 1L;
 	public static final String NAME = "search";
 	protected GoogleMap map;
 	private List<SearchInterface> presenterList;
@@ -33,6 +38,7 @@ public class SearchView extends SearchDesign implements View {
 		map = createMap();
 		mapContainer.addComponent(map);
 		UI.getCurrent().getPage().addBrowserWindowResizeListener(new BrowserWindowResizeListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void browserWindowResized(BrowserWindowResizeEvent event) {
@@ -51,6 +57,7 @@ public class SearchView extends SearchDesign implements View {
 		});
 
 		searchBar.addSearchListener(new Listener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void componentEvent(Event event) {
@@ -79,6 +86,7 @@ public class SearchView extends SearchDesign implements View {
 		}
 
 		map.addMarkerClickListener(new MarkerClickListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void markerClicked(GoogleMapMarker clickedMarker) {
@@ -89,6 +97,10 @@ public class SearchView extends SearchDesign implements View {
 		return map;
 	}
 
+	/**
+	 * Sets the markers for the bars on the map
+	 * @param bars
+	 */
 	public void displayBarsOnMap(List<Bar> bars) {
 		Collection<GoogleMapMarker> markers = map.getMarkers();
 

@@ -22,7 +22,7 @@ import de.kaniba.view.UpdateInformationView;
  *
  */
 public class UpdateInformationPresenter implements UpdateInformationInterface {
-
+	private static final long serialVersionUID = 1L;
 	private InternalUser user;
 	private UpdateInformationView view;
 	private VaadinSession session;
