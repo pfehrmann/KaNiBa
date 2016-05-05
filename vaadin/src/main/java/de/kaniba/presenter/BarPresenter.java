@@ -19,6 +19,8 @@ import de.kaniba.view.BarView;
 import de.kaniba.view.SurveyView;
 
 public class BarPresenter implements BarPresenterInterface {
+	private static final long serialVersionUID = 1L;
+
 	private Bar bar;
 	private BarView view;
 	private boolean settingUp;
@@ -54,6 +56,7 @@ public class BarPresenter implements BarPresenterInterface {
 		view.setBarDescription(bar.getDescription());
 		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
 		view.setBarLogo(bar);
+		view.setTags(bar.getTags(), bar.getBarID());
 		
 		if (User.isLoggedIn()) {
 			Rating userRating = null;
@@ -153,5 +156,10 @@ public class BarPresenter implements BarPresenterInterface {
 	@Override
 	public void clickedSurvey() {
 		UI.getCurrent().getNavigator().navigateTo(SurveyView.NAME + "/" + bar.getBarID());
+	}
+
+	@Override
+	public void updateTagList() {
+		view.setTags(bar.getTags(), bar.getBarID());
 	}
 }

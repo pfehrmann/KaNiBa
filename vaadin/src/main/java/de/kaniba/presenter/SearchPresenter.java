@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+
 import de.kaniba.components.SearchElement;
 import de.kaniba.components.SearchElementImpl;
 import de.kaniba.model.Bar;
@@ -34,13 +36,7 @@ public class SearchPresenter implements SearchPresenterInterface {
 	 */
 	@Override
 	public void updateSearchView(String searchValue) {
-
-		List<Bar> resultList = null;
-		try {
-			resultList = Database.searchForBar(searchValue);
-		} catch (SQLException e) {
-			LoggingUtils.exception(e);
-		}
+		List<Bar> resultList = getResultList(searchValue);
 		
 		if(resultList == null) {
 			LoggingUtils.log("Error while accesing database, will not show search results.");
@@ -55,6 +51,34 @@ public class SearchPresenter implements SearchPresenterInterface {
 		view.setSearchResults(searchElementList);
 		
 		view.displayBarsOnMap(resultList);
+	}
+
+	private List<Bar> getResultList(String searchValue) {
+		List<Bar> resultList = null;
 		
+		// Search for a tag?
+		if(searchValue.startsWith("tag=")) {
+			try {
+				resultList = Database.getBarsForTag(searchValue.replaceFirst("tag=\\s*", ""));
+				return resultList;
+			} catch (SQLException e) {
+				LoggingUtils.exception(e);
+			}
+		}
+		
+		try {
+			resultList = Database.searchForBar(searchValue);
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
+		}
+		return resultList;
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		String tag = event.getParameters();
+		if(tag != null && !"".equals(tag)) {
+			updateSearchView("tag=" + tag);
+		}
 	}	
 }

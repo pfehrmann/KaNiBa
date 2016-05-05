@@ -1,9 +1,11 @@
 package de.kaniba.model;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -21,7 +23,9 @@ import de.kaniba.utils.Utils;
  * @author philipp
  *
  */
-public class Bar {
+public class Bar implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	public static final int UNKNOWNBARID = -1;
 
 	private int barID;
@@ -381,5 +385,14 @@ public class Bar {
 			}
 		}
 		return bar;
+	}
+
+	public List<Tag> getTags() {
+		try {
+			return Database.getTagsForBar(getBarID());
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
+		}
+		return new ArrayList<>();
 	}
 }

@@ -1,5 +1,6 @@
 package de.kaniba.model;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
@@ -8,7 +9,8 @@ import java.sql.Timestamp;
  * @author Philipp
  *
  */
-public class Special {
+public class Special implements Serializable {
+	private static final long serialVersionUID = 1L;
 	public static final int UNKNOWNSPECIALID = -1;
 	private int specialID;
 	private int barID;

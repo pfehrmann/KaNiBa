@@ -21,6 +21,8 @@ import de.kaniba.view.EditBarView;
  *
  */
 public class EditBarPresenter implements EditBarPresenterInterface {
+	private static final long serialVersionUID = 1L;
+	
 	private EditBarView view;
 	private Bar bar;
 	

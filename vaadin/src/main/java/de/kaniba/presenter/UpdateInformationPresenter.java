@@ -21,7 +21,8 @@ import de.kaniba.view.UpdateInformationView;
  *
  */
 public class UpdateInformationPresenter implements UpdateInformationPresenterInterface {
-
+	private static final long serialVersionUID = 1L;
+	
 	private InternalUser user;
 	private UpdateInformationView view;
 	private VaadinSession session;

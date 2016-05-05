@@ -22,6 +22,8 @@ import de.kaniba.view.SurveyView;
  *
  */
 public class SurveyPresenter implements SurveyPresenterInterface {
+	private static final long serialVersionUID = 1L;
+	
 	private Bar bar;
 	private List<Question> questionsForBar;
 	private SurveyView view;

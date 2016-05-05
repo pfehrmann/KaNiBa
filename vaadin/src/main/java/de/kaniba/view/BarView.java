@@ -18,6 +18,7 @@ import com.vaadin.tapio.googlemaps.client.LatLon;
 import com.vaadin.tapio.googlemaps.client.overlays.GoogleMapMarker;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
@@ -31,6 +32,8 @@ import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
 import de.kaniba.presenter.BarPresenterInterface;
+import de.kaniba.model.Tag;
+import de.kaniba.utils.Callback;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 
@@ -268,7 +271,30 @@ public class BarView extends BarDesign implements View {
 	public void setBarDescription(String description) {
 		infoPanel.setContent(new Label(description, ContentMode.HTML));
 	}
+	
+	public void setTags(List<Tag> tags, final int barID) {
+		tagLayout.removeAllComponents();
+		for(Tag tag : tags) {
+			tagLayout.addComponent(tag.getComponent());
+		}
+		Button button = new Button("+");
+		button.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
 
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Tag.createNewTag(barID, new Callback() {
+					
+					@Override
+					public void success() {
+						presenter.updateTagList();
+					}
+				});
+			}
+		});
+		tagLayout.addComponent(button);
+	}
+	
 	@Override
 	public void enter(ViewChangeEvent event) {
 		removeComponent(map);

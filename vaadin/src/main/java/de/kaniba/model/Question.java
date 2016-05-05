@@ -1,8 +1,10 @@
 package de.kaniba.model;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 
-public class Question {
+public class Question implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int questionID;
 	private int barID;
 	private boolean isText;

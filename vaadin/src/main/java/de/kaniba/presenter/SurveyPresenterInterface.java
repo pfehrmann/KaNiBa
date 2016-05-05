@@ -1,5 +1,7 @@
 package de.kaniba.presenter;
 
+import java.io.Serializable;
+
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 
 /**
@@ -7,7 +9,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
  * @author Philipp
  *
  */
-public interface SurveyPresenterInterface extends SecuredPresenter {
+public interface SurveyPresenterInterface extends SecuredPresenter, Serializable {
 
 	/**
 	 * Called when the page is accessed
