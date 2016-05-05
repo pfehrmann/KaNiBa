@@ -11,7 +11,6 @@ import de.kaniba.components.SearchElementImpl;
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
 import de.kaniba.utils.LoggingUtils;
-import de.kaniba.view.SearchInterface;
 import de.kaniba.view.SearchView;
 
 /**
@@ -19,13 +18,14 @@ import de.kaniba.view.SearchView;
  * @author Philipp
  *
  */
-public class SearchPresenter implements SearchInterface {
+public class SearchPresenter implements SearchPresenterInterface {
+	private static final long serialVersionUID = 1L;
 	
 	private SearchView view;
 
 	public SearchPresenter(SearchView view) {
 		this.view = view;
-		view.registerPresenter(this);
+		view.setPresenter(this);
 	}
 	
 	public SearchView getView() {

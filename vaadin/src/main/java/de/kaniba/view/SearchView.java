@@ -1,6 +1,5 @@
 package de.kaniba.view;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,7 +18,7 @@ import com.vaadin.ui.UI;
 import de.kaniba.components.SearchElement;
 import de.kaniba.designs.SearchDesign;
 import de.kaniba.model.Bar;
-import de.kaniba.presenter.SearchPresenter;
+import de.kaniba.presenter.SearchPresenterInterface;
 
 /**
  * The View for Searching
@@ -30,11 +29,9 @@ public class SearchView extends SearchDesign implements View {
 	private static final long serialVersionUID = 1L;
 	public static final String NAME = "search";
 	protected GoogleMap map;
-	private List<SearchInterface> presenterList;
+	private SearchPresenterInterface presenter;
 
 	public SearchView() {
-		presenterList = new ArrayList<>();
-
 		map = createMap();
 		mapContainer.addComponent(map);
 		UI.getCurrent().getPage().addBrowserWindowResizeListener(new BrowserWindowResizeListener() {
@@ -119,9 +116,7 @@ public class SearchView extends SearchDesign implements View {
 	}
 
 	private void firePresenter() {
-		for (SearchInterface presenter : presenterList) {
-			presenter.updateSearchView(searchBar.getSearchValue());
-		}
+		presenter.updateSearchView(searchBar.getSearchValue());
 	}
 
 	public void setSearchResults(List<SearchElement> elements) {
@@ -136,17 +131,15 @@ public class SearchView extends SearchDesign implements View {
 	 * Add an presenter to the list of presenters. It will be called on various events.
 	 * @param presenter
 	 */
-	public void registerPresenter(SearchPresenter presenter) {
-		this.presenterList.add(presenter);
+	public void setPresenter(SearchPresenterInterface presenter) {
+		this.presenter = presenter;
 
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		Page.getCurrent().setTitle("Suchen...");
-		for(SearchInterface presenter : presenterList) {
-			presenter.enter(event);
-		}
+		presenter.enter(event);
 	}
 
 }

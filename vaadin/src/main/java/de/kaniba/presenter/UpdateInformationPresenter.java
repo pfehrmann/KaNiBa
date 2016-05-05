@@ -5,14 +5,13 @@ import java.sql.SQLException;
 import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Notification;
 
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.User;
 import de.kaniba.utils.LoggingUtils;
+import de.kaniba.utils.NotificationUtils;
 import de.kaniba.utils.Utils;
-import de.kaniba.view.UpdateInformationInterface;
 import de.kaniba.view.UpdateInformationView;
 
 /**
@@ -21,8 +20,9 @@ import de.kaniba.view.UpdateInformationView;
  * @author Philipp
  *
  */
-public class UpdateInformationPresenter implements UpdateInformationInterface {
+public class UpdateInformationPresenter implements UpdateInformationPresenterInterface {
 	private static final long serialVersionUID = 1L;
+	
 	private InternalUser user;
 	private UpdateInformationView view;
 	private VaadinSession session;
@@ -40,7 +40,7 @@ public class UpdateInformationPresenter implements UpdateInformationInterface {
 		if (user != null) {
 			view.setUser(user);
 		}
-		view.addPresenter(this);
+		view.setPresenter(this);
 	}
 
 	public UpdateInformationView getView() {
@@ -88,7 +88,7 @@ public class UpdateInformationPresenter implements UpdateInformationInterface {
 			view.getSubmit().setComponentError(null);
 
 			session.setAttribute("user", user);
-			Notification.show("Daten geändert.");
+			NotificationUtils.showNotification("Daten geändert.");
 		} catch (SQLException e) {
 			view.getSubmit().setComponentError(new UserError("Fehler beim speichern"));
 			LoggingUtils.exception(e);
@@ -102,15 +102,19 @@ public class UpdateInformationPresenter implements UpdateInformationInterface {
 	 */
 	@Override
 	public void enter() {
+		view.setUser(user);
+	}
+
+	@Override
+	public boolean checkRights(String parameters) {
 		this.user = InternalUser.getUser();
 
 		if (!User.isLoggedIn()) {
-			Notification.show("Um deine Daten zu ändern, musst du eingeloggt sein.");
-			Utils.navigateBack();
-			return;
+			NotificationUtils.showNotification("Um deine Daten zu ändern, musst du eingeloggt sein.");
+			return false;
 		}
-
-		view.setUser(user);
+		
+		return true;
 	}
 
 }

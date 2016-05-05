@@ -14,6 +14,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
 import de.kaniba.utils.Callback;
+import de.kaniba.utils.NotificationUtils;
 import de.kaniba.utils.Utils;
 import de.kaniba.view.SearchView;
 
@@ -98,7 +99,7 @@ public class Tag {
 		
 		// Only logged in users may add tags.
 		if (!User.isLoggedIn()) {
-			Utils.showNotification("Um Tags setzen zu können, musst du eingeloggt sein.");
+			NotificationUtils.showNotification("Um Tags setzen zu können, musst du eingeloggt sein.");
 			return;
 		}
 		

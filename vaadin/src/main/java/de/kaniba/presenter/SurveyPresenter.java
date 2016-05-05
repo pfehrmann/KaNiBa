@@ -13,11 +13,16 @@ import de.kaniba.model.Database;
 import de.kaniba.model.Question;
 import de.kaniba.model.User;
 import de.kaniba.utils.LoggingUtils;
-import de.kaniba.utils.Utils;
-import de.kaniba.view.SurveyInterface;
+import de.kaniba.utils.NavigationUtils;
+import de.kaniba.utils.NotificationUtils;
 import de.kaniba.view.SurveyView;
 
-public class SurveyPresenter implements SurveyInterface {
+/**
+ * Presenter to control the  SurveyView
+ * @author Philipp
+ *
+ */
+public class SurveyPresenter implements SurveyPresenterInterface {
 	private static final long serialVersionUID = 1L;
 	
 	private Bar bar;
@@ -26,7 +31,7 @@ public class SurveyPresenter implements SurveyInterface {
 
 	public SurveyPresenter(SurveyView view) {
 		this.view = view;
-		view.addPresenter(this);
+		view.setPresenter(this);
 	}
 
 	/* (non-Javadoc)
@@ -34,30 +39,6 @@ public class SurveyPresenter implements SurveyInterface {
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
-		bar = Bar.getBarFromParams(event.getParameters());
-
-		if (!User.isLoggedIn()) {
-			Utils.navigateBack("Du musst eingeloggt sein, um abstimmen zu können.", Notification.Type.WARNING_MESSAGE);
-			return;
-		}
-
-		if (bar == null) {
-			Utils.navigateBack();
-			return;
-		}
-
-		questionsForBar = null;
-		try {
-			questionsForBar = Database.getQuestionsForBar(bar.getBarID());
-		} catch (SQLException e) {
-			LoggingUtils.exception(e);
-		}
-		
-		if (questionsForBar != null && questionsForBar.isEmpty()) {
-			Utils.navigateBack("Keine Fragebögen für diese Bar gefunden :(", Notification.Type.WARNING_MESSAGE);
-			return;
-		}
-
 		view.displayQuestions(questionsForBar);
 	}
 
@@ -74,11 +55,42 @@ public class SurveyPresenter implements SurveyInterface {
 			}
 		}
 
-		Utils.navigateBack("Danke für deine Abstimmung");
+		NavigationUtils.navigateBack("Danke für deine Abstimmung");
 	}
 
 	public View getView() {
 		return view;
+	}
+
+	@Override
+	public boolean checkRights(String parameters) {
+		bar = Bar.getBarFromParams(parameters);
+
+		if (!User.isLoggedIn()) {
+			NotificationUtils.showNotification("Du musst eingeloggt sein, um abstimmen zu können.",
+					Notification.Type.WARNING_MESSAGE);
+			return false;
+		}
+
+		if (bar == null) {
+			NotificationUtils.showNotification("Bar nicht gefunden.");
+			return false;
+		}
+
+		questionsForBar = null;
+		try {
+			questionsForBar = Database.getQuestionsForBar(bar.getBarID());
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
+		}
+		
+		if (questionsForBar == null || questionsForBar.isEmpty()) {
+			NotificationUtils.showNotification("Keine Fragebögen für diese Bar gefunden :(", 
+					Notification.Type.WARNING_MESSAGE);
+			return false;
+		}
+		
+		return true;
 	}
 
 }

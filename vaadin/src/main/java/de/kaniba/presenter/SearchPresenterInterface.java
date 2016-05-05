@@ -1,10 +1,10 @@
-package de.kaniba.view;
+package de.kaniba.presenter;
 
 import java.io.Serializable;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 
-public interface SearchInterface extends Serializable {
+public interface SearchPresenterInterface extends Serializable {
 
 	/**
 	 * Searches the database

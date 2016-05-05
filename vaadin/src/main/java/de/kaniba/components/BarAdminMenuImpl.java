@@ -3,7 +3,7 @@ package de.kaniba.components;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
-import de.kaniba.utils.Utils;
+import de.kaniba.utils.NavigationUtils;
 import de.kaniba.view.MyBarsView;
 
 public class BarAdminMenuImpl extends BarAdminMenu {
@@ -18,7 +18,7 @@ public class BarAdminMenuImpl extends BarAdminMenu {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				Utils.navigateTo(MyBarsView.NAME);
+				NavigationUtils.navigateTo(MyBarsView.NAME);
 			}
 		});
 	}

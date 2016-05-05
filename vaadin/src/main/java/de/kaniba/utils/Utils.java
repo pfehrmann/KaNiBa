@@ -9,12 +9,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.shared.Position;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 
 /**
@@ -23,7 +19,6 @@ import com.vaadin.ui.UI;
  *
  */
 public final class Utils {
-	private static final int DEFAULT_NOTIFICATION_DELAY = 2000;
 	
 	private Utils() {
 		// May not be instanciated
@@ -88,77 +83,5 @@ public final class Utils {
 			LoggingUtils.exception(e);
 		}
 		return sb.toString();
-	}
-
-	/**
-	 * Navigates to a given state.
-	 * 
-	 * @param navigationState
-	 */
-	public static void navigateTo(String navigationState) {
-		UI.getCurrent().getNavigator().navigateTo(navigationState);
-	}
-
-	/**
-	 * Shows a notification with the given message. The notification will be
-	 * visible for 2000ms.
-	 * 
-	 * @param message
-	 */
-	public static void showNotification(String message) {
-		showNotification(message, Type.HUMANIZED_MESSAGE);
-	}
-
-	/**
-	 * Shows a notfication.
-	 * 
-	 * @param message
-	 * @param type
-	 */
-	public static void showNotification(String message, Type type) {
-		showNotification(message, type, DEFAULT_NOTIFICATION_DELAY);
-	}
-
-	/**
-	 * Shows a notification
-	 * 
-	 * @param message
-	 * @param type
-	 * @param durationMs
-	 */
-	public static void showNotification(String message, Type type, int durationMs) {
-		Notification note = new Notification(message, type);
-		note.setDelayMsec(durationMs);
-		note.setPosition(Position.MIDDLE_CENTER);
-		note.show(Page.getCurrent());
-	}
-
-	/**
-	 * Navigates to the previous page.
-	 */
-	public static void navigateBack() {
-		Page.getCurrent().getJavaScript().execute("window.history.back()");
-	}
-
-	/**
-	 * Navigates to the previous page and shows a message.
-	 * 
-	 * @param message
-	 */
-	public static void navigateBack(String message) {
-		navigateBack();
-		showNotification(message);
-	}
-
-	/**
-	 * Navigates back and shows a message of a specific type. Useful for error
-	 * messages.
-	 * 
-	 * @param message
-	 * @param type
-	 */
-	public static void navigateBack(String message, Type type) {
-		navigateBack();
-		showNotification(message, type);
 	}
 }

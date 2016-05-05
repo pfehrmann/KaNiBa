@@ -1,4 +1,4 @@
-package de.kaniba.view;
+package de.kaniba.presenter;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author Philipp
  *
  */
-public interface RegisterInterface extends Serializable{
+public interface RegisterPresenterInterface extends SecuredPresenter, Serializable{
 
 	/**
 	 * This is calles, when the Register button is clicked.

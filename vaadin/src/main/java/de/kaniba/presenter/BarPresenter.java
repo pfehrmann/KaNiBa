@@ -15,11 +15,10 @@ import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
 import de.kaniba.model.User;
 import de.kaniba.utils.LoggingUtils;
-import de.kaniba.view.BarInterface;
 import de.kaniba.view.BarView;
 import de.kaniba.view.SurveyView;
 
-public class BarPresenter implements BarInterface {
+public class BarPresenter implements BarPresenterInterface {
 	private static final long serialVersionUID = 1L;
 
 	private Bar bar;

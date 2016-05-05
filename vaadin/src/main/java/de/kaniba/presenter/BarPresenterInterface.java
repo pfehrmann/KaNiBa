@@ -1,4 +1,4 @@
-package de.kaniba.view;
+package de.kaniba.presenter;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 
 import de.kaniba.model.Rating;
 
-public interface BarInterface extends Serializable {
+public interface BarPresenterInterface extends Serializable {
 
 	void enter(ViewChangeEvent event);
 
