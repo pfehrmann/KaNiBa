@@ -16,6 +16,11 @@ import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.NavigationUtils;
 import de.kaniba.view.SurveyView;
 
+/**
+ * Presenter to control the  SurveyView
+ * @author Philipp
+ *
+ */
 public class SurveyPresenter implements SurveyPresenterInterface {
 	private Bar bar;
 	private List<Question> questionsForBar;
@@ -76,7 +81,7 @@ public class SurveyPresenter implements SurveyPresenterInterface {
 			LoggingUtils.exception(e);
 		}
 		
-		if (questionsForBar == null || (questionsForBar != null && questionsForBar.isEmpty())) {
+		if (questionsForBar == null || questionsForBar.isEmpty()) {
 			NavigationUtils.navigateBack("Keine Fragebögen für diese Bar gefunden :(", 
 					Notification.Type.WARNING_MESSAGE);
 			return false;
