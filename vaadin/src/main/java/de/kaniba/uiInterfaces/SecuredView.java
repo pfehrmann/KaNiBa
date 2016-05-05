@@ -1,4 +1,4 @@
-package de.kaniba.view;
+package de.kaniba.uiInterfaces;
 
 import com.vaadin.navigator.View;
 

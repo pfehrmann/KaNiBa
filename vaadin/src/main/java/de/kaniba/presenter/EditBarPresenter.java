@@ -9,11 +9,12 @@ import com.vaadin.ui.Notification.Type;
 import de.kaniba.model.Bar;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.User;
+import de.kaniba.uiInterfaces.EditBarPresenterInterface;
+import de.kaniba.uiInterfaces.EditBarViewInterface;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.NavigationUtils;
 import de.kaniba.utils.NotificationUtils;
 import de.kaniba.view.BarView;
-import de.kaniba.view.EditBarView;
 
 /**
  * Logic for editing bars
@@ -23,13 +24,13 @@ import de.kaniba.view.EditBarView;
 public class EditBarPresenter implements EditBarPresenterInterface {
 	private static final long serialVersionUID = 1L;
 	
-	private EditBarView view;
+	private EditBarViewInterface view;
 	private Bar bar;
 	
 	/**
 	 * @param view The view to manage
 	 */
-	public EditBarPresenter(EditBarView view) {
+	public EditBarPresenter(EditBarViewInterface view) {
 		this.view = view;
 		view.setPresenter(this);
 	}

@@ -16,9 +16,10 @@ import de.kaniba.model.Admin;
 import de.kaniba.model.Bar;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.User;
+import de.kaniba.uiInterfaces.MyBarsPresenterInterface;
+import de.kaniba.uiInterfaces.MyBarsViewInterface;
 import de.kaniba.utils.NotificationUtils;
 import de.kaniba.view.EditBarView;
-import de.kaniba.view.MyBarsView;
 
 /**
  * Class to control the MyBarsView
@@ -26,14 +27,15 @@ import de.kaniba.view.MyBarsView;
  *
  */
 public class MyBarsPresenter implements MyBarsPresenterInterface {
-
-	private MyBarsView view;
+	private static final long serialVersionUID = 1L;
+	
+	private MyBarsViewInterface view;
 	
 	/**
 	 * Initialize with the view of this presenter.
 	 * @param view
 	 */
-	public MyBarsPresenter(MyBarsView view) {
+	public MyBarsPresenter(MyBarsViewInterface view) {
 		this.view = view;
 		view.setPresenter(this);
 	}

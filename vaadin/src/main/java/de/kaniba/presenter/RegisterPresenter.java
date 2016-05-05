@@ -10,19 +10,20 @@ import com.vaadin.ui.Window;
 import de.kaniba.components.LoginPopupImpl;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.User;
+import de.kaniba.uiInterfaces.RegisterPresenterInterface;
+import de.kaniba.uiInterfaces.RegisterViewInterface;
 import de.kaniba.utils.LoggingUtils;
-import de.kaniba.view.RegisterView;
 
 public class RegisterPresenter implements RegisterPresenterInterface {
 	private static final long serialVersionUID = 1L;
-	private RegisterView view;
+	private RegisterViewInterface view;
 
 	/**
 	 * Sets everything up.
 	 * @param model
 	 * @param view
 	 */
-	public RegisterPresenter(RegisterView view) {
+	public RegisterPresenter(RegisterViewInterface view) {
 		this.view = view;
 
 		view.setPresenter(this);

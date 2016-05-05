@@ -17,14 +17,15 @@ import com.vaadin.ui.Button.ClickEvent;
 import de.kaniba.model.Address;
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
-import de.kaniba.presenter.RegisterPresenterInterface;
+import de.kaniba.uiInterfaces.RegisterPresenterInterface;
+import de.kaniba.uiInterfaces.RegisterViewInterface;
 
 /**
  * The view for registering
  * @author Philipp
  *
  */
-public class RegisterView extends CustomComponent implements SecuredView {
+public class RegisterView extends CustomComponent implements RegisterViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	public static final String NAME = "register";
@@ -116,46 +117,90 @@ public class RegisterView extends CustomComponent implements SecuredView {
 		setCompositionRoot(mainPanel);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.RegisterViewInterface#getNameField()
+	 */
+	@Override
 	public TextField getNameField() {
 		return nameField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.RegisterViewInterface#getFirstNameField()
+	 */
+	@Override
 	public TextField getFirstNameField() {
 		return firstNameField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.RegisterViewInterface#getEmailField()
+	 */
+	@Override
 	public TextField getEmailField() {
 		return emailField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.RegisterViewInterface#getPasswordField()
+	 */
+	@Override
 	public PasswordField getPasswordField() {
 		return passwordField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.RegisterViewInterface#getRepeatPasswordField()
+	 */
+	@Override
 	public PasswordField getRepeatPasswordField() {
 		return repeatPasswordField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.RegisterViewInterface#getBirthdateField()
+	 */
+	@Override
 	public DateField getBirthdateField() {
 		return birthdateField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.RegisterViewInterface#getCityField()
+	 */
+	@Override
 	public TextField getCityField() {
 		return cityField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.RegisterViewInterface#getStreetField()
+	 */
+	@Override
 	public TextField getStreetField() {
 		return streetField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.RegisterViewInterface#getNumberField()
+	 */
+	@Override
 	public TextField getNumberField() {
 		return numberField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.RegisterViewInterface#getZipField()
+	 */
+	@Override
 	public TextField getZipField() {
 		return zipField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.RegisterViewInterface#getSubmit()
+	 */
+	@Override
 	public Button getSubmit() {
 		return submit;
 	}
@@ -165,6 +210,10 @@ public class RegisterView extends CustomComponent implements SecuredView {
 		Page.getCurrent().setTitle("Registrieren");
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.RegisterViewInterface#getUser()
+	 */
+	@Override
 	public InternalUser getUser() {
 		InternalUser user = new InternalUser();
 
@@ -184,6 +233,10 @@ public class RegisterView extends CustomComponent implements SecuredView {
 		return user;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.RegisterViewInterface#setPresenter(de.kaniba.presenter.RegisterPresenterInterface)
+	 */
+	@Override
 	public void setPresenter(RegisterPresenterInterface presenter) {
 		this.presenter = presenter;
 	}

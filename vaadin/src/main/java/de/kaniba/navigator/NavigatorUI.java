@@ -70,7 +70,8 @@ public class NavigatorUI extends UI {
 		navigator.addView("", searchView);
 		navigator.addView(SearchView.NAME, searchPresenter.getView());
 		
-		BarPresenter barPresenter = new BarPresenter();
+		BarView barView = new BarView();
+		BarPresenter barPresenter = new BarPresenter(barView);
 		navigator.addView(BarView.NAME, barPresenter.getView());
 
 		RegisterPresenter registerPresenter = new RegisterPresenter(new RegisterView());

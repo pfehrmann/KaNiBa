@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
@@ -31,8 +30,9 @@ import de.kaniba.model.DisplayRating;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
-import de.kaniba.presenter.BarPresenterInterface;
 import de.kaniba.model.Tag;
+import de.kaniba.uiInterfaces.BarPresenterInterface;
+import de.kaniba.uiInterfaces.BarViewInterface;
 import de.kaniba.utils.Callback;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
@@ -42,7 +42,7 @@ import de.kaniba.utils.Utils;
  * @author Philipp
  *
  */
-public class BarView extends BarDesign implements View {
+public class BarView extends BarDesign implements BarViewInterface {
 	private static final int DEFAULT_ZOOM = 15;
 
 	private static final long serialVersionUID = 1L;
@@ -189,10 +189,18 @@ public class BarView extends BarDesign implements View {
 		presenter.saveRating(rating);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.BarViewInterface#setPresenter(de.kaniba.presenter.BarPresenterInterface)
+	 */
+	@Override
 	public void setPresenter(BarPresenterInterface presenter) {
 		this.presenter = presenter;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.BarViewInterface#setBarMessageBoard(java.util.List)
+	 */
+	@Override
 	public void setBarMessageBoard(List<Message> messages) {
 		if(messages == null) {
 			return;
@@ -236,6 +244,10 @@ public class BarView extends BarDesign implements View {
 		messagePanel.setContent(layout);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.BarViewInterface#setBarRating(de.kaniba.model.DisplayRating)
+	 */
+	@Override
 	public void setBarRating(DisplayRating rating) {
 		starTotal.setValue(rating.getGeneralRating());
 		starAtmosphere.setValue(rating.getAtmosphereRating());
@@ -244,6 +256,10 @@ public class BarView extends BarDesign implements View {
 		starPrice.setValue(rating.getPriceRating());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.BarViewInterface#setBarLogo(de.kaniba.model.Bar)
+	 */
+	@Override
 	public void setBarLogo(Bar bar) {
 		File image = new File(Utils.getBarLogoBasePath() + bar.getBarID() + ".png");
 		
@@ -255,23 +271,43 @@ public class BarView extends BarDesign implements View {
 		barImage.setSource(resource);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.BarViewInterface#setMapCoords(com.vaadin.tapio.googlemaps.client.LatLon)
+	 */
+	@Override
 	public void setMapCoords(LatLon coords) {
 		map.setCenter(coords);
 		map.addMarker(new GoogleMapMarker("", coords, false));
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.BarViewInterface#setBarName(java.lang.String)
+	 */
+	@Override
 	public void setBarName(String name) {
 		barNameLabel.setValue(name);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.BarViewInterface#setBarAddress(java.lang.String)
+	 */
+	@Override
 	public void setBarAddress(String address) {
 		barAddressLabel.setValue(address);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.BarViewInterface#setBarDescription(java.lang.String)
+	 */
+	@Override
 	public void setBarDescription(String description) {
 		infoPanel.setContent(new Label(description, ContentMode.HTML));
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.BarViewInterface#setTags(java.util.List, int)
+	 */
+	@Override
 	public void setTags(List<Tag> tags, final int barID) {
 		tagLayout.removeAllComponents();
 		for(Tag tag : tags) {
