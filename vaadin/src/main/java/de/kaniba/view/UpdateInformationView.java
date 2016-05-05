@@ -1,11 +1,7 @@
 package de.kaniba.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.server.UserError;
@@ -17,7 +13,6 @@ import com.vaadin.ui.Button.ClickEvent;
 import de.kaniba.designs.UpdateInformationDesign;
 import de.kaniba.model.Address;
 import de.kaniba.model.InternalUser;
-import de.kaniba.presenter.UpdateInformationPresenter;
 import de.kaniba.presenter.UpdateInformationPresenterInterface;
 
 /**

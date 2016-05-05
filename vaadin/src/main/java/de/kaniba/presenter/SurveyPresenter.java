@@ -14,6 +14,7 @@ import de.kaniba.model.Question;
 import de.kaniba.model.User;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.NavigationUtils;
+import de.kaniba.utils.NotificationUtils;
 import de.kaniba.view.SurveyView;
 
 /**
@@ -66,13 +67,13 @@ public class SurveyPresenter implements SurveyPresenterInterface {
 		bar = Bar.getBarFromParams(parameters);
 
 		if (!User.isLoggedIn()) {
-			NavigationUtils.navigateBack("Du musst eingeloggt sein, um abstimmen zu können.",
+			NotificationUtils.showNotification("Du musst eingeloggt sein, um abstimmen zu können.",
 					Notification.Type.WARNING_MESSAGE);
 			return false;
 		}
 
 		if (bar == null) {
-			NavigationUtils.navigateBack("Bar nicht gefunden.");
+			NotificationUtils.showNotification("Bar nicht gefunden.");
 			return false;
 		}
 
@@ -84,7 +85,7 @@ public class SurveyPresenter implements SurveyPresenterInterface {
 		}
 		
 		if (questionsForBar == null || questionsForBar.isEmpty()) {
-			NavigationUtils.navigateBack("Keine Fragebögen für diese Bar gefunden :(", 
+			NotificationUtils.showNotification("Keine Fragebögen für diese Bar gefunden :(", 
 					Notification.Type.WARNING_MESSAGE);
 			return false;
 		}
