@@ -14,24 +14,25 @@ import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
 import de.kaniba.model.User;
+import de.kaniba.uiInterfaces.BarPresenterInterface;
+import de.kaniba.uiInterfaces.BarViewInterface;
 import de.kaniba.utils.LoggingUtils;
-import de.kaniba.view.BarView;
 import de.kaniba.view.SurveyView;
 
 public class BarPresenter implements BarPresenterInterface {
 	private static final long serialVersionUID = 1L;
 
 	private Bar bar;
-	private BarView view;
+	private BarViewInterface view;
 	private boolean settingUp;
 
-	public BarPresenter() {
-		view = new BarView();
+	public BarPresenter(BarViewInterface view) {
+		this.view = view;
 		view.setPresenter(this);
 		settingUp = false;
 	}
 
-	public BarView getView() {
+	public BarViewInterface getView() {
 		return view;
 	}
 

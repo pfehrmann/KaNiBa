@@ -6,9 +6,10 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.ui.Notification.Type;
-import com.vaadin.ui.UI;
 
-import de.kaniba.view.SecuredView;
+import de.kaniba.uiInterfaces.SecuredView;
+
+import com.vaadin.ui.UI;
 
 /**
  * Utils for navigation.

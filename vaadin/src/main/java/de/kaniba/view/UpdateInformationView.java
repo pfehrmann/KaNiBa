@@ -13,14 +13,16 @@ import com.vaadin.ui.Button.ClickEvent;
 import de.kaniba.designs.UpdateInformationDesign;
 import de.kaniba.model.Address;
 import de.kaniba.model.InternalUser;
-import de.kaniba.presenter.UpdateInformationPresenterInterface;
+import de.kaniba.uiInterfaces.SecuredView;
+import de.kaniba.uiInterfaces.UpdateInformationPresenterInterface;
+import de.kaniba.uiInterfaces.UpdateInformationViewInterface;
 
 /**
  * The view for updating personal informations
  * @author Philipp
  *
  */
-public class UpdateInformationView extends UpdateInformationDesign implements SecuredView {
+public class UpdateInformationView extends UpdateInformationDesign implements UpdateInformationViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	public static final String NAME = "updateInformation";
@@ -56,18 +58,34 @@ public class UpdateInformationView extends UpdateInformationDesign implements Se
 		});
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#getOldPasswordField()
+	 */
+	@Override
 	public PasswordField getOldPasswordField() {
 		return oldPasswordField;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#getPasswordField()
+	 */
+	@Override
 	public PasswordField getPasswordField() {
 		return passwordField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#getRepeatPasswordField()
+	 */
+	@Override
 	public PasswordField getRepeatPasswordField() {
 		return repeatPasswordField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#getSubmit()
+	 */
+	@Override
 	public Button getSubmit() {
 		return submit;
 	}
@@ -81,6 +99,10 @@ public class UpdateInformationView extends UpdateInformationDesign implements Se
 
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#getUser()
+	 */
+	@Override
 	public InternalUser getUser() {
 		InternalUser user = new InternalUser();
 		
@@ -98,6 +120,10 @@ public class UpdateInformationView extends UpdateInformationDesign implements Se
 		return user;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#setUser(de.kaniba.model.InternalUser)
+	 */
+	@Override
 	public void setUser(InternalUser user) {
 		nameField.setValue(user.getName());
 		firstNameField.setValue(user.getFirstname());
@@ -108,10 +134,10 @@ public class UpdateInformationView extends UpdateInformationDesign implements Se
 		zipField.setValue(user.getAddress().getZip());
 	}
 
-	/**
-	 * Add a presenter to the list of presenters
-	 * @param presenter
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#setPresenter(de.kaniba.presenter.UpdateInformationPresenterInterface)
 	 */
+	@Override
 	public void setPresenter(UpdateInformationPresenterInterface presenter) {
 		this.presenter = presenter;
 	}

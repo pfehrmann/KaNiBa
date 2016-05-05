@@ -12,10 +12,11 @@ import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
 import de.kaniba.model.Question;
 import de.kaniba.model.User;
+import de.kaniba.uiInterfaces.SurveyPresenterInterface;
+import de.kaniba.uiInterfaces.SurveyViewInterface;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.NavigationUtils;
 import de.kaniba.utils.NotificationUtils;
-import de.kaniba.view.SurveyView;
 
 /**
  * Presenter to control the  SurveyView
@@ -27,9 +28,9 @@ public class SurveyPresenter implements SurveyPresenterInterface {
 	
 	private Bar bar;
 	private List<Question> questionsForBar;
-	private SurveyView view;
+	private SurveyViewInterface view;
 
-	public SurveyPresenter(SurveyView view) {
+	public SurveyPresenter(SurveyViewInterface view) {
 		this.view = view;
 		view.setPresenter(this);
 	}

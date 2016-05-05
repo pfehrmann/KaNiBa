@@ -3,7 +3,6 @@ package de.kaniba.view;
 import java.util.Collection;
 import java.util.List;
 
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.BrowserWindowResizeEvent;
@@ -18,14 +17,15 @@ import com.vaadin.ui.UI;
 import de.kaniba.components.SearchElement;
 import de.kaniba.designs.SearchDesign;
 import de.kaniba.model.Bar;
-import de.kaniba.presenter.SearchPresenterInterface;
+import de.kaniba.uiInterfaces.SearchPresenterInterface;
+import de.kaniba.uiInterfaces.SearchViewInterface;
 
 /**
  * The View for Searching
  * @author Philipp
  *
  */
-public class SearchView extends SearchDesign implements View {
+public class SearchView extends SearchDesign implements SearchViewInterface {
 	private static final long serialVersionUID = 1L;
 	public static final String NAME = "search";
 	protected GoogleMap map;
@@ -94,10 +94,10 @@ public class SearchView extends SearchDesign implements View {
 		return map;
 	}
 
-	/**
-	 * Sets the markers for the bars on the map
-	 * @param bars
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.SearchViewInterface#displayBarsOnMap(java.util.List)
 	 */
+	@Override
 	public void displayBarsOnMap(List<Bar> bars) {
 		Collection<GoogleMapMarker> markers = map.getMarkers();
 
@@ -119,6 +119,10 @@ public class SearchView extends SearchDesign implements View {
 		presenter.updateSearchView(searchBar.getSearchValue());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.SearchViewInterface#setSearchResults(java.util.List)
+	 */
+	@Override
 	public void setSearchResults(List<SearchElement> elements) {
 		this.resultList.removeAllComponents();
 		resultList.addComponent(searchBar);
@@ -127,10 +131,10 @@ public class SearchView extends SearchDesign implements View {
 		}
 	}
 
-	/**
-	 * Add an presenter to the list of presenters. It will be called on various events.
-	 * @param presenter
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.SearchViewInterface#setPresenter(de.kaniba.presenter.SearchPresenterInterface)
 	 */
+	@Override
 	public void setPresenter(SearchPresenterInterface presenter) {
 		this.presenter = presenter;
 

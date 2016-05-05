@@ -9,10 +9,11 @@ import com.vaadin.ui.Button.ClickEvent;
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.User;
+import de.kaniba.uiInterfaces.UpdateInformationPresenterInterface;
+import de.kaniba.uiInterfaces.UpdateInformationViewInterface;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.NotificationUtils;
 import de.kaniba.utils.Utils;
-import de.kaniba.view.UpdateInformationView;
 
 /**
  * This presenter handels the logic for updating personal informations
@@ -24,14 +25,14 @@ public class UpdateInformationPresenter implements UpdateInformationPresenterInt
 	private static final long serialVersionUID = 1L;
 	
 	private InternalUser user;
-	private UpdateInformationView view;
+	private UpdateInformationViewInterface view;
 	private VaadinSession session;
 
 	/**
 	 * Initiate with a the view to handle
 	 * @param view
 	 */
-	public UpdateInformationPresenter(UpdateInformationView view) {
+	public UpdateInformationPresenter(UpdateInformationViewInterface view) {
 		this.view = view;
 
 		session = Utils.getSession();
@@ -43,7 +44,7 @@ public class UpdateInformationPresenter implements UpdateInformationPresenterInt
 		view.setPresenter(this);
 	}
 
-	public UpdateInformationView getView() {
+	public UpdateInformationViewInterface getView() {
 		return view;
 	}
 

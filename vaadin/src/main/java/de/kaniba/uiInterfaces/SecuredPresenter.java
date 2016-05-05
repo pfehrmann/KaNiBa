@@ -1,4 +1,4 @@
-package de.kaniba.presenter;
+package de.kaniba.uiInterfaces;
 
 public interface SecuredPresenter {
 	/**
