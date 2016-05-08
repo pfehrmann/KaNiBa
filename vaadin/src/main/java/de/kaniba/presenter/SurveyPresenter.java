@@ -17,6 +17,7 @@ import de.kaniba.uiInterfaces.SurveyViewInterface;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.NavigationUtils;
 import de.kaniba.utils.NotificationUtils;
+import de.kaniba.view.BarView;
 
 /**
  * Presenter to control the  SurveyView
@@ -56,7 +57,7 @@ public class SurveyPresenter implements SurveyPresenterInterface {
 			}
 		}
 
-		NavigationUtils.navigateBack("Danke für deine Abstimmung");
+		NavigationUtils.navigateTo(BarView.NAME + "/" + bar.getBarID(), "Danke für deine Abstimmung");
 	}
 
 	public View getView() {
