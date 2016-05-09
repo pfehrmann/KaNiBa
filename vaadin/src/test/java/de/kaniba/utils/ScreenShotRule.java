@@ -39,7 +39,9 @@ public class ScreenShotRule extends TestWatcher {
 
     @Override
     protected void finished(Description description) {
-        browser.close();
+    	if(browser != null) {
+    		browser.quit();
+		}
     }
 
     private File getDestinationFile() {

@@ -12,16 +12,19 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.openqa.jetty.jetty.Server;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import com.vaadin.ui.Window;
 
 import de.kaniba.components.LoginPopupImpl;
 import de.kaniba.utils.ScreenShotRule;
+import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
+import kaniba.test.Utils;
 
 /**
  * @author phili
@@ -29,23 +32,26 @@ import io.github.bonigarcia.wdm.PhantomJsDriverManager;
  */
 public class LoginTest {
 	private LoginPopupImpl loginPopup;
-	private PhantomJSDriver driver;
+	private WebDriver driver;
 	
 	@BeforeClass
 	public static void initialize() {
 		PhantomJsDriverManager.getInstance().setup();
+		ChromeDriverManager.getInstance().setup();
+		Utils.prepareDatabaseForTests();
 	}
 	
 	@Before
 	public void setUp() throws Exception {
 		driver = new PhantomJSDriver();
+		driver.manage().window().setSize(new Dimension(1024, 768));
 		screenShootRule.setDriver(driver);
 		
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		
 		loginPopup = new LoginPopupImpl(new Window());
 	}
-
+	
 	@Rule public ScreenShotRule screenShootRule = new ScreenShotRule(driver);
 	
 	/**
@@ -55,10 +61,9 @@ public class LoginTest {
 	 */
 	@Test
 	public void testLoginPopupImpl() {
-		driver.get("localhost:9764");
+		driver.get("http://localhost:9764/");
+		
 		driver.manage().timeouts().implicitlyWait(90, TimeUnit.SECONDS);
-		System.out.println("first test");
-		System.out.println("Going to sleep");
 		
 		driver.findElement(By.id("login-button")).click();
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
