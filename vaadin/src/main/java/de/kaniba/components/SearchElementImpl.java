@@ -2,9 +2,8 @@ package de.kaniba.components;
 
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
-import com.vaadin.ui.UI;
-
 import de.kaniba.model.Bar;
+import de.kaniba.utils.NavigationUtils;
 import de.kaniba.view.BarView;
 
 /**
@@ -46,7 +45,7 @@ public class SearchElementImpl extends SearchElement {
 
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
-				UI.getCurrent().getNavigator().navigateTo(navigationState);
+				NavigationUtils.navigateTo(navigationState);
 			}
 		});
 	}

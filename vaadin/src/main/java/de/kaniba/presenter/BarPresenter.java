@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
-import com.vaadin.ui.UI;
 
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
@@ -17,6 +16,7 @@ import de.kaniba.model.User;
 import de.kaniba.uiInterfaces.BarPresenterInterface;
 import de.kaniba.uiInterfaces.BarViewInterface;
 import de.kaniba.utils.LoggingUtils;
+import de.kaniba.utils.NavigationUtils;
 import de.kaniba.view.SurveyView;
 
 public class BarPresenter implements BarPresenterInterface {
@@ -156,7 +156,7 @@ public class BarPresenter implements BarPresenterInterface {
 	 */
 	@Override
 	public void clickedSurvey() {
-		UI.getCurrent().getNavigator().navigateTo(SurveyView.NAME + "/" + bar.getBarID());
+		NavigationUtils.navigateTo(SurveyView.NAME + "/" + bar.getBarID());
 	}
 
 	@Override

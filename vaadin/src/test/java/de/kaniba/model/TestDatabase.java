@@ -7,8 +7,6 @@ import java.sql.SQLException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.experimental.categories.Categories.ExcludeCategory;
-
 import kaniba.test.Utils;
 
 public class TestDatabase {

@@ -1,9 +1,9 @@
 package de.kaniba.utils;
 
+import java.util.LinkedList;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.Page;
-import com.vaadin.ui.Notification.Type;
 
 import de.kaniba.uiInterfaces.SecuredView;
 
@@ -16,6 +16,11 @@ import com.vaadin.ui.UI;
  *
  */
 public final class NavigationUtils {
+	/**
+	 * Variable for keeping track of the navigation history, in case that moving back is neccesary.
+	 */
+	private static LinkedList<String> viewHistory = new LinkedList<>();
+	
 	public static final ViewChangeListener viewChangeListener = new ViewChangeListener() {
 		private static final long serialVersionUID = 1L;
 
@@ -26,7 +31,7 @@ public final class NavigationUtils {
 
 		@Override
 		public void afterViewChange(ViewChangeEvent event) {
-			// Nothing to do, only interested in the before event
+			viewHistory.add(event.getViewName() + "/" + event.getParameters());
 		}
 
 	};
@@ -53,35 +58,6 @@ public final class NavigationUtils {
 	 */
 	public static void navigateTo(String navigationState) {
 		UI.getCurrent().getNavigator().navigateTo(navigationState);
-	}
-
-	/**
-	 * Navigates to the previous page.
-	 */
-	public static void navigateBack() {
-		Page.getCurrent().getJavaScript().execute("window.history.back()");
-	}
-
-	/**
-	 * Navigates to the previous page and shows a message.
-	 * 
-	 * @param message
-	 */
-	public static void navigateBack(String message) {
-		navigateBack();
-		NotificationUtils.showNotification(message);
-	}
-
-	/**
-	 * Navigates back and shows a message of a specific type. Useful for error
-	 * messages.
-	 * 
-	 * @param message
-	 * @param type
-	 */
-	public static void navigateBack(String message, Type type) {
-		navigateBack();
-		NotificationUtils.showNotification(message, type);
 	}
 
 	/**
