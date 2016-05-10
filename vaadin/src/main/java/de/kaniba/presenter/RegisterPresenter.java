@@ -13,6 +13,7 @@ import de.kaniba.model.User;
 import de.kaniba.uiInterfaces.RegisterPresenterInterface;
 import de.kaniba.uiInterfaces.RegisterViewInterface;
 import de.kaniba.utils.LoggingUtils;
+import de.kaniba.utils.NavigationUtils;
 
 public class RegisterPresenter implements RegisterPresenterInterface {
 	private static final long serialVersionUID = 1L;
@@ -43,7 +44,7 @@ public class RegisterPresenter implements RegisterPresenterInterface {
 			((InternalUser) user).saveUser();
 			view.getSubmit().setComponentError(null);
 			
-			UI.getCurrent().getNavigator().navigateTo("");
+			NavigationUtils.navigateTo("", "Erfolgreich registriert");
 			
 			Window loginWindow = new Window("Login");
 			LoginPopupImpl popup = new LoginPopupImpl(loginWindow);

@@ -13,7 +13,6 @@ import com.vaadin.ui.Button.ClickEvent;
 import de.kaniba.designs.UpdateInformationDesign;
 import de.kaniba.model.Address;
 import de.kaniba.model.InternalUser;
-import de.kaniba.uiInterfaces.SecuredView;
 import de.kaniba.uiInterfaces.UpdateInformationPresenterInterface;
 import de.kaniba.uiInterfaces.UpdateInformationViewInterface;
 
