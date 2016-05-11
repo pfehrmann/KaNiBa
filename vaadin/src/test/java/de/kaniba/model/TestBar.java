@@ -3,6 +3,7 @@ package de.kaniba.model;
 import static org.junit.Assert.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -58,6 +59,13 @@ public class TestBar {
 	public void testGetBarFromParamsNegative() {
 		Bar bar = Bar.getBarFromParams("-1");
 		assertNull("Wrong bar read from database", bar);
+	}
+	
+	@Test
+	public void testGetTags() throws SQLException {
+		Bar bar = Database.readBar(1);
+		List<Tag> tags = bar.getTags();
+		assertEquals("Wrong amount of tags read", 3, tags.size());
 	}
 
 }

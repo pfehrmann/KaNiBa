@@ -1,10 +1,12 @@
 package de.kaniba.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import de.kaniba.utils.Utils;
 
-public class Pinboard {
+public class Pinboard implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private List<Message> messages;
 	private int barID;
 

@@ -1,5 +1,6 @@
 package de.kaniba.components;
 
+import com.vaadin.server.Page;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -44,6 +45,15 @@ public class InternalMenuImpl extends InternalMenu {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				UI.getCurrent().getNavigator().navigateTo(UpdateInformationView.NAME);
+			}
+		});
+		
+		aboutButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Page.getCurrent().open("https://kanibablog.wordpress.com/", "KaNiBa - Blog");
 			}
 		});
 	}

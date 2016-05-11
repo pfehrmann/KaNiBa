@@ -3,7 +3,6 @@ package de.kaniba.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.AbstractField;
@@ -16,13 +15,16 @@ import de.kaniba.model.Answer;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Question;
 import de.kaniba.presenter.SurveyPresenter;
+import de.kaniba.uiInterfaces.SecuredView;
+import de.kaniba.uiInterfaces.SurveyPresenterInterface;
+import de.kaniba.uiInterfaces.SurveyViewInterface;
 
 /**
  * This class represents the view of a survey.
  * @author Philipp
  *
  */
-public class SurveyView extends SurveyDesign implements View {
+public class SurveyView extends SurveyDesign implements SurveyViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -31,39 +33,32 @@ public class SurveyView extends SurveyDesign implements View {
 	 */
 	public static final String NAME = "survey";
 
-	private List<SurveyPresenter> presenters;
+	private SurveyPresenterInterface presenter;
 	private List<QuestionElement> questionElements;
 
 	/**
 	 * Creates the view. All the clicklisteners are created.
 	 */
 	public SurveyView() {
-		this.presenters = new ArrayList<>();
-
 		submitButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				for (SurveyInterface presenter : presenters) {
-					presenter.submitForm();
-				}
+				presenter.submitForm();
 			}
 		});
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		for (SurveyInterface presenter : presenters) {
-			presenter.enter(event);
-		}
+		presenter.enter(event);
 	}
 
-	/**
-	 * Returns a list of answers supplied by the user. If no answers was given,
-	 * the default value is returned.
-	 * 
-	 * @return Returns a list of answers.
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.SurveyViewInterface#getAnswers()
 	 */
+	@Override
 	public List<Answer> getAnswers() {
 		List<Answer> answers = new ArrayList<>();
 		InternalUser user = InternalUser.getUser();
@@ -92,29 +87,18 @@ public class SurveyView extends SurveyDesign implements View {
 		return answers;
 	}
 
-	/**
-	 * This adds a presenter to the view. Note that having multiple presenters
-	 * is possible, but not suggested. Contradictory actions can lead to
-	 * confusing results.
-	 * 
-	 * @param presenter
-	 *            The presenter to add. The presenters are called on enter and
-	 *            on button clicks.
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.SurveyViewInterface#setPresenter(de.kaniba.presenter.SurveyPresenterInterface)
 	 */
-	public void addPresenter(SurveyPresenter presenter) {
-		if (presenter != null) {
-			this.presenters.add(presenter);
-		}
+	@Override
+	public void setPresenter(SurveyPresenterInterface presenter) {
+		this.presenter = presenter;
 	}
 
-	/**
-	 * Shows the list of questions supplied as questions. The questions will be
-	 * automatically displayed as text fields or as checkboxes, depending on the
-	 * type of question. To retireve the answers, call getAnswers().
-	 * 
-	 * @param questions
-	 *            The questions to display
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.SurveyViewInterface#displayQuestions(java.util.List)
 	 */
+	@Override
 	public void displayQuestions(List<Question> questions) {
 		// Check for null
 		if (questions == null) {
@@ -160,5 +144,10 @@ public class SurveyView extends SurveyDesign implements View {
 		field.setWidth("100%");
 
 		return field;
+	}
+
+	@Override
+	public boolean checkRights(String parameters) {
+		return presenter.checkRights(parameters);
 	}
 }

@@ -1,11 +1,8 @@
 package de.kaniba.view;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
 
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.BrowserWindowResizeEvent;
@@ -20,19 +17,25 @@ import com.vaadin.ui.UI;
 import de.kaniba.components.SearchElement;
 import de.kaniba.designs.SearchDesign;
 import de.kaniba.model.Bar;
-import de.kaniba.presenter.SearchPresenter;
+import de.kaniba.uiInterfaces.SearchPresenterInterface;
+import de.kaniba.uiInterfaces.SearchViewInterface;
 
-public class SearchView extends SearchDesign implements View {
+/**
+ * The View for Searching
+ * @author Philipp
+ *
+ */
+public class SearchView extends SearchDesign implements SearchViewInterface {
+	private static final long serialVersionUID = 1L;
 	public static final String NAME = "search";
 	protected GoogleMap map;
-	private List<SearchPresenter> presenterList;
+	private SearchPresenterInterface presenter;
 
 	public SearchView() {
-		presenterList = new ArrayList<>();
-
 		map = createMap();
 		mapContainer.addComponent(map);
 		UI.getCurrent().getPage().addBrowserWindowResizeListener(new BrowserWindowResizeListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void browserWindowResized(BrowserWindowResizeEvent event) {
@@ -51,6 +54,7 @@ public class SearchView extends SearchDesign implements View {
 		});
 
 		searchBar.addSearchListener(new Listener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void componentEvent(Event event) {
@@ -79,6 +83,7 @@ public class SearchView extends SearchDesign implements View {
 		}
 
 		map.addMarkerClickListener(new MarkerClickListener() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void markerClicked(GoogleMapMarker clickedMarker) {
@@ -89,6 +94,10 @@ public class SearchView extends SearchDesign implements View {
 		return map;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.SearchViewInterface#displayBarsOnMap(java.util.List)
+	 */
+	@Override
 	public void displayBarsOnMap(List<Bar> bars) {
 		Collection<GoogleMapMarker> markers = map.getMarkers();
 
@@ -107,11 +116,13 @@ public class SearchView extends SearchDesign implements View {
 	}
 
 	private void firePresenter() {
-		for (SearchInterface presenter : presenterList) {
-			presenter.updateSearchView(searchBar.getSearchValue());
-		}
+		presenter.updateSearchView(searchBar.getSearchValue());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.SearchViewInterface#setSearchResults(java.util.List)
+	 */
+	@Override
 	public void setSearchResults(List<SearchElement> elements) {
 		this.resultList.removeAllComponents();
 		resultList.addComponent(searchBar);
@@ -120,18 +131,19 @@ public class SearchView extends SearchDesign implements View {
 		}
 	}
 
-	/**
-	 * Add an presenter to the list of presenters. It will be called on various events.
-	 * @param presenter
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.SearchViewInterface#setPresenter(de.kaniba.presenter.SearchPresenterInterface)
 	 */
-	public void registerPresenter(SearchPresenter presenter) {
-		this.presenterList.add(presenter);
+	@Override
+	public void setPresenter(SearchPresenterInterface presenter) {
+		this.presenter = presenter;
 
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		Page.getCurrent().setTitle("Suchen...");
+		presenter.enter(event);
 	}
 
 }

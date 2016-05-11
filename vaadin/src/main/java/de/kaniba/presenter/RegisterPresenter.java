@@ -10,23 +10,23 @@ import com.vaadin.ui.Window;
 import de.kaniba.components.LoginPopupImpl;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.User;
+import de.kaniba.uiInterfaces.RegisterPresenterInterface;
+import de.kaniba.uiInterfaces.RegisterViewInterface;
 import de.kaniba.utils.LoggingUtils;
-import de.kaniba.view.RegisterInterface;
-import de.kaniba.view.RegisterView;
 
-public class RegisterPresenter implements RegisterInterface {
-
-	private RegisterView view;
+public class RegisterPresenter implements RegisterPresenterInterface {
+	private static final long serialVersionUID = 1L;
+	private RegisterViewInterface view;
 
 	/**
 	 * Sets everything up.
 	 * @param model
 	 * @param view
 	 */
-	public RegisterPresenter(RegisterView view) {
+	public RegisterPresenter(RegisterViewInterface view) {
 		this.view = view;
 
-		view.addListener(this);
+		view.setPresenter(this);
 	}
 	
 	public View getView() {
@@ -60,6 +60,14 @@ public class RegisterPresenter implements RegisterInterface {
 			view.getSubmit().setComponentError(new UserError("Fehler beim speichern"));
 			LoggingUtils.exception(e);
 		}
+	}
+
+	@Override
+	public boolean checkRights(String parameters) {
+		if(User.isLoggedIn()) {
+			return false;
+		}
+		return true;
 	}
 
 }

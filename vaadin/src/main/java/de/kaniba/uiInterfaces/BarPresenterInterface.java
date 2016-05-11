@@ -1,10 +1,12 @@
-package de.kaniba.view;
+package de.kaniba.uiInterfaces;
+
+import java.io.Serializable;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 
 import de.kaniba.model.Rating;
 
-public interface BarInterface {
+public interface BarPresenterInterface extends Serializable {
 
 	void enter(ViewChangeEvent event);
 
@@ -13,5 +15,7 @@ public interface BarInterface {
 	void sendMessage(String message);
 
 	void clickedSurvey();
+
+	void updateTagList();
 
 }

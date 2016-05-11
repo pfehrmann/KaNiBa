@@ -9,25 +9,28 @@ import com.vaadin.ui.Notification.Type;
 import de.kaniba.model.Bar;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.User;
+import de.kaniba.uiInterfaces.EditBarPresenterInterface;
+import de.kaniba.uiInterfaces.EditBarViewInterface;
 import de.kaniba.utils.LoggingUtils;
-import de.kaniba.utils.Utils;
+import de.kaniba.utils.NavigationUtils;
+import de.kaniba.utils.NotificationUtils;
 import de.kaniba.view.BarView;
-import de.kaniba.view.EditBarInterface;
-import de.kaniba.view.EditBarView;
 
 /**
  * Logic for editing bars
  * @author Philipp
  *
  */
-public class EditBarPresenter implements EditBarInterface {
-	private EditBarView view;
+public class EditBarPresenter implements EditBarPresenterInterface {
+	private static final long serialVersionUID = 1L;
+	
+	private EditBarViewInterface view;
 	private Bar bar;
 	
 	/**
 	 * @param view The view to manage
 	 */
-	public EditBarPresenter(EditBarView view) {
+	public EditBarPresenter(EditBarViewInterface view) {
 		this.view = view;
 		view.setPresenter(this);
 	}
@@ -47,8 +50,8 @@ public class EditBarPresenter implements EditBarInterface {
 		bar.setDescription(read.getDescription());
 		try {
 			bar.saveBar();
-			Utils.navigateTo(BarView.NAME + "/" + bar.getBarID());
-			Utils.showNotification("Die Änderungen wurden erfolgreich gespeichert.");
+			NavigationUtils.navigateTo(BarView.NAME + "/" + bar.getBarID());
+			NotificationUtils.showNotification("Die Änderungen wurden erfolgreich gespeichert.");
 		} catch (SQLException e) {
 			LoggingUtils.exception(e);
 		}
@@ -60,15 +63,21 @@ public class EditBarPresenter implements EditBarInterface {
 	@Override
 	public boolean enter(ViewChangeEvent event) {
 		bar = Bar.getBarFromParams(event.getParameters());
-		if(bar.getBarOwner().getUserID() != InternalUser.getUser().getUserID()) {
-			Utils.navigateBack("Du darfst diese Bar nicht administrieren");
-			return false;
-		}
-		
 		view.setBar(bar);
+		return true;
+	}
+
+	@Override
+	public boolean checkRights(String parameters) {
+		bar = Bar.getBarFromParams(parameters);
 		
 		if(!User.isAdmin()) {
-			Utils.navigateBack("Um eine Bar bearbeiten zu können, musst du ein Bar Admin sein.", Type.ERROR_MESSAGE);
+			NotificationUtils.showNotification("Um eine Bar bearbeiten zu können, musst du ein Bar Admin sein.",
+					Type.ERROR_MESSAGE);
+			return false;
+		}
+		if(bar.getBarOwner().getUserID() != InternalUser.getUser().getUserID()) {
+			NotificationUtils.showNotification("Du darfst diese Bar nicht administrieren");
 			return false;
 		}
 		

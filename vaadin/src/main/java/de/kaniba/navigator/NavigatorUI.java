@@ -14,10 +14,12 @@ import com.vaadin.ui.UI;
 
 import de.kaniba.presenter.BarPresenter;
 import de.kaniba.presenter.EditBarPresenter;
+import de.kaniba.presenter.MyBarsPresenter;
 import de.kaniba.presenter.RegisterPresenter;
 import de.kaniba.presenter.SearchPresenter;
 import de.kaniba.presenter.SurveyPresenter;
 import de.kaniba.presenter.UpdateInformationPresenter;
+import de.kaniba.utils.NavigationUtils;
 import de.kaniba.view.BarView;
 import de.kaniba.view.EditBarView;
 import de.kaniba.view.MyBarsView;
@@ -61,13 +63,15 @@ public class NavigatorUI extends UI {
 		
 		// Create the Navigator and set it up
 		Navigator navigator = new Navigator(this, design.content);
+		navigator.addViewChangeListener(NavigationUtils.viewChangeListener);
 		
 		SearchView searchView = new SearchView();
 		SearchPresenter searchPresenter = new SearchPresenter(searchView);
 		navigator.addView("", searchView);
 		navigator.addView(SearchView.NAME, searchPresenter.getView());
 		
-		BarPresenter barPresenter = new BarPresenter();
+		BarView barView = new BarView();
+		BarPresenter barPresenter = new BarPresenter(barView);
 		navigator.addView(BarView.NAME, barPresenter.getView());
 
 		RegisterPresenter registerPresenter = new RegisterPresenter(new RegisterView());
@@ -85,7 +89,8 @@ public class NavigatorUI extends UI {
 		navigator.addView(EditBarView.NAME, editBarPresenter.getView());
 		
 		MyBarsView myBarsView = new MyBarsView();
-		navigator.addView(MyBarsView.NAME, myBarsView);
+		MyBarsPresenter myBarsPresenter = new MyBarsPresenter(myBarsView);
+		navigator.addView(MyBarsView.NAME, myBarsPresenter.getView());
 	}
 	
 	public void setMenu(Component menu) {

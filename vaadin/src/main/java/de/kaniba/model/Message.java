@@ -1,5 +1,6 @@
 package de.kaniba.model;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
@@ -11,7 +12,9 @@ import de.kaniba.utils.LoggingUtils;
  * @author Philipp
  *
  */
-public class Message {
+public class Message implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private int messageID;
 	private int userID;
 	private int barID;

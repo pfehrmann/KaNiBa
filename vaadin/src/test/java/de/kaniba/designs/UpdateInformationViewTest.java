@@ -12,10 +12,11 @@ import com.vaadin.ui.PasswordField;
 import de.kaniba.model.Address;
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
+import de.kaniba.uiInterfaces.UpdateInformationViewInterface;
 import de.kaniba.view.UpdateInformationView;
 
 public class UpdateInformationViewTest {
-	private UpdateInformationView view;
+	private UpdateInformationViewInterface view;
 	
 	@Before
 	public void setUp() {
