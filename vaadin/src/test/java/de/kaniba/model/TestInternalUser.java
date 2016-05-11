@@ -85,7 +85,7 @@ public class TestInternalUser {
 	
 	@Test
 	public void testLogin() throws SQLException {
-		InternalUser user = (InternalUser) original.login("philipp", "test");
+		InternalUser user = (InternalUser) original.loginDatabase("philipp", "test");
 		assertEquals("philipp", user.getEmail().getMail());
 	}
 

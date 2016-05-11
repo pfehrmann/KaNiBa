@@ -11,7 +11,14 @@ import java.util.List;
 
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
+
+import de.kaniba.components.BarAdminMenu;
+import de.kaniba.components.ExternalMenuImpl;
+import de.kaniba.components.InternalMenuImpl;
+import de.kaniba.model.User;
+import de.kaniba.navigator.NavigatorUI;
 
 /**
  * Utility class for various purposes.
@@ -83,5 +90,23 @@ public final class Utils {
 			LoggingUtils.exception(e);
 		}
 		return sb.toString();
+	}
+	
+	/**
+	 * Set the menu
+	 */
+	public static void updateMenu() {
+		((NavigatorUI) UI.getCurrent()).setMenu(getMenu());
+	}
+	
+	private static Component getMenu() {
+		if(User.isAdmin()) {
+			return new BarAdminMenu();
+		}
+		if(User.isLoggedIn()) {
+			return new InternalMenuImpl();
+		}
+		
+		return new ExternalMenuImpl();
 	}
 }

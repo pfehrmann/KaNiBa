@@ -4,10 +4,10 @@ import java.sql.SQLException;
 
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.UI;
 
-import de.kaniba.components.ExternalMenuImpl;
-import de.kaniba.navigator.NavigatorUI;
+import de.kaniba.utils.LoggingUtils;
+import de.kaniba.utils.NavigationUtils;
+import de.kaniba.utils.NotificationUtils;
 import de.kaniba.utils.Utils;
 
 /**
@@ -21,23 +21,16 @@ public class User {
 	 * Try to log a user in.
 	 * @param username The username
 	 * @param password The password
-	 * @return Retuns a user, or null.
+	 * @return Returns an internalUser, or null.
 	 * @throws SQLException
 	 */
-	public User login(String username, String password) throws SQLException {
-		return Database.logUserIn(username, password);
-	}
-
-	/**
-	 * Logs the user out.
-	 */
-	public static void logout() {
-		VaadinSession session = Utils.getSession();
-		session.setAttribute("loggedIn", false);
-		session.setAttribute("model", null);
-		session.setAttribute("admin", null);
-		((NavigatorUI) UI.getCurrent()).setMenu(new ExternalMenuImpl());
-		Notification.show("Erfolgreich ausgeloggt.");
+	public static InternalUser loginDatabase(String username, String password) {
+		try {
+			return Database.logUserIn(username, password);
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
+			return null;
+		}
 	}
 
 	/**
@@ -52,7 +45,7 @@ public class User {
 			admin = true;
 		}
 	
-		return admin && isLoggedIn();
+		return admin && User.isLoggedIn();
 	}
 
 	/**
@@ -68,5 +61,69 @@ public class User {
 		}
 	
 		return loggedIn;
+	}
+
+	/**
+	 * Logs the user out. Triggers listeners.
+	 */
+	public static void logout() {
+		VaadinSession session = Utils.getSession();
+		session.setAttribute("loggedIn", false);
+		session.setAttribute("model", null);
+		session.setAttribute("admin", null);
+		Utils.updateMenu();
+		Notification.show("Erfolgreich ausgeloggt.");
+		
+		// Navigate to a save state
+		NavigationUtils.navigateTo("");
+	}
+
+	/**
+	 * Loggs a user in with a password and a username
+	 * @param username The username
+	 * @param password The password.
+	 * @return Returns the user, or null if no user could be retrieved.
+	 */
+	public static InternalUser login(String username, String password) {
+	
+		// Wenn der User bereits eingeloggt ist, kann er sich nicht erneut
+		// einloggen
+		boolean loggedIn = isLoggedIn();
+		if(loggedIn) {
+			return null;
+		}
+	
+		// Versuchen einzuloggen
+		InternalUser user = loginDatabase(username, password);
+		if(user != null) {
+			loggedIn = true;
+		}
+		
+		// Prüfen, ob das einloggen geklappt hat und ob der User admin ist
+		Admin admin = null;
+		if (loggedIn) {
+			if (user.getClass().equals(Admin.class)) {
+				admin = (Admin) user;
+			}
+			
+			// Bestätigung für den User anzeigen
+			NotificationUtils.showNotification("Erfolgreich eingeloggt.");
+		}
+	
+		// Werte in die Session schreiben
+		VaadinSession session = Utils.getSession();
+		session.setAttribute("user", user);
+		session.setAttribute("admin", admin);
+		session.setAttribute("loggedIn", loggedIn);
+		
+		// Update the menu
+		Utils.updateMenu();
+		
+		// Return values
+		if(admin != null) {
+			return admin;
+		}
+		
+		return user;
 	}
 }
