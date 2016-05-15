@@ -15,7 +15,6 @@ import com.vaadin.ui.Button.ClickListener;
 
 import de.kaniba.utils.Callback;
 import de.kaniba.utils.NotificationUtils;
-import de.kaniba.utils.Utils;
 import de.kaniba.view.SearchView;
 
 /**

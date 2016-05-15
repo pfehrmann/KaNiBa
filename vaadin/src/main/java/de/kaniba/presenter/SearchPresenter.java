@@ -13,7 +13,6 @@ import de.kaniba.model.Database;
 import de.kaniba.uiInterfaces.SearchPresenterInterface;
 import de.kaniba.uiInterfaces.SearchViewInterface;
 import de.kaniba.utils.LoggingUtils;
-import de.kaniba.view.SearchView;
 
 /**
  * Logic for the search

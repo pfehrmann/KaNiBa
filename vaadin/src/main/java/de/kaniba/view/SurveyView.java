@@ -14,8 +14,6 @@ import de.kaniba.designs.SurveyDesign;
 import de.kaniba.model.Answer;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Question;
-import de.kaniba.presenter.SurveyPresenter;
-import de.kaniba.uiInterfaces.SecuredView;
 import de.kaniba.uiInterfaces.SurveyPresenterInterface;
 import de.kaniba.uiInterfaces.SurveyViewInterface;
 
