@@ -3,7 +3,6 @@ package de.kaniba.model;
 import java.sql.SQLException;
 
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Notification;
 
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.NavigationUtils;
@@ -72,7 +71,7 @@ public class User {
 		session.setAttribute("model", null);
 		session.setAttribute("admin", null);
 		Utils.updateMenu();
-		Notification.show("Erfolgreich ausgeloggt.");
+		NotificationUtils.showNotification("Erfolgreich ausgeloggt.");
 		
 		// Navigate to a save state
 		NavigationUtils.navigateTo("");
