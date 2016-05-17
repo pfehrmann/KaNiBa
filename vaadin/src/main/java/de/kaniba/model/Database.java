@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.sql.Date;
 
 import de.kaniba.utils.LoggingUtils;
+import kaniba.test.TestDatabaseConnectionCreater;
 
 /**
  * Eine Klasse, die Zugriff auf die Datenbak abstrahiert. Die Zugriffe sind alle
@@ -57,6 +58,13 @@ public final class Database {
 
 	private static ConnectionCreater connectionCreater = new DefaultDatabaseConnectionCreater();
 
+	static {
+		if(System.getenv("testMode") != null) {
+			System.out.println("Switching to test mode");
+			connectionCreater = new TestDatabaseConnectionCreater();
+		}
+	}
+	
 	private Database() {
 		// May not be instanciated
 	}
