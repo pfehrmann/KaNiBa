@@ -14,7 +14,7 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
-import de.kaniba.components.BarAdminMenu;
+import de.kaniba.components.BarAdminMenuImpl;
 import de.kaniba.components.ExternalMenuImpl;
 import de.kaniba.components.InternalMenuImpl;
 import de.kaniba.model.User;
@@ -101,7 +101,7 @@ public final class Utils {
 
 	private static Component getMenu() {
 		if (User.isAdmin()) {
-			return new BarAdminMenu();
+			return new BarAdminMenuImpl();
 		}
 		if (User.isLoggedIn()) {
 			return new InternalMenuImpl();
