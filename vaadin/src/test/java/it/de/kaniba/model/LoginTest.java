@@ -3,39 +3,29 @@
  */
 package it.de.kaniba.model;
 
-import static org.junit.Assert.*;
-
 import java.util.concurrent.TimeUnit;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
+import java.util.regex.Pattern;
+import org.junit.*;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
-import com.vaadin.ui.Window;
-
-import de.kaniba.components.LoginPopupImpl;
 import de.kaniba.utils.ScreenShotRule;
-import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
 import kaniba.test.Utils;
 
 /**
- * @author phili
+ * @author Philipp
  *
  */
 public class LoginTest {
-	private LoginPopupImpl loginPopup;
 	private WebDriver driver;
 	
 	@BeforeClass
 	public static void initialize() {
 		PhantomJsDriverManager.getInstance().setup();
-		ChromeDriverManager.getInstance().setup();
 		Utils.prepareDatabaseForTests();
 	}
 	
@@ -46,8 +36,7 @@ public class LoginTest {
 		screenShootRule.setDriver(driver);
 		
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		
-		loginPopup = new LoginPopupImpl(new Window());
+		Utils.prepareDatabaseForTests();
 	}
 	
 	@Rule public ScreenShotRule screenShootRule = new ScreenShotRule(driver);
