@@ -22,6 +22,7 @@
 		<vaadin.version>7.5.8</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
+		<jetty.port>9764</jetty.port>
 		<project.source.version>1.7</project.source.version>
 		<project.target.version>1.7</project.target.version>
 		<project.encoding>UTF-8</project.encoding>
@@ -31,12 +32,14 @@
 		<maven.compiler.version>3.3</maven.compiler.version>
 
 		<!-- SonarQube properties -->
-		<sonar.jacoco.itReportPath>${project.basedir}/reports/jacoco-it.exec</sonar.jacoco.itReportPath>
+		<sonar.jacoco.reportPath>${project.basedir}/target/reports/jacoco-ut.exec</sonar.jacoco.reportPath>
+		<sonar.jacoco.itReportPath>${project.basedir}/target/reports/jacoco-it.exec</sonar.jacoco.itReportPath>
 		<sonar.host.url>http://193.196.7.25</sonar.host.url>
 		<sonar.projectName>KaNiBa</sonar.projectName>
 		<sonar.scm.provider>git</sonar.scm.provider>
 		<sonar.links.scm>https://github.com/Zuseban/KaNiBa</sonar.links.scm>
 		<sonar.links.homepage>http://www.kaniba.de</sonar.links.homepage>
+		<sonar.tests>${project.basedir}/src/test</sonar.tests>
 	</properties>
 
 	<dependencyManagement>
@@ -265,28 +268,15 @@
 					<stopPort>9999</stopPort>
 					<httpConnector>
 						<!--host>localhost</host -->
-						<port>9764</port>
+						<port>${jetty.port}</port>
 					</httpConnector>
+					<systemProperties>
+						<systemProperty>
+							<name>testMode</name>
+							<value>true</value>
+						</systemProperty>
+					</systemProperties>
 				</configuration>
-				<executions>
-					<execution>
-						<id>start-jetty</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>start</goal>
-						</goals>
-						<configuration>
-							<scanIntervalSeconds>0</scanIntervalSeconds>
-						</configuration>
-					</execution>
-					<execution>
-						<id>stop-jetty</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>stop</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 
@@ -354,8 +344,10 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-failsafe-plugin</artifactId>
+
 						<configuration>
 							<argLine>${jacoco.agent.it.arg}</argLine>
+
 							<!-- Specific to generate mapping between tests and covered code -->
 							<properties>
 								<property>
@@ -363,8 +355,7 @@
 									<value>org.sonar.java.jacoco.JUnitListener</value>
 								</property>
 							</properties>
-							<!-- Let's put failsafe reports with surefire to have access to tests 
-								failures/success reports in sonar -->
+							<testFailureIgnore>true</testFailureIgnore>
 						</configuration>
 					</plugin>
 					<plugin>
@@ -398,6 +389,49 @@
 									<propertyName>jacoco.agent.it.arg</propertyName>
 									<append>true</append>
 								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-maven-plugin</artifactId>
+						<version>${jetty.plugin.version}</version>
+						<configuration>
+							<scanIntervalSeconds>2</scanIntervalSeconds>
+							<stopKey>foo</stopKey>
+							<stopPort>9999</stopPort>
+							<httpConnector>
+								<!--host>localhost</host -->
+								<port>${jetty.port}</port>
+							</httpConnector>
+							<systemProperties>
+								<systemProperty>
+									<name>testMode</name>
+									<value>true</value>
+								</systemProperty>
+							</systemProperties>
+						</configuration>
+						<executions>
+							<execution>
+								<id>start-jetty</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>run-forked</goal>
+								</goals>
+								<configuration>
+									<scanIntervalSeconds>0</scanIntervalSeconds>
+									<daemon>true</daemon>
+									<waitForChild>false</waitForChild>
+									<maxStartupLines>200</maxStartupLines>
+									<jvmArgs>${jacoco.agent.it.arg} -DtestMode=true -Djetty.port=${jetty.port}</jvmArgs>
+								</configuration>
+							</execution>
+							<execution>
+								<id>stop-jetty</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
 							</execution>
 						</executions>
 					</plugin>

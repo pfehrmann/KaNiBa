@@ -14,7 +14,7 @@ import de.kaniba.utils.LoggingUtils;
  * @author phili
  *
  */
-final class TestDatabaseConnectionCreater implements ConnectionCreater {
+final public class TestDatabaseConnectionCreater implements ConnectionCreater {
 	@Override
 	public Connection verbindung() throws SQLException {
 		try {

@@ -62,7 +62,10 @@ public class BarView extends BarDesign implements BarViewInterface {
 		super.removeComponent(leftGrid);
 		super.addComponent(leftGrid, 0, 0, 0, 1);
 
+		// Make sure, that at least something is shown...
 		infoPanel.setContent(new Label("Keine Beschreibung verfügbar", ContentMode.HTML));
+		
+		// Setup the map
 		map = new GoogleMap("apiKey", null, "german");
 		map.setSizeFull();
 		map.setZoom(DEFAULT_ZOOM);
@@ -71,11 +74,13 @@ public class BarView extends BarDesign implements BarViewInterface {
 		super.setRowExpandRatio(0, 1.0F);
 		super.addComponent(map, 1, 0);
 
+		// Find the path to the bar image
 		String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 		FileResource resource = new FileResource(new File(basepath + "/WEB-INF/images/stoevchen.png"));
 		barImage.setHeightUndefined();
 		barImage.setSource(resource);
 
+		// add rate clicklistners
 		rateButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -85,6 +90,7 @@ public class BarView extends BarDesign implements BarViewInterface {
 			}
 		});
 
+		// add listeners to all stars
 		starTotal.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 			
@@ -215,9 +221,16 @@ public class BarView extends BarDesign implements BarViewInterface {
 				LoggingUtils.exception(e);
 			}
 			
+			// only display a message that has a user
 			if(user != null) {
-				StringBuilder text = new StringBuilder("");
+				
+				// format the message
+				StringBuilder text = new StringBuilder();
+				
+				// append the date
 				text.append(element.getTime().getDate() + "." + element.getTime().getMonth() + "." + (element.getTime().getYear()+1900) + "");
+				
+				// append the username
 				text.append(" <b>" + user.getFirstname() + " " + user.getName().substring(0, 1) + "." + "</b>: ");
 				text.append(element.getMessageText());
 				CssLayout layout = new CssLayout();
