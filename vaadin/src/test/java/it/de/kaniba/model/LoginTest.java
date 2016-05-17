@@ -48,6 +48,8 @@ public class LoginTest {
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		
 		loginPopup = new LoginPopupImpl(new Window());
+		
+		Utils.prepareDatabaseForTests();
 	}
 	
 	@Rule public ScreenShotRule screenShootRule = new ScreenShotRule(driver);
