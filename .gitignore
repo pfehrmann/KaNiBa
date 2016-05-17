@@ -3,20 +3,20 @@
 #################
 
 *.pydevproject
-.project
-.metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.classpath
-.settings/
-.loadpath
+vaadin/.project
+vaadin/.metadata
+vaadin/bin/
+vaadin/tmp/
+vaadin/*.tmp
+vaadin/*.bak
+vaadin/*.swp
+vaadin/*~.nib
+vaadin/local.properties
+vaadin/.classpath
+vaadin/.settings/
+vaadin/.loadpath
 
-vaadin/target/
+vaadin/target
 
 # External tool builders
 .externalToolBuilders/
@@ -216,3 +216,6 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+vaadin/reports/jacoco-it.exec
+vaadin/screenShot.png
+vaadin/reports/jacoco.exec
