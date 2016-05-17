@@ -17,6 +17,7 @@ import de.kaniba.presenter.EditBarPresenter;
 import de.kaniba.presenter.MyBarsPresenter;
 import de.kaniba.presenter.RegisterPresenter;
 import de.kaniba.presenter.SearchPresenter;
+import de.kaniba.presenter.SuggestionsPresenter;
 import de.kaniba.presenter.SurveyPresenter;
 import de.kaniba.presenter.UpdateInformationPresenter;
 import de.kaniba.utils.NavigationUtils;
@@ -25,6 +26,7 @@ import de.kaniba.view.EditBarView;
 import de.kaniba.view.MyBarsView;
 import de.kaniba.view.RegisterView;
 import de.kaniba.view.SearchView;
+import de.kaniba.view.SuggestionsView;
 import de.kaniba.view.SurveyView;
 import de.kaniba.view.UpdateInformationView;
 
@@ -91,6 +93,10 @@ public class NavigatorUI extends UI {
 		MyBarsView myBarsView = new MyBarsView();
 		MyBarsPresenter myBarsPresenter = new MyBarsPresenter(myBarsView);
 		navigator.addView(MyBarsView.NAME, myBarsPresenter.getView());
+		
+		SuggestionsView suggestionsView = new SuggestionsView();
+		SuggestionsPresenter suggestionsPresenter = new SuggestionsPresenter(suggestionsView);
+		navigator.addView(SuggestionsView.NAME, suggestionsPresenter.getView());
 	}
 	
 	public void setMenu(Component menu) {
