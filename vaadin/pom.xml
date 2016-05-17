@@ -267,6 +267,12 @@
 						<!--host>localhost</host -->
 						<port>9764</port>
 					</httpConnector>
+					<systemProperties>
+						<systemProperty>
+							<name>testMode</name>
+							<value>true</value>
+						</systemProperty>
+					</systemProperties>
 				</configuration>
 				<executions>
 					<execution>
@@ -354,8 +360,10 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-failsafe-plugin</artifactId>
+
 						<configuration>
 							<argLine>${jacoco.agent.it.arg}</argLine>
+
 							<!-- Specific to generate mapping between tests and covered code -->
 							<properties>
 								<property>
@@ -363,8 +371,7 @@
 									<value>org.sonar.java.jacoco.JUnitListener</value>
 								</property>
 							</properties>
-							<!-- Let's put failsafe reports with surefire to have access to tests 
-								failures/success reports in sonar -->
+							<testFailureIgnore>true</testFailureIgnore>
 						</configuration>
 					</plugin>
 					<plugin>
