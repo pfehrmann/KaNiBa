@@ -20,10 +20,10 @@ public class FrameImplementation extends FrameDesign {
 
 			@Override
             public void buttonClick(ClickEvent event) {
-                if (menuContainer.getStyleName().contains("valo-menu-visible")) {
-                	menuContainer.removeStyleName("valo-menu-visible");
+                if (menuPart.getStyleName().contains("valo-menu-visible")) {
+                	menuPart.removeStyleName("valo-menu-visible");
                 } else {
-                	menuContainer.addStyleName("valo-menu-visible");
+                	menuPart.addStyleName("valo-menu-visible");
                 }
             }
 		});

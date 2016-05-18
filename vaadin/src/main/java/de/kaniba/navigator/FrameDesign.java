@@ -26,6 +26,7 @@ public class FrameDesign extends HorizontalLayout {
 	protected Image logo;
 	protected Button menuToggle;
 	protected VerticalLayout content;
+	protected CssLayout menuPart;
 
 	public FrameDesign() {
 		Design.read(this);
