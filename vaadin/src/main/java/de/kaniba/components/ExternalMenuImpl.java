@@ -6,6 +6,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
+import de.kaniba.navigator.NavigatorUI;
 import de.kaniba.utils.NavigationUtils;
 import de.kaniba.view.SearchView;
 
@@ -27,11 +28,13 @@ public class ExternalMenuImpl extends ExternalMenu {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				Window loginWindow = new Window("Login");
-				loginWindow.setContent(new LoginPopupImpl(loginWindow));
+				LoginPopupImpl popup = new LoginPopupImpl(loginWindow); 
+				loginWindow.setContent(popup);
 				loginWindow.setWidth("450px");
 				loginWindow.setResizable(false);
 				loginWindow.setModal(true);
 				loginWindow.setDraggable(false);
+				UI.getCurrent().getNavigator().addViewChangeListener(popup);
 				UI.getCurrent().addWindow(loginWindow);
 			}
 		});
