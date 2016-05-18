@@ -9,10 +9,10 @@ import com.vaadin.server.Page.BrowserWindowResizeListener;
 import com.vaadin.ui.UI;
 
 import de.kaniba.components.Map;
-import de.kaniba.components.Map.Coordinates;
 import de.kaniba.components.SearchElement;
 import de.kaniba.designs.SearchDesign;
 import de.kaniba.model.Bar;
+import de.kaniba.model.Coordinates;
 import de.kaniba.uiInterfaces.SearchPresenterInterface;
 import de.kaniba.uiInterfaces.SearchViewInterface;
 

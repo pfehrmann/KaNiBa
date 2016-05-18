@@ -16,6 +16,7 @@ import org.vaadin.addon.vol3.source.OLVectorSource;
 
 import com.vaadin.ui.CustomComponent;
 
+import de.kaniba.model.Coordinates;
 import de.kaniba.utils.NavigationUtils;
 
 /**
@@ -114,24 +115,6 @@ public class Map extends CustomComponent {
 	public void removeAllMarkers() {
 		while(!source.getFeatures().isEmpty()) {
 			source.removeFeatureById(source.getFeatures().get(0).getId());
-		}
-	}
-	
-	public static class Coordinates {
-		private double lat;
-		private double lon;
-		
-		public Coordinates(double lat, double lon) {
-			this.lat = lat;
-			this.lon = lon;
-		}
-		
-		public double getLat() {
-			return lat;
-		}
-		
-		public double getLon() {
-			return lon;
 		}
 	}
 }

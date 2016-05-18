@@ -20,9 +20,9 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 
 import de.kaniba.components.Map;
-import de.kaniba.components.Map.Coordinates;
 import de.kaniba.designs.BarDesign;
 import de.kaniba.model.Bar;
+import de.kaniba.model.Coordinates;
 import de.kaniba.model.Database;
 import de.kaniba.model.DisplayRating;
 import de.kaniba.model.InternalUser;
