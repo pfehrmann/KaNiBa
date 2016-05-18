@@ -1,19 +1,15 @@
 package de.kaniba.view;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.BrowserWindowResizeEvent;
 import com.vaadin.server.Page.BrowserWindowResizeListener;
-import com.vaadin.tapio.googlemaps.GoogleMap;
-import com.vaadin.tapio.googlemaps.client.GoogleMapControl;
-import com.vaadin.tapio.googlemaps.client.LatLon;
-import com.vaadin.tapio.googlemaps.client.events.MarkerClickListener;
-import com.vaadin.tapio.googlemaps.client.overlays.GoogleMapMarker;
 import com.vaadin.ui.UI;
 
+import de.kaniba.components.Map;
+import de.kaniba.components.Map.Coordinates;
 import de.kaniba.components.SearchElement;
 import de.kaniba.designs.SearchDesign;
 import de.kaniba.model.Bar;
@@ -28,11 +24,14 @@ import de.kaniba.uiInterfaces.SearchViewInterface;
 public class SearchView extends SearchDesign implements SearchViewInterface {
 	private static final long serialVersionUID = 1L;
 	public static final String NAME = "search";
-	protected GoogleMap map;
+	//protected GoogleMap map;
+	protected Map map;
 	private SearchPresenterInterface presenter;
 
 	public SearchView() {
-		map = createMap();
+		//map = createMap();
+		map = new Map();
+		map.setCenter(new Coordinates(49.0068901, 8.4036527));
 		mapContainer.addComponent(map);
 		UI.getCurrent().getPage().addBrowserWindowResizeListener(new BrowserWindowResizeListener() {
 			private static final long serialVersionUID = 1L;
@@ -66,55 +65,16 @@ public class SearchView extends SearchDesign implements SearchViewInterface {
 		}
 	}
 
-	private GoogleMap createMap() {
-		map = new GoogleMap("apiKey", null, "german");
-		map.setCenter(new LatLon(49.0068901, 8.4036527));
-		map.setSizeFull();
-		map.setZoom(12);
-		map.setMinZoom(4);
-		map.setMaxZoom(18);
-		map.removeControl(GoogleMapControl.MapType);
-		map.removeControl(GoogleMapControl.Pan);
-		map.removeControl(GoogleMapControl.Rotate);
-		map.removeControl(GoogleMapControl.Zoom);
-		map.removeControl(GoogleMapControl.StreetView);
-		map.removeControl(GoogleMapControl.Scale);
-
-		Collection<GoogleMapMarker> markers = map.getMarkers();
-		for (GoogleMapMarker marker : markers) {
-			map.removeMarker(marker);
-		}
-
-		map.addMarkerClickListener(new MarkerClickListener() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void markerClicked(GoogleMapMarker clickedMarker) {
-				Page.getCurrent().updateLocation("#!bar/" + clickedMarker.getId(), true);
-			}
-		});
-
-		return map;
-	}
-
 	/* (non-Javadoc)
 	 * @see de.kaniba.view.SearchViewInterface#displayBarsOnMap(java.util.List)
 	 */
 	@Override
 	public void displayBarsOnMap(List<Bar> bars) {
-		Collection<GoogleMapMarker> markers = map.getMarkers();
-
-		while (!markers.isEmpty()) {
-			GoogleMapMarker marker = markers.iterator().next();
-			map.removeMarker(marker);
-			map.getMarkers();
-		}
+		map.removeAllMarkers();
 
 		for (Bar b : bars) {
-			LatLon latLon = b.getLatLon();
-			GoogleMapMarker marker = new GoogleMapMarker(b.getName(), latLon, false);
-			marker.setId(b.getBarID());
-			map.addMarker(marker);
+			Coordinates coords = b.getLatLon();
+			map.addMarker(BarView.NAME + "/" + b.getBarID(), coords);
 		}
 	}
 

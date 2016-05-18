@@ -56,6 +56,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.vaadin.addon</groupId>
+			<artifactId>v-ol3</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+
+		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
 			<version>1.4.2</version>
@@ -72,12 +78,6 @@
 			<artifactId>cucumber-java</artifactId>
 			<version>${cucumber.version}</version>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.vaadin.tapio</groupId>
-			<artifactId>googlemaps</artifactId>
-			<version>1.2.1</version>
 		</dependency>
 
 		<dependency>
