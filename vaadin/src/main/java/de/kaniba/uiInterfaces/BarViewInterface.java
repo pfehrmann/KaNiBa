@@ -3,8 +3,8 @@ package de.kaniba.uiInterfaces;
 import java.util.List;
 
 import com.vaadin.navigator.View;
-import com.vaadin.tapio.googlemaps.client.LatLon;
 
+import de.kaniba.components.Map.Coordinates;
 import de.kaniba.model.Bar;
 import de.kaniba.model.DisplayRating;
 import de.kaniba.model.Message;
@@ -20,7 +20,7 @@ public interface BarViewInterface extends View {
 
 	void setBarLogo(Bar bar);
 
-	void setMapCoords(LatLon coords);
+	void setMapCoords(Coordinates coords);
 
 	void setBarName(String name);
 

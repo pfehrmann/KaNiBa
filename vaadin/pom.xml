@@ -56,6 +56,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.vaadin.addon</groupId>
+			<artifactId>v-ol3</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+
+		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
 			<version>1.4.2</version>
@@ -72,12 +78,6 @@
 			<artifactId>cucumber-java</artifactId>
 			<version>${cucumber.version}</version>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.vaadin.tapio</groupId>
-			<artifactId>googlemaps</artifactId>
-			<version>1.2.1</version>
 		</dependency>
 
 		<dependency>
@@ -136,8 +136,11 @@
 			For widgetset compilation, vaadin-client-compiler is automatically added 
 			on the compilation classpath by vaadin-maven-plugin so normally there is 
 			no need for an explicit dependency. -->
-		<!-- <dependency> <groupId>com.vaadin</groupId> <artifactId>vaadin-client-compiler</artifactId> 
-			<scope>provided</scope> </dependency> -->
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-client-compiler</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
@@ -423,7 +426,8 @@
 									<daemon>true</daemon>
 									<waitForChild>false</waitForChild>
 									<maxStartupLines>200</maxStartupLines>
-									<jvmArgs>${jacoco.agent.it.arg} -DtestMode=true -Djetty.port=${jetty.port}</jvmArgs>
+									<jvmArgs>${jacoco.agent.it.arg} -DtestMode=true
+										-Djetty.port=${jetty.port}</jvmArgs>
 								</configuration>
 							</execution>
 							<execution>

@@ -6,6 +6,7 @@ import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
@@ -36,10 +37,10 @@ import de.kaniba.view.UpdateInformationView;
 @Theme("mytheme")
 @Widgetset("de.kaniba.vaadin.MyAppWidgetset")
 @PreserveOnRefresh
-public class NavigatorUI extends UI {
+public class NavigatorUI extends UI implements ViewChangeListener {
 	private static final long serialVersionUID = 1L;
 	
-	private FrameDesign design;
+	private FrameImplementation design;
 	
 	/**
 	 * Create the navigator ui
@@ -51,7 +52,7 @@ public class NavigatorUI extends UI {
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
 		// Use the new design
-		design = new FrameDesign();
+		design = new FrameImplementation();
 		
 		// Add the logo to the menu
 		// TODO: Fix menu logo width and position
@@ -97,10 +98,34 @@ public class NavigatorUI extends UI {
 		SuggestionsView suggestionsView = new SuggestionsView();
 		SuggestionsPresenter suggestionsPresenter = new SuggestionsPresenter(suggestionsView);
 		navigator.addView(SuggestionsView.NAME, suggestionsPresenter.getView());
+		
+		navigator.addViewChangeListener(this);
 	}
 	
 	public void setMenu(Component menu) {
 		design.menuContainer.removeAllComponents();
 		design.menuContainer.addComponent(menu);
+	}
+	
+	/**
+	 * Set the visibility of the menu
+	 * @param visible
+	 */
+	public void setMenuVisibility (boolean visible) {
+		if(visible) {
+			design.menuPart.addStyleName("valo-menu-visible");
+			return;
+		}
+		design.menuPart.removeStyleName("valo-menu-visible");
+	}
+
+	@Override
+	public boolean beforeViewChange(ViewChangeEvent event) {
+		return true;
+	}
+
+	@Override
+	public void afterViewChange(ViewChangeEvent event) {
+		setMenuVisibility(false);
 	}
 }

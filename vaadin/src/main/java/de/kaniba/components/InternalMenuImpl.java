@@ -16,7 +16,6 @@ import de.kaniba.view.UpdateInformationView;
  *
  */
 public class InternalMenuImpl extends InternalMenu {
-	
 	private static final long serialVersionUID = 1L;
 
 	/**
