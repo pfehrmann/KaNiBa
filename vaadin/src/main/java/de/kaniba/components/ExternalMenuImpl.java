@@ -27,6 +27,9 @@ public class ExternalMenuImpl extends ExternalMenu {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
+				// Hide the menu
+				((NavigatorUI) UI.getCurrent()).setMenuVisibility(false);
+				
 				Window loginWindow = new Window("Login");
 				LoginPopupImpl popup = new LoginPopupImpl(loginWindow); 
 				loginWindow.setContent(popup);
