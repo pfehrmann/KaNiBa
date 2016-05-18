@@ -39,16 +39,7 @@ public class SearchView extends SearchDesign implements SearchViewInterface {
 
 			@Override
 			public void browserWindowResized(BrowserWindowResizeEvent event) {
-				if (event.getWidth() < 460) {
-					mapContainer.removeComponent(map);
-					resultList.setWidth("100%");
-					mapContainer.setWidth("0%");
-				} else {
-					mapContainer.addComponent(map);
-					resultList.setWidth("20%");
-					mapContainer.setWidth("80%");
-				}
-
+				checkMapVisibility();
 			}
 
 		});
@@ -61,6 +52,18 @@ public class SearchView extends SearchDesign implements SearchViewInterface {
 				firePresenter();
 			}
 		});
+	}
+	
+	private void checkMapVisibility() {
+		if(Page.getCurrent().getBrowserWindowWidth() <= 800) {
+			mapContainer.removeComponent(map);
+			resultList.setWidth("100%");
+			mapContainer.setWidth("0%");
+		} else {
+			mapContainer.addComponent(map);
+			resultList.setWidth("20%");
+			mapContainer.setWidth("80%");
+		}
 	}
 
 	private GoogleMap createMap() {
@@ -144,6 +147,7 @@ public class SearchView extends SearchDesign implements SearchViewInterface {
 	public void enter(ViewChangeEvent event) {
 		Page.getCurrent().setTitle("Suchen...");
 		presenter.enter(event);
+		checkMapVisibility();
 	}
 
 }
