@@ -16,12 +16,12 @@
    <vaadin-css-layout style-name="valo-menu" responsive> 
     <vaadin-css-layout style-name="valo-menu-part" responsive> 
      <vaadin-horizontal-layout style-name="valo-menu-title" width-full _id="menuTitle"> 
-      <vaadin-image source="http://kaniba.de/APP/connector/0/20/source/logo.png" id="logo" width="110px" height="110px" _id="logo"></vaadin-image> 
+      <vaadin-image source="http://kaniba.de/APP/connector/0/20/source/logo.png" id="logo" style-name="logo-style" _id="logo"></vaadin-image> 
      </vaadin-horizontal-layout> 
      <vaadin-button icon="fonticon://FontAwesome/f03a" style-name="primary small valo-menu-toggle" plain-text _id="menuToggle">
        Menu 
      </vaadin-button> 
-     <vaadin-css-layout _id="menuContainer">
+     <vaadin-css-layout _id="menuContainer" responsive>
       <components-external-menu-impl></components-external-menu-impl> 
      </vaadin-css-layout>
     </vaadin-css-layout> 

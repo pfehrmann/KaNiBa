@@ -39,7 +39,7 @@ import de.kaniba.view.UpdateInformationView;
 public class NavigatorUI extends UI {
 	private static final long serialVersionUID = 1L;
 	
-	private FrameDesign design;
+	private FrameImplementation design;
 	
 	/**
 	 * Create the navigator ui
@@ -51,7 +51,7 @@ public class NavigatorUI extends UI {
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
 		// Use the new design
-		design = new FrameDesign();
+		design = new FrameImplementation();
 		
 		// Add the logo to the menu
 		// TODO: Fix menu logo width and position
