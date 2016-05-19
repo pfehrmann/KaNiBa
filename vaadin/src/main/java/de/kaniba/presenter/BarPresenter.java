@@ -61,6 +61,8 @@ public class BarPresenter implements BarPresenterInterface {
 		view.setBarLogo(bar);
 		view.setTags(bar.getTags(), bar.getBarID());
 		
+		DisplayRating rating = bar.getDisplayRating();
+		
 		if (User.isLoggedIn()) {
 			Rating userRating = null;
 			try {
@@ -68,13 +70,13 @@ public class BarPresenter implements BarPresenterInterface {
 			} catch (SQLException e) {
 				LoggingUtils.exception(e);
 			}
-
-			if (userRating != null) {
-				view.setBarRating(new DisplayRating(userRating));
+			
+			if(userRating != null) {
+				rating = new DisplayRating(userRating);
 			}
-		} else {
-			view.setBarRating(bar.getDisplayRating());
 		}
+		
+		view.setBarRating(rating);
 		settingUp = false;
 	}
 
