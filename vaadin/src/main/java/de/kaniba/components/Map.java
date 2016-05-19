@@ -26,23 +26,23 @@ import de.kaniba.utils.NavigationUtils;
 public class Map extends CustomComponent {
 	private static final long serialVersionUID = 1L;
 	
-	private OLMap map;
+	private OLMap openMap;
 	private OLTileLayer baseLayer;
 	private OLVectorLayer vectorLayer;
 	private OLVectorSource source;
 
 	public Map() {
-		map = new OLMap();
-		map.setView(createView());
-		map.setSizeFull();
+		openMap = new OLMap();
+		openMap.setView(createView());
+		openMap.setSizeFull();
 		baseLayer = new OLTileLayer(createTileSource());
 		source = new OLVectorSource();
 		vectorLayer = new OLVectorLayer(source);
 		vectorLayer.setLayerVisible(true);
-		map.addLayer(baseLayer);
-		map.addLayer(vectorLayer);
+		openMap.addLayer(baseLayer);
+		openMap.addLayer(vectorLayer);
 		setSizeFull();
-		setCompositionRoot(map);
+		setCompositionRoot(openMap);
 	}
 
 	private OLView createView() {
@@ -67,7 +67,7 @@ public class Map extends CustomComponent {
 	 * @param lon
 	 */
 	public void setCenter(Coordinates coords) {
-		map.getView().setCenter(coords.getLon(), coords.getLat());
+		openMap.getView().setCenter(coords.getLon(), coords.getLat());
 	}
 
 	/**
@@ -95,9 +95,8 @@ public class Map extends CustomComponent {
 		feature.setId(id);
 
 		source.addFeature(feature);
-		//source.updateFeature(feature);
 		
-		map.addClickListener(new ClickListener() {
+		openMap.addClickListener(new ClickListener() {
 			
 			@Override
 			public void onClick(OLClickEvent clickEvent) {
