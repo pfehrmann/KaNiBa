@@ -3,6 +3,7 @@ package de.kaniba.model;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.vaadin.server.VaadinSession;
 
@@ -181,6 +182,10 @@ public class InternalUser extends User implements Serializable {
 		}
 
 		return internalUser;
+	}
+
+	public List<Bar> getSuggestions() throws SQLException {
+		return Database.getSuggestions(userID);
 	}
 
 }

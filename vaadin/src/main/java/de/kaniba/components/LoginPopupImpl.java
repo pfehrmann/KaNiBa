@@ -1,13 +1,9 @@
 package de.kaniba.components;
 
-import java.sql.SQLException;
-
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.UserError;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;

@@ -163,9 +163,9 @@ public final class Database {
 		List<Bar> bars = new ArrayList<>();
 
 		ResultSet rs = null;
-		String sql = "SELECT barID, SUM(generalRating) " + "FROM RATINGS WHERE userID IN "
+		String sql = "SELECT barID, SUM(generalRating) " + "FROM ratings WHERE userID IN "
 				+ "(SELECT userID FROM ratings WHERE barID IN "
-				+ "(SELECT barID FROM ratings WHERE userID = ?) AND userID != ?) "
+				+ "(SELECT barID FROM ratings WHERE userID = ? AND generalRating > 3) AND userID != ?) "
 				+ "GROUP BY barID ORDER BY SUM(generalRating) DESC LIMIT 5";
 
 		try (Connection con = verbindung(); PreparedStatement statement = con.prepareStatement(sql);) {

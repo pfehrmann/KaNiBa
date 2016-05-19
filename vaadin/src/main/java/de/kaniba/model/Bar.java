@@ -12,8 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.vaadin.tapio.googlemaps.client.LatLon;
-
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 
@@ -310,24 +308,24 @@ public class Bar implements Serializable {
 	 *            The bar to search for
 	 * @return Returns the coordinates.
 	 */
-	public LatLon getLatLon() {
+	public Coordinates getLatLon() {
 		String jsonString;
-		String url = "http://maps.google.com/maps/api/geocode/json?address=" + prepareAddressForGoogle()
-				+ "&sensor=false";
+		String url = "http://nominatim.openstreetmap.org/search?" + prepareQueryForGeocoding();
+		
 		try {
 			jsonString = Utils.downloadURL(url);
 		} catch (MalformedURLException e) {
 			jsonString = "";
 			LoggingUtils.exception(e);
 		}
-
+		
 		try {
-			JSONArray results = new JSONObject(jsonString).getJSONArray("results");
-			JSONObject result = (JSONObject) results.get(0);
-
-			double lat = result.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
-			double lon = result.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
-			return new LatLon(lat, lon);
+			JSONArray array = new JSONArray(jsonString);
+			JSONObject index0 = (JSONObject) array.get(0);
+			double lon = index0.getDouble("lon");
+			double lat = index0.getDouble("lat");
+			
+			return new Coordinates(lat, lon);
 		} catch (JSONException e) {
 			LoggingUtils.exception(e);
 			LoggingUtils.log(url);
@@ -336,22 +334,25 @@ public class Bar implements Serializable {
 		}
 	}
 
-	private String prepareAddressForGoogle() {
-
-		String preparedAddress = "";
-		preparedAddress += getAddress().getStreet();
-		preparedAddress += " " + getAddress().getNumber();
-		preparedAddress += "," + getAddress().getZip();
-		preparedAddress += " " + getAddress().getCity();
-
-		try {
-			preparedAddress = URLEncoder.encode(preparedAddress, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			LoggingUtils.exception(e);
-			return null;
-		}
+	private String prepareQueryForGeocoding() {
+		String preparedAddress = "format=json";
+		preparedAddress += "&street=" + encodeString(getAddress().getNumber()) + "%20"
+				+ encodeString(getAddress().getStreet());
+		preparedAddress += "&postalcode=" + encodeString(getAddress().getZip());
+		preparedAddress += "&city=" + encodeString(getAddress().getCity());
 
 		return preparedAddress;
+	}
+	
+	private String encodeString(String string) {
+		String encoded = "";
+		try {
+			encoded = URLEncoder.encode(string, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			LoggingUtils.exception(e);
+		}
+		
+		return encoded;
 	}
 
 	/**
