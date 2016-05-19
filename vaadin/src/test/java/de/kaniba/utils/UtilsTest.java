@@ -2,24 +2,18 @@ package de.kaniba.utils;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
 
 public class UtilsTest {
 
 	@Test
 	public void testCopyList() {
+		System.out.println("Copy list");
 		List<String> original = Arrays.asList("Hallo", "Bla", "Blub");
 		List<String> copy = Utils.copyList(original);
 
@@ -31,7 +25,9 @@ public class UtilsTest {
 	}
 
 	@Test
+	@Ignore
 	public void testDownloadURL() throws MalformedURLException {
+		System.out.println("testDownloadURL");
 		String url = "http://kaniba.de/ROOT_DEFAULT/";
 		String downloaded = Utils.downloadURL(url);
 		assertEquals("Strings not equal. The test might be broken...",
@@ -58,20 +54,5 @@ public class UtilsTest {
 						+ "<p>NOTE: For security reasons, using the manager webapp is restricted to users with role \"manager-gui\". The host-manager webapp is restricted to users with role \"admin-gui\". Users are defined in <code>/etc/tomcat7/tomcat-users.xml</code>.</p>\n"
 						+ "\n" + "</body>\n" + "</html>\n",
 				downloaded);
-	}
-
-	public static void capture(WebDriver driver) {
-		File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-		String path = "";
-		String fn = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()).toString(); 
-		path += fn;
-		path += ".jpg";
-		
-		try {
-			FileUtils.copyFile(src, new File(path));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

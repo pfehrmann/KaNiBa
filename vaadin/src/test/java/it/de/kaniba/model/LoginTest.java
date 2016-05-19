@@ -36,6 +36,7 @@ public class LoginTest {
 		screenShootRule.setDriver(driver);
 		
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		
 		Utils.prepareDatabaseForTests();
 	}
 	

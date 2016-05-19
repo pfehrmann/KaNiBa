@@ -11,15 +11,23 @@ import java.util.List;
 
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
+
+import de.kaniba.components.BarAdminMenuImpl;
+import de.kaniba.components.ExternalMenuImpl;
+import de.kaniba.components.InternalMenuImpl;
+import de.kaniba.model.User;
+import de.kaniba.navigator.NavigatorUI;
 
 /**
  * Utility class for various purposes.
+ * 
  * @author Philipp
  *
  */
 public final class Utils {
-	
+
 	private Utils() {
 		// May not be instanciated
 	}
@@ -29,16 +37,17 @@ public final class Utils {
 	 * elements are still equal (listA.get(1) == listB.get(1)), but the lists
 	 * are not equal (listA != listB).
 	 * 
-	 * @param list The list to copy.
+	 * @param list
+	 *            The list to copy.
 	 * @return Returns a copy of the list.
 	 */
 	public static <T> List<T> copyList(List<T> list) {
 		List<T> copy = new ArrayList<>();
 
-		if(list == null) {
+		if (list == null) {
 			return copy;
 		}
-		
+
 		for (T element : list) {
 			copy.add(element);
 		}
@@ -52,7 +61,7 @@ public final class Utils {
 	public static String basepath() {
 		return VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 	}
-	
+
 	public static String getBarLogoBasePath() {
 		return basepath() + "/WEB-INF/images/";
 	}
@@ -75,13 +84,29 @@ public final class Utils {
 		StringBuilder sb = new StringBuilder();
 		try (InputStream in = website.openStream(); BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
 			while (br.ready()) {
-				while (br.ready()) {
-					sb.append(br.readLine() + "\n");
-				}
+				sb.append(br.readLine() + "\n");
 			}
 		} catch (IOException e) {
 			LoggingUtils.exception(e);
 		}
 		return sb.toString();
+	}
+
+	/**
+	 * Set the menu
+	 */
+	public static void updateMenu() {
+		((NavigatorUI) UI.getCurrent()).setMenu(getMenu());
+	}
+
+	private static Component getMenu() {
+		if (User.isAdmin()) {
+			return new BarAdminMenuImpl();
+		}
+		if (User.isLoggedIn()) {
+			return new InternalMenuImpl();
+		}
+
+		return new ExternalMenuImpl();
 	}
 }

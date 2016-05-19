@@ -17,6 +17,7 @@ import de.kaniba.uiInterfaces.BarPresenterInterface;
 import de.kaniba.uiInterfaces.BarViewInterface;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.NavigationUtils;
+import de.kaniba.utils.NotificationUtils;
 import de.kaniba.view.SurveyView;
 
 public class BarPresenter implements BarPresenterInterface {
@@ -48,7 +49,8 @@ public class BarPresenter implements BarPresenterInterface {
 		if(bar == null) {
 			settingUp = false;
 			
-			//TODO: Show 404 - Bar not found page
+			NotificationUtils.showNotification("Wir konnten die Bar leider nicht finden... "
+					+ "Vielleicht ist sie ja später da :D", Type.ERROR_MESSAGE);
 			return;
 		}
 		view.setMapCoords(bar.getLatLon());

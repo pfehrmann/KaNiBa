@@ -11,10 +11,6 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.tapio.googlemaps.GoogleMap;
-import com.vaadin.tapio.googlemaps.client.GoogleMapControl;
-import com.vaadin.tapio.googlemaps.client.LatLon;
-import com.vaadin.tapio.googlemaps.client.overlays.GoogleMapMarker;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button;
@@ -23,8 +19,10 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 
+import de.kaniba.components.Map;
 import de.kaniba.designs.BarDesign;
 import de.kaniba.model.Bar;
+import de.kaniba.model.Coordinates;
 import de.kaniba.model.Database;
 import de.kaniba.model.DisplayRating;
 import de.kaniba.model.InternalUser;
@@ -43,14 +41,12 @@ import de.kaniba.utils.Utils;
  *
  */
 public class BarView extends BarDesign implements BarViewInterface {
-	private static final int DEFAULT_ZOOM = 15;
-
 	private static final long serialVersionUID = 1L;
 
 	public static final String NAME = "bar";
 	
-	protected GoogleMap map;
-
+	//protected GoogleMap map;
+	protected Map map;
 	private BarPresenterInterface presenter;
 
 	/**
@@ -62,20 +58,30 @@ public class BarView extends BarDesign implements BarViewInterface {
 		super.removeComponent(leftGrid);
 		super.addComponent(leftGrid, 0, 0, 0, 1);
 
+		// Make sure, that at least something is shown...
 		infoPanel.setContent(new Label("Keine Beschreibung verfügbar", ContentMode.HTML));
+		
+		// Setup the map
+		/*
 		map = new GoogleMap("apiKey", null, "german");
 		map.setSizeFull();
 		map.setZoom(DEFAULT_ZOOM);
 		map.removeControl(GoogleMapControl.MapType);
 		map.removeControl(GoogleMapControl.StreetView);
 		super.setRowExpandRatio(0, 1.0F);
+		*/
+		//super.addComponent(map, 1, 0);
+		
+		map = new Map();
 		super.addComponent(map, 1, 0);
-
+		
+		// Find the path to the bar image
 		String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 		FileResource resource = new FileResource(new File(basepath + "/WEB-INF/images/stoevchen.png"));
 		barImage.setHeightUndefined();
 		barImage.setSource(resource);
 
+		// add rate clicklistners
 		rateButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -85,6 +91,7 @@ public class BarView extends BarDesign implements BarViewInterface {
 			}
 		});
 
+		// add listeners to all stars
 		starTotal.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 			
@@ -215,9 +222,16 @@ public class BarView extends BarDesign implements BarViewInterface {
 				LoggingUtils.exception(e);
 			}
 			
+			// only display a message that has a user
 			if(user != null) {
-				StringBuilder text = new StringBuilder("");
+				
+				// format the message
+				StringBuilder text = new StringBuilder();
+				
+				// append the date
 				text.append(element.getTime().getDate() + "." + element.getTime().getMonth() + "." + (element.getTime().getYear()+1900) + "");
+				
+				// append the username
 				text.append(" <b>" + user.getFirstname() + " " + user.getName().substring(0, 1) + "." + "</b>: ");
 				text.append(element.getMessageText());
 				CssLayout layout = new CssLayout();
@@ -275,9 +289,9 @@ public class BarView extends BarDesign implements BarViewInterface {
 	 * @see de.kaniba.view.BarViewInterface#setMapCoords(com.vaadin.tapio.googlemaps.client.LatLon)
 	 */
 	@Override
-	public void setMapCoords(LatLon coords) {
+	public void setMapCoords(Coordinates coords) {
 		map.setCenter(coords);
-		map.addMarker(new GoogleMapMarker("", coords, false));
+		map.addMarker(coords);
 	}
 
 	/* (non-Javadoc)
@@ -333,6 +347,7 @@ public class BarView extends BarDesign implements BarViewInterface {
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
+		/*
 		removeComponent(map);
 		map = new GoogleMap("apiKey", null, "german");
 		map.setSizeFull();
@@ -340,7 +355,8 @@ public class BarView extends BarDesign implements BarViewInterface {
 		map.removeControl(GoogleMapControl.MapType);
 		map.removeControl(GoogleMapControl.StreetView);
 		setRowExpandRatio(0, 1.0F);
-		addComponent(map, 1, 0);
+		//addComponent(map, 1, 0);
+		*/
 		
 		presenter.enter(event);
 	}
