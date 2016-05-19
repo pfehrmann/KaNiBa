@@ -52,4 +52,9 @@ public class SuggestionsView extends MyBarsDesign implements SuggestionsViewInte
 		}
 	}
 
+	@Override
+	public boolean checkRights(String parameters) {
+		return presenter.checkRights(parameters);
+	}
+
 }

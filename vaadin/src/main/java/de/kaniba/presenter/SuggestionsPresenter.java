@@ -14,10 +14,12 @@ import com.vaadin.ui.Component;
 import de.kaniba.components.SearchElementImpl;
 import de.kaniba.model.Bar;
 import de.kaniba.model.InternalUser;
+import de.kaniba.model.User;
 import de.kaniba.uiInterfaces.SuggestionsPresenterInterface;
 import de.kaniba.uiInterfaces.SuggestionsViewInterface;
 import de.kaniba.utils.LoggingUtils;
-import de.kaniba.view.EditBarView;
+import de.kaniba.utils.NotificationUtils;
+import de.kaniba.view.BarView;
 
 /**
  * Class to control the MyBarsView
@@ -42,7 +44,7 @@ public class SuggestionsPresenter implements SuggestionsPresenterInterface {
 	public void enter(ViewChangeEvent event) {
 		InternalUser user = InternalUser.getUser();
 
-		List<Bar> suggestions = null;
+		List<Bar> suggestions = new ArrayList<>();
 		try {
 			suggestions = user.getSuggestions();
 		} catch (SQLException e) {
@@ -52,7 +54,7 @@ public class SuggestionsPresenter implements SuggestionsPresenterInterface {
 		List<Component> components = new ArrayList<>();
 		for (Bar bar : suggestions) {
 			SearchElementImpl result = new SearchElementImpl(bar.getName(), bar.getOneLineAddress(),
-					EditBarView.NAME + "/" + bar.getBarID());
+					BarView.NAME + "/" + bar.getBarID());
 			components.add(result);
 		}
 		
@@ -65,6 +67,15 @@ public class SuggestionsPresenter implements SuggestionsPresenterInterface {
 	 */
 	public View getView() {
 		return view;
+	}
+
+	@Override
+	public boolean checkRights(String parameters) {
+		if(!User.isLoggedIn()) {
+			NotificationUtils.showNotification("Um Vorschläge zu erhalten musst du eingeloggt sein.");
+			return false;
+		}
+		return true;
 	}
 
 }
