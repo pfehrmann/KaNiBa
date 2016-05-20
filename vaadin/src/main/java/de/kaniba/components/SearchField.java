@@ -12,6 +12,12 @@ import com.vaadin.ui.Button.ClickEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class implements the search field
+ * 
+ * @author phili
+ *
+ */
 public class SearchField extends CustomComponent {
 	private static final long serialVersionUID = 1L;
 	private TextField searchTextField;
@@ -19,17 +25,20 @@ public class SearchField extends CustomComponent {
 	private GridLayout layout;
 	private List<Listener> listeners;
 
+	/**
+	 * Initializes the search field and sets up all the listeners
+	 */
 	public SearchField() {
 		listeners = new ArrayList<>();
 
-		layout = new GridLayout(2,1);
+		layout = new GridLayout(2, 1);
 		layout.setWidth("100%");
 		layout.setId("search-bar-layout");
-		
+
 		searchTextField = new TextField();
 		searchTextField.setWidth("100%");
 		searchTextField.addStyleName("searchField-textField");
-		
+
 		searchTextField.addShortcutListener(new ShortcutListener(null, KeyCode.ENTER, null) {
 
 			private static final long serialVersionUID = -8536048045745120836L;
@@ -38,7 +47,7 @@ public class SearchField extends CustomComponent {
 			public void handleAction(Object sender, Object target) {
 				if (target instanceof TextField) {
 					TextField t = (TextField) target;
-					if(t.equals(searchTextField)) {
+					if (t.equals(searchTextField)) {
 						fireSearchEvent(null);
 					}
 				}
@@ -60,25 +69,40 @@ public class SearchField extends CustomComponent {
 			}
 		});
 		layout.addComponent(searchButton);
-		
+
 		setCompositionRoot(layout);
 	}
-	
+
 	private void fireSearchEvent(Event event) {
-		for(Listener listener : listeners) {
+		for (Listener listener : listeners) {
 			listener.componentEvent(event);
 		}
 	}
-	
+
+	/**
+	 * Returns the entered search vale
+	 * 
+	 * @return
+	 */
 	public String getSearchValue() {
 		return searchTextField.getValue();
 	}
 
+	/**
+	 * Add a listener. This listener will be fired when either be button is
+	 * clicked or enter is pressed
+	 * 
+	 * @param listener
+	 */
 	public void addSearchListener(Listener listener) {
 		super.addListener(listener);
 		listeners.add(listener);
 	}
 
+	/**
+	 * Removes a listener
+	 * @param listener
+	 */
 	public void removeSearchListener(Listener listener) {
 		super.removeListener(listener);
 		listeners.remove(listener);
