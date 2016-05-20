@@ -32,6 +32,9 @@ public class Map extends CustomComponent {
 	private OLVectorLayer vectorLayer;
 	private OLVectorSource source;
 
+	/**
+	 * Initialize the map. The center will not be set.
+	 */
 	public Map() {
 		openMap = new OLMap();
 		openMap.setView(createView());
@@ -63,9 +66,8 @@ public class Map extends CustomComponent {
 	}
 
 	/**
-	 * Set senter of the map
-	 * @param lat
-	 * @param lon
+	 * Set center of the map
+	 * @param coords
 	 */
 	public void setCenter(Coordinates coords) {
 		openMap.getView().setCenter(coords.getLon(), coords.getLat());
@@ -86,8 +88,7 @@ public class Map extends CustomComponent {
 	/**
 	 * Add a marker to the map. The map will navigate to the provided state
 	 * @param state
-	 * @param lat
-	 * @param lon
+	 * @param coords
 	 */
 	public void addMarker(final String state, Coordinates coords) {
 		final String id = state + new OLFeature().hashCode();
