@@ -117,4 +117,8 @@ public class Map extends CustomComponent {
 			source.removeFeatureById(source.getFeatures().get(0).getId());
 		}
 	}
+
+	public void setZoom(int zoom) {
+		openMap.getView().setZoom(zoom);
+	}
 }

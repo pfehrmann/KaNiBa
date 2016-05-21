@@ -65,10 +65,7 @@ public class RegisterPresenter implements RegisterPresenterInterface {
 
 	@Override
 	public boolean checkRights(String parameters) {
-		if(User.isLoggedIn()) {
-			return false;
-		}
-		return true;
+		return !User.isLoggedIn();
 	}
 
 }
