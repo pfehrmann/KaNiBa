@@ -31,6 +31,10 @@ public class SurveyPresenter implements SurveyPresenterInterface {
 	private List<Question> questionsForBar;
 	private SurveyViewInterface view;
 
+	/**
+	 * Initialize the presenter with it's view
+	 * @param view
+	 */
 	public SurveyPresenter(SurveyViewInterface view) {
 		this.view = view;
 		view.setPresenter(this);
