@@ -26,6 +26,10 @@ import de.kaniba.utils.NavigationUtils;
  *
  */
 public class Map extends CustomComponent {
+	private static final int DEFAULT_ZOOM = 12;
+	private static final int MAX_ZOOM = 18;
+	private static final int MIN_ZOOM = 4;
+
 	private static final long serialVersionUID = 1L;
 
 	private OLMap openMap;
@@ -53,11 +57,11 @@ public class Map extends CustomComponent {
 	private OLView createView() {
 		OLViewOptions options = new OLViewOptions();
 		options.setInputProjection(Projections.EPSG4326);
-		options.setMinZoom(4);
-		options.setMaxZoom(18);
+		options.setMinZoom(MIN_ZOOM);
+		options.setMaxZoom(MAX_ZOOM);
 
 		OLView view = new OLView(options);
-		view.setZoom(12);
+		view.setZoom(DEFAULT_ZOOM);
 
 		return view;
 	}
