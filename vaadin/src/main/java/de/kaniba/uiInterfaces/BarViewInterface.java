@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.vaadin.navigator.View;
 
-import de.kaniba.components.Map.Coordinates;
 import de.kaniba.model.Bar;
+import de.kaniba.model.Coordinates;
 import de.kaniba.model.DisplayRating;
 import de.kaniba.model.Message;
 import de.kaniba.model.Tag;

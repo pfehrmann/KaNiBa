@@ -15,6 +15,11 @@ import de.kaniba.uiInterfaces.RegisterViewInterface;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.NavigationUtils;
 
+/**
+ * The presenter for the registerView
+ * @author Philipp
+ *
+ */
 public class RegisterPresenter implements RegisterPresenterInterface {
 	private static final long serialVersionUID = 1L;
 	private RegisterViewInterface view;
@@ -65,10 +70,7 @@ public class RegisterPresenter implements RegisterPresenterInterface {
 
 	@Override
 	public boolean checkRights(String parameters) {
-		if(User.isLoggedIn()) {
-			return false;
-		}
-		return true;
+		return !User.isLoggedIn();
 	}
 
 }

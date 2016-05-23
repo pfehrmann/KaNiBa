@@ -2,10 +2,9 @@ package de.kaniba.uiInterfaces;
 
 import java.util.List;
 
-import com.vaadin.navigator.View;
 import com.vaadin.ui.Component;
 
-public interface SuggestionsViewInterface extends View{
+public interface SuggestionsViewInterface extends SecuredView{
 
 	/**
 	 * Set the presenter for this view.

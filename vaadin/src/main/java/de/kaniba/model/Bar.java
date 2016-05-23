@@ -12,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.kaniba.components.Map.Coordinates;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 

@@ -20,6 +20,11 @@ import de.kaniba.utils.NavigationUtils;
 import de.kaniba.utils.NotificationUtils;
 import de.kaniba.view.SurveyView;
 
+/**
+ * This class is the presenter of the BarView
+ * @author Philipp
+ *
+ */
 public class BarPresenter implements BarPresenterInterface {
 	private static final long serialVersionUID = 1L;
 
@@ -27,6 +32,10 @@ public class BarPresenter implements BarPresenterInterface {
 	private BarViewInterface view;
 	private boolean settingUp;
 
+	/**
+	 * Initialize the Presenter with the correct view
+	 * @param view
+	 */
 	public BarPresenter(BarViewInterface view) {
 		this.view = view;
 		view.setPresenter(this);
@@ -61,6 +70,8 @@ public class BarPresenter implements BarPresenterInterface {
 		view.setBarLogo(bar);
 		view.setTags(bar.getTags(), bar.getBarID());
 		
+		DisplayRating rating = bar.getDisplayRating();
+		
 		if (User.isLoggedIn()) {
 			Rating userRating = null;
 			try {
@@ -68,13 +79,13 @@ public class BarPresenter implements BarPresenterInterface {
 			} catch (SQLException e) {
 				LoggingUtils.exception(e);
 			}
-
-			if (userRating != null) {
-				view.setBarRating(new DisplayRating(userRating));
+			
+			if(userRating != null) {
+				rating = new DisplayRating(userRating);
 			}
-		} else {
-			view.setBarRating(bar.getDisplayRating());
 		}
+		
+		view.setBarRating(rating);
 		settingUp = false;
 	}
 

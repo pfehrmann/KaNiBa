@@ -20,9 +20,9 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 
 import de.kaniba.components.Map;
-import de.kaniba.components.Map.Coordinates;
 import de.kaniba.designs.BarDesign;
 import de.kaniba.model.Bar;
+import de.kaniba.model.Coordinates;
 import de.kaniba.model.Database;
 import de.kaniba.model.DisplayRating;
 import de.kaniba.model.InternalUser;
@@ -44,8 +44,9 @@ public class BarView extends BarDesign implements BarViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	public static final String NAME = "bar";
+
+	private static final int DEFAULT_ZOOM = 14;
 	
-	//protected GoogleMap map;
 	protected Map map;
 	private BarPresenterInterface presenter;
 
@@ -62,17 +63,8 @@ public class BarView extends BarDesign implements BarViewInterface {
 		infoPanel.setContent(new Label("Keine Beschreibung verfügbar", ContentMode.HTML));
 		
 		// Setup the map
-		/*
-		map = new GoogleMap("apiKey", null, "german");
-		map.setSizeFull();
-		map.setZoom(DEFAULT_ZOOM);
-		map.removeControl(GoogleMapControl.MapType);
-		map.removeControl(GoogleMapControl.StreetView);
-		super.setRowExpandRatio(0, 1.0F);
-		*/
-		//super.addComponent(map, 1, 0);
-		
 		map = new Map();
+		map.setZoom(DEFAULT_ZOOM);
 		super.addComponent(map, 1, 0);
 		
 		// Find the path to the bar image
@@ -347,16 +339,8 @@ public class BarView extends BarDesign implements BarViewInterface {
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
-		/*
-		removeComponent(map);
-		map = new GoogleMap("apiKey", null, "german");
-		map.setSizeFull();
 		map.setZoom(DEFAULT_ZOOM);
-		map.removeControl(GoogleMapControl.MapType);
-		map.removeControl(GoogleMapControl.StreetView);
-		setRowExpandRatio(0, 1.0F);
-		//addComponent(map, 1, 0);
-		*/
+		map.removeAllMarkers();
 		
 		presenter.enter(event);
 	}

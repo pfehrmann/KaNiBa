@@ -1,5 +1,10 @@
 package de.kaniba.model;
 
+/**
+ * Class that represents a rating for display
+ * @author Philipp
+ *
+ */
 public class DisplayRating {
 	private double generalRating;
 	private double priceRating;
@@ -7,6 +12,10 @@ public class DisplayRating {
 	private double peopleRating;
 	private double atmosphereRating;
 	
+	/**
+	 * Innitialize the display rating with a usual rating
+	 * @param rating
+	 */
 	public DisplayRating(Rating rating) {
 		this.generalRating = rating.getGeneralRating();
 		this.priceRating = rating.getPprRating();
@@ -15,6 +24,14 @@ public class DisplayRating {
 		this.atmosphereRating = rating.getAtmosphereRating();
 	}
 	
+	/**
+	 * Initialize the rating with all the single ratings
+	 * @param generalRating
+	 * @param priceRating
+	 * @param musicRating
+	 * @param peopleRating
+	 * @param atmosphereRating
+	 */
 	public DisplayRating(double generalRating, double priceRating, double musicRating, double peopleRating,
 			double atmosphereRating) {
 		super();
@@ -44,6 +61,4 @@ public class DisplayRating {
 	public double getAtmosphereRating() {
 		return atmosphereRating;
 	}
-	
-	
 }
