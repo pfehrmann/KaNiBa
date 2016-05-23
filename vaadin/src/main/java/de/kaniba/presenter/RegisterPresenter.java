@@ -47,7 +47,7 @@ public class RegisterPresenter implements RegisterPresenterInterface {
 		User user = view.getUser();
 		try {
 			((InternalUser) user).saveUser();
-			view.getSubmit().setComponentError(null);
+			view.getSubmitButton().setComponentError(null);
 			
 			NavigationUtils.navigateTo("", "Erfolgreich registriert");
 			
@@ -63,7 +63,7 @@ public class RegisterPresenter implements RegisterPresenterInterface {
 			UI.getCurrent().addWindow(loginWindow);
 			
 		} catch (SQLException e) {
-			view.getSubmit().setComponentError(new UserError("Fehler beim speichern"));
+			view.getSubmitButton().setComponentError(new UserError("Fehler beim speichern"));
 			LoggingUtils.exception(e);
 		}
 	}
