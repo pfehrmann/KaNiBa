@@ -78,6 +78,9 @@ public class Tag {
 		return new Date(created.getTime());
 	}
 
+	/**
+	 * Save the tag to the database.
+	 */
 	public void saveTag() {
 		Database.saveTag(this);
 	}

@@ -98,13 +98,4 @@ public class SearchField extends CustomComponent {
 		super.addListener(listener);
 		listeners.add(listener);
 	}
-
-	/**
-	 * Removes a listener
-	 * @param listener
-	 */
-	public void removeSearchListener(Listener listener) {
-		super.removeListener(listener);
-		listeners.remove(listener);
-	}
 }

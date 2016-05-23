@@ -20,6 +20,11 @@ import de.kaniba.utils.NavigationUtils;
 import de.kaniba.utils.NotificationUtils;
 import de.kaniba.view.SurveyView;
 
+/**
+ * This class is the presenter of the BarView
+ * @author Philipp
+ *
+ */
 public class BarPresenter implements BarPresenterInterface {
 	private static final long serialVersionUID = 1L;
 
@@ -27,6 +32,10 @@ public class BarPresenter implements BarPresenterInterface {
 	private BarViewInterface view;
 	private boolean settingUp;
 
+	/**
+	 * Initialize the Presenter with the correct view
+	 * @param view
+	 */
 	public BarPresenter(BarViewInterface view) {
 		this.view = view;
 		view.setPresenter(this);

@@ -15,6 +15,11 @@ import de.kaniba.uiInterfaces.RegisterViewInterface;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.NavigationUtils;
 
+/**
+ * The presenter for the registerView
+ * @author Philipp
+ *
+ */
 public class RegisterPresenter implements RegisterPresenterInterface {
 	private static final long serialVersionUID = 1L;
 	private RegisterViewInterface view;

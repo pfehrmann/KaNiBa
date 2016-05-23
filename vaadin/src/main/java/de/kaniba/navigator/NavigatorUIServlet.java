@@ -17,16 +17,25 @@ import com.vaadin.server.BootstrapPageResponse;
 import com.vaadin.server.SessionInitEvent;
 import com.vaadin.server.SessionInitListener;
 
+/**
+ * This class is represents the servlet of kaniba
+ * @author Philipp
+ *
+ */
 @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
 @VaadinServletConfiguration(ui = NavigatorUI.class, productionMode = false)
 public class NavigatorUIServlet extends VaadinServlet {
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void servletInitialized() throws ServletException {
 		getService().addSessionInitListener(new SessionInitListener() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void sessionInit(final SessionInitEvent event) {
 				event.getSession().addBootstrapListener(new BootstrapListener() {
+					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void modifyBootstrapPage(BootstrapPageResponse response) {
@@ -41,6 +50,7 @@ public class NavigatorUIServlet extends VaadinServlet {
 
 					@Override
 					public void modifyBootstrapFragment(BootstrapFragmentResponse response) {
+						// not needed
 					}
 				});
 			}

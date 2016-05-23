@@ -16,6 +16,7 @@ import de.kaniba.view.SearchView;
  *
  */
 public class ExternalMenuImpl extends ExternalMenu {
+	// Default serial version id
 	private static final long serialVersionUID = 1L;
 
 	/**
