@@ -47,25 +47,18 @@ public class BarView extends BarDesign implements BarViewInterface {
 
 	private static final int DEFAULT_ZOOM = 14;
 	
-	protected Map map;
 	private BarPresenterInterface presenter;
 
 	/**
 	 * Sets up the basic layout and tries to fix it.
 	 */
 	public BarView() {
-
-		// Resize the grid
-		super.removeComponent(leftGrid);
-		super.addComponent(leftGrid, 0, 0, 0, 1);
-
+		
 		// Make sure, that at least something is shown...
 		infoPanel.setContent(new Label("Keine Beschreibung verfügbar", ContentMode.HTML));
 		
 		// Setup the map
-		map = new Map();
 		map.setZoom(DEFAULT_ZOOM);
-		super.addComponent(map, 1, 0);
 		
 		// Find the path to the bar image
 		String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
@@ -187,7 +180,7 @@ public class BarView extends BarDesign implements BarViewInterface {
 		rating.setMusicRating(starMusic.getValue().intValue());
 		presenter.saveRating(rating);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see de.kaniba.view.BarViewInterface#setPresenter(de.kaniba.presenter.BarPresenterInterface)
 	 */
