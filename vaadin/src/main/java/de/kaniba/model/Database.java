@@ -1,20 +1,17 @@
 package de.kaniba.model;
 
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Date;
-import de.kaniba.utils.Utils;
+
+import de.kaniba.utils.LoggingUtils;
 
 /**
  * Eine Klasse, die Zugriff auf die Datenbak abstrahiert. Die Zugriffe sind alle
@@ -43,6 +40,7 @@ import de.kaniba.utils.Utils;
 
 public final class Database {
 
+	private static final String CREATED_STRING = "created";
 	private static final String BEGIN_STRING = "begin";
 	private static final String EMAIL_STRING = "email";
 	/*
@@ -57,6 +55,8 @@ public final class Database {
 	private static final String PPR_RATING_STRING = "pprRating";
 	private static final String GENERAL_RATING_STRING = "generalRating";
 
+	private static ConnectionCreater connectionCreater = new DefaultDatabaseConnectionCreater();
+
 	private Database() {
 		// May not be instanciated
 	}
@@ -69,30 +69,14 @@ public final class Database {
 	 * @throws SQLException
 	 */
 	public static Connection verbindung() throws SQLException {
-		// TREIBER
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			Utils.log("Fehler bei MySQL-JDBC-Bridge: ");
-			Utils.exception(e);
-			return null;
+		if (connectionCreater != null) {
+			return connectionCreater.verbindung();
 		}
-		// VERBINDUNG
-		return DriverManager.getConnection("jdbc:mysql://localhost:3306/kaniba", "root", getPassword());
+		throw new IllegalStateException("No connection creater available");
 	}
 
-	private static String getPassword() {
-		String password = "";
-
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader("/home/kanibaPassword"));
-			password = reader.readLine();
-			reader.close();
-		} catch (IOException e) {
-			Utils.log("Password not available, will use standard password.");
-		}
-
-		return password;
+	public static void setConnectionCreater(ConnectionCreater connectionCreater) {
+		Database.connectionCreater = connectionCreater;
 	}
 
 	/**
@@ -109,47 +93,26 @@ public final class Database {
 			throw new IllegalArgumentException();
 		}
 
-		Bar ret = new Bar();
 		// Alle Werte aus der Datenbank auslesen und die Setter Methoden
 		// aufrufen.
 		// Das auslesen der Liste muss / sollte nicht erfolgen, nur die
 		// Informationen, die schnell gefunden werden können.
 
-		try (Connection con = verbindung();
-				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM bars WHERE barID = " + barID);) {
+		String sql = "SELECT * FROM bars WHERE barID=?";
+		ResultSet rs = null;
+		try (Connection con = verbindung(); PreparedStatement st = con.prepareStatement(sql);) {
+			st.setInt(1, barID);
+			rs = st.executeQuery();
 
-			while (rs.next()) {
-				int generalRating = rs.getInt(GENERAL_RATING_STRING);
-				int pprRating = rs.getInt(PPR_RATING_STRING);
-				int musicRating = rs.getInt(MUSIC_RATING_STRING);
-				int peopleRating = rs.getInt(PEOPLE_RATING_STRING);
-				int atmosphereRating = rs.getInt(ATMOSPHERE_RATING_STRING);
-				int ratingCount = rs.getInt("ratingCount");
-				int userID = rs.getInt(USER_ID_STRING);
-				String city = rs.getString("city");
-				String street = rs.getString("street");
-				String number = rs.getString("number");
-				String zip = rs.getString("zip");
-				String description = rs.getString("description");
-				String name = rs.getString("name");
+			if (rs.next()) {
+				Bar ret = getBarFromRS(rs);
 
-				ret.setSumGeneralRating(generalRating);
-				ret.setSumPprRating(pprRating);
-				ret.setSumMusicRating(musicRating);
-				ret.setSumPeopleRating(peopleRating);
-				ret.setSumAtmosphereRating(atmosphereRating);
-				ret.setCountRating(ratingCount);
-				Admin admin = new Admin(giveUser(userID));
-				ret.setBarOwner(admin);
-				Address address = new Address(city, street, number, zip);
-				ret.setAddress(address);
-				ret.setPinboard(givePinboard(barID));
-				ret.setName(name);
-				ret.setDescription(description);
-				ret.setBarID(barID);
-
+				rs.close();
 				return ret;
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
 			}
 		}
 
@@ -157,9 +120,166 @@ public final class Database {
 	}
 
 	/**
+	 * @param barID
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 */
+	private static Bar getBarFromRS(ResultSet rs) throws SQLException {
+		int generalRating = rs.getInt(GENERAL_RATING_STRING);
+		int pprRating = rs.getInt(PPR_RATING_STRING);
+		int musicRating = rs.getInt(MUSIC_RATING_STRING);
+		int peopleRating = rs.getInt(PEOPLE_RATING_STRING);
+		int atmosphereRating = rs.getInt(ATMOSPHERE_RATING_STRING);
+		int ratingCount = rs.getInt("ratingCount");
+		int userID = rs.getInt(USER_ID_STRING);
+		int barID = rs.getInt(BAR_ID_STRING);
+		String city = rs.getString("city");
+		String street = rs.getString("street");
+		String number = rs.getString("number");
+		String zip = rs.getString("zip");
+		String description = rs.getString("description");
+		String name = rs.getString("name");
+
+		Bar ret = new Bar();
+		ret.setSumGeneralRating(generalRating);
+		ret.setSumPprRating(pprRating);
+		ret.setSumMusicRating(musicRating);
+		ret.setSumPeopleRating(peopleRating);
+		ret.setSumAtmosphereRating(atmosphereRating);
+		ret.setCountRating(ratingCount);
+		Admin admin = new Admin(giveUser(userID));
+		ret.setBarOwner(admin);
+		Address address = new Address(city, street, number, zip);
+		ret.setAddress(address);
+		ret.setPinboard(givePinboard(barID));
+		ret.setName(name);
+		ret.setDescription(description);
+		ret.setBarID(barID);
+		return ret;
+	}
+
+	/**
+	 * Get the suggestions for a user
+	 * @param userID The user ID
+	 * @return 
+	 * @throws SQLException
+	 */
+	public static List<Bar> getSuggestions(int userID) throws SQLException {
+		List<Bar> bars = new ArrayList<>();
+
+		ResultSet rs = null;
+		String sql = "SELECT barID, SUM(generalRating) " + "FROM ratings WHERE userID IN "
+				+ "(SELECT userID FROM ratings WHERE barID IN "
+				+ "(SELECT barID FROM ratings WHERE userID = ? AND generalRating > 3) AND userID != ?) "
+				+ "GROUP BY barID ORDER BY SUM(generalRating) DESC LIMIT 5";
+
+		try (Connection con = verbindung(); PreparedStatement statement = con.prepareStatement(sql);) {
+			statement.setInt(1, userID);
+			statement.setInt(2, userID);
+			rs = statement.executeQuery();
+			while (rs.next()) {
+				int barID = rs.getInt(BAR_ID_STRING);
+				bars.add(readBar(barID));
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+		}
+		return bars;
+	}
+
+	/**
+	 * Get all the tags that are set for a specific bar.
+	 * 
+	 * @param barID
+	 *            The barID
+	 * @return Retuns a list with all tags
+	 * @throws SQLException
+	 *             IF something goes wrong...
+	 */
+	public static List<Tag> getTagsForBar(int barID) throws SQLException {
+		List<Tag> tags = new ArrayList<>();
+
+		String sql = "SELECT * FROM tags WHERE barID=?";
+
+		try (Connection con = verbindung(); PreparedStatement prepareStatement = con.prepareStatement(sql);) {
+			prepareStatement.setInt(1, barID);
+			ResultSet rs = prepareStatement.executeQuery();
+
+			while (rs.next()) {
+				tags.add(getTagFromRs(rs));
+			}
+			rs.close();
+		}
+
+		return tags;
+	}
+
+	/**
+	 * Get a tag from an ResultSet. The set is not closed here.
+	 * 
+	 * @param rs
+	 * @return
+	 */
+	private static Tag getTagFromRs(ResultSet rs) {
+		Tag tag = new Tag();
+		try {
+			tag.setTagID(rs.getInt("tagID"));
+			tag.setUserID(rs.getInt("userID"));
+			tag.setBarID(rs.getInt("barID"));
+			tag.setName(rs.getString("name"));
+			tag.setCreated(rs.getDate(CREATED_STRING));
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
+		}
+		return tag;
+	}
+
+	/**
+	 * @param tag
+	 */
+	public static void saveTag(Tag tag) {
+		if (tag.getTagID() != Tag.INVALID_TAG_ID) {
+			updateTag(tag);
+			return;
+		}
+
+		String sql = "INSERT INTO tags SET userID=?, barID=?, name=?";
+
+		try (Connection con = verbindung(); PreparedStatement prepareStatement = con.prepareStatement(sql);) {
+			prepareStatement.setInt(1, tag.getUserID());
+			prepareStatement.setInt(2, tag.getBarID());
+			prepareStatement.setString(3, tag.getName());
+			prepareStatement.executeUpdate();
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
+		}
+	}
+
+	/**
+	 * 
+	 * @param tag
+	 */
+	private static void updateTag(Tag tag) {
+		String sql = "UPDATE tags SET userID=?, barID=?, name=? WHERE tagID=?";
+
+		try (Connection con = verbindung(); PreparedStatement prepareStatement = con.prepareStatement(sql);) {
+			prepareStatement.setInt(1, tag.getUserID());
+			prepareStatement.setInt(2, tag.getBarID());
+			prepareStatement.setString(3, tag.getName());
+			prepareStatement.setInt(4, tag.getTagID());
+			prepareStatement.executeQuery();
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
+		}
+	}
+
+	/**
 	 * Nimmt eine UserID und gibt den entsprechenden User zurück
 	 * 
-	 * @param UserID
+	 * @param userID
 	 *            Die UserID
 	 * @return Gibt den User zurück.
 	 */
@@ -168,10 +288,13 @@ public final class Database {
 			throw new IllegalArgumentException("Invalid user id");
 		}
 
-		try (Connection con = verbindung();
-				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM User WHERE userID = " + userID + ";");) {
-			while (rs.next()) {
+		ResultSet rs = null;
+		String sql = "SELECT * FROM user WHERE userID=?";
+		try (Connection con = verbindung(); PreparedStatement st = con.prepareStatement(sql);) {
+			st.setInt(1, userID);
+			rs = st.executeQuery();
+
+			if (rs.next()) {
 				String name = rs.getString("name");
 				String firstname = rs.getString("firstname");
 				String email = rs.getString(EMAIL_STRING);
@@ -196,6 +319,10 @@ public final class Database {
 				user.setUserID(userID);
 				return user;
 			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
 		}
 		return null;
 	}
@@ -211,9 +338,12 @@ public final class Database {
 		Pinboard pinboard = new Pinboard(barID);
 		List<Message> messages = new ArrayList<>();
 
-		try (Connection con = verbindung();
-				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM Message WHERE barID = " + barID + ";");) {
+		ResultSet rs = null;
+		String sql = "SELECT * FROM message WHERE barID=?";
+		try (Connection con = verbindung(); PreparedStatement st = con.prepareStatement(sql);) {
+			st.setInt(1, barID);
+			rs = st.executeQuery();
+
 			while (rs.next()) {
 				String messageString = rs.getString(MESSAGE_STRING);
 				Timestamp time = rs.getTimestamp("time");
@@ -222,13 +352,17 @@ public final class Database {
 				Message message = new Message(messageID, userID, barID, messageString, time);
 				messages.add(message);
 			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
 		}
 
 		if (messages.isEmpty()) {
 			return pinboard;
 		}
 
-		pinboard.messages = messages;
+		pinboard.setMessages(messages);
 		return pinboard;
 	}
 
@@ -251,7 +385,7 @@ public final class Database {
 				statement.setString(4, bar.getAddress().getZip());
 				statement.setString(5, bar.getDescription());
 				statement.setString(6, bar.getName());
-				statement.setDate(7, new Date( Calendar.getInstance().getTimeInMillis()));
+				statement.setDate(7, new Date(Calendar.getInstance().getTimeInMillis()));
 				statement.setInt(8, bar.getBarID());
 				statement.executeUpdate();
 			}
@@ -292,9 +426,12 @@ public final class Database {
 		int peopleRating = 0;
 		int atmosphereRating = 0;
 
-		try (Connection con = verbindung();
-				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM ratings WHERE barID = " + barID + ";");) {
+		ResultSet rs = null;
+		String sql = "SELECT * FROM ratings WHERE barID=?";
+		try (Connection con = verbindung(); PreparedStatement st = con.prepareStatement(sql);) {
+			st.setInt(1, barID);
+			rs = st.executeQuery();
+
 			while (rs.next()) {
 				generalRating += rs.getInt(GENERAL_RATING_STRING);
 				pprRating += rs.getInt(PPR_RATING_STRING);
@@ -306,6 +443,10 @@ public final class Database {
 			st.executeUpdate("UPDATE bars SET generalRating = " + generalRating + ", pprRating = " + pprRating
 					+ ", musicRating = " + musicRating + ", peoplerating = " + peopleRating + ", atmosphereRating = "
 					+ atmosphereRating + " WHERE barID= " + barID + ";");
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
 		}
 		return true;
 	}
@@ -313,8 +454,6 @@ public final class Database {
 	/**
 	 * Methode, um ein Rating zu speichern
 	 * 
-	 * @param bar
-	 *            Die Bar, der bewertet werden soll.
 	 * @param rating
 	 *            Das abgebenene Rating
 	 * @return Gibt true zurück, wenn es beim Speichern keine Probleme gab.
@@ -477,7 +616,7 @@ public final class Database {
 			message = rs.getString(MESSAGE_STRING);
 			begin = rs.getTimestamp(BEGIN_STRING);
 			end = rs.getTimestamp("end");
-			created = rs.getTimestamp("created");
+			created = rs.getTimestamp(CREATED_STRING);
 			java.util.Date date = new java.util.Date();
 
 			if (date.after(end) && end.before(date)) {
@@ -518,7 +657,7 @@ public final class Database {
 			String message = rs.getString(MESSAGE_STRING);
 			Timestamp begin = rs.getTimestamp(BEGIN_STRING);
 			Timestamp end = rs.getTimestamp("end");
-			Timestamp created = rs.getTimestamp("created");
+			Timestamp created = rs.getTimestamp(CREATED_STRING);
 
 			Special special = new Special();
 			special.setBegin(begin);
@@ -544,7 +683,7 @@ public final class Database {
 	 *            Das Special, as ausgelesen werden soll
 	 * @return Gibt das ausgelesene Special zurück.
 	 */
-	public static Special readSpecial(int specialID) throws Exception {
+	public static Special readSpecial(int specialID) throws SQLException {
 		if (specialID < 0) {
 			throw new IllegalArgumentException("Invalid special ID");
 		}
@@ -564,7 +703,7 @@ public final class Database {
 			message = rs.getString(MESSAGE_STRING);
 			begin = rs.getTimestamp(BEGIN_STRING);
 			end = rs.getTimestamp("end");
-			created = rs.getTimestamp("created");
+			created = rs.getTimestamp(CREATED_STRING);
 
 			Special special = new Special();
 			special.setBegin(begin);
@@ -618,38 +757,67 @@ public final class Database {
 	 * @throws SQLException
 	 */
 	public static InternalUser logUserIn(String useremail, String password) throws SQLException {
-
-		String useremaildb;
-		String userpassworddb;
 		int isadmin;
 		int userid;
-		Connection con = verbindung();
-		Statement st = con.createStatement();
 
-		String sql = "SELECT * FROM user WHERE email = '" + useremail + "' AND password = '" + password + "' ";
-		ResultSet rs = st.executeQuery(sql);
+		String sql = "SELECT * FROM user WHERE email=? AND password=? ";
+		try (Connection con = verbindung(); PreparedStatement st = con.prepareStatement(sql);) {
+			st.setString(1, useremail);
+			st.setString(2, password);
 
-		while (rs.next()) {
-			isadmin = rs.getInt("isAdmin");
-			userid = rs.getInt(USER_ID_STRING);
-			if (isadmin == 0) {
-				InternalUser user = giveUser(userid);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				isadmin = rs.getInt("isAdmin");
+				userid = rs.getInt(USER_ID_STRING);
+				if (isadmin == 0) {
+					InternalUser user = giveUser(userid);
+					rs.close();
+					st.close();
+					con.close();
+					return user;
+				} else {
+					Admin user = new Admin(giveUser(userid));
+					rs.close();
+					st.close();
+					con.close();
+					return user;
+				}
+			}
+			rs.close();
+		}
+		return null;
+
+	}
+
+	/**
+	 * Get all the bars that an admin may administrate
+	 * @param userID
+	 * @return
+	 * @throws SQLException
+	 */
+	public static List<Bar> getBarsOfAdmin(int userID) throws SQLException {
+		List<Bar> bars = new ArrayList<>();
+
+		String sql = "SELECT barID FROM bars WHERE userID=?";
+
+		ResultSet rs = null;
+		try (Connection con = verbindung(); PreparedStatement statement = con.prepareStatement(sql);) {
+			statement.setInt(1, userID);
+			rs = statement.executeQuery();
+
+			while (rs.next()) {
+				bars.add(readBar(rs.getInt("barID")));
+			}
+
+			rs.close();
+		} finally {
+			if (rs != null) {
 				rs.close();
-				st.close();
-				con.close();
-				return user;
-			} else {
-				Admin user = new Admin(giveUser(userid));
-				rs.close();
-				st.close();
-				con.close();
-				return user;
 			}
 		}
-		rs.close();
-		st.close();
-		con.close();
-		return null;
+
+		return bars;
 	}
 
 	/**
@@ -663,41 +831,32 @@ public final class Database {
 	 * @throws SQLException
 	 */
 	public static Rating getRating(int userID, int barID) throws SQLException {
-		int generalRating;
-		int pprRating;
-		int musicRating;
-		int peopleRating;
-		int atmosphereRating;
-		int userIDdb;
-		int barIDdb;
-		int ratingID;
-		Timestamp time;
-		Connection con = verbindung();
-		Statement st = con.createStatement();
+		String sql = "SELECT * FROM ratings WHERE userID=? AND barID=?";
+		ResultSet rs = null;
+		try (Connection con = verbindung(); PreparedStatement st = con.prepareStatement(sql);) {
+			st.setInt(1, userID);
+			st.setInt(2, barID);
 
-		ResultSet rs = st.executeQuery("SELECT * FROM Ratings");
+			rs = st.executeQuery();
 
-		while (rs.next()) {
-			ratingID = rs.getInt("ratingID");
-			generalRating = rs.getInt(GENERAL_RATING_STRING);
-			pprRating = rs.getInt(PPR_RATING_STRING);
-			musicRating = rs.getInt(MUSIC_RATING_STRING);
-			peopleRating = rs.getInt(PEOPLE_RATING_STRING);
-			atmosphereRating = rs.getInt(ATMOSPHERE_RATING_STRING);
-			userIDdb = rs.getInt(USER_ID_STRING);
-			barIDdb = rs.getInt(BAR_ID_STRING);
-			time = rs.getTimestamp("time");
-			if (barID == barIDdb && userID == userIDdb) {
-				rs.close();
-				st.close();
-				con.close();
+			while (rs.next()) {
+				int ratingID = rs.getInt("ratingID");
+				int generalRating = rs.getInt(GENERAL_RATING_STRING);
+				int pprRating = rs.getInt(PPR_RATING_STRING);
+				int musicRating = rs.getInt(MUSIC_RATING_STRING);
+				int peopleRating = rs.getInt(PEOPLE_RATING_STRING);
+				int atmosphereRating = rs.getInt(ATMOSPHERE_RATING_STRING);
+				int userIDdb = rs.getInt(USER_ID_STRING);
+				int barIDdb = rs.getInt(BAR_ID_STRING);
+				Timestamp time = rs.getTimestamp("time");
 				return new Rating(ratingID, userIDdb, barIDdb, generalRating, pprRating, musicRating, peopleRating,
 						atmosphereRating, time);
 			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
 		}
-		rs.close();
-		st.close();
-		con.close();
 		return null;
 	}
 
@@ -732,7 +891,7 @@ public final class Database {
 	/**
 	 * Methode, um einen User zu speichern
 	 * 
-	 * @param User
+	 * @param user
 	 *            Der User, der erstellt oder geändert werden soll.
 	 * 
 	 * @return Gibt die UserID zurück
@@ -781,7 +940,7 @@ public final class Database {
 	/**
 	 * Methode, um eine Email zu ändern
 	 * 
-	 * @param User
+	 * @param user
 	 *            Der User, dessen Email geändert werden soll.
 	 * 
 	 * @param email
@@ -846,6 +1005,12 @@ public final class Database {
 		return message;
 	}
 
+	/**
+	 * Get a question by it's ID
+	 * @param questionID The ID of the question to read
+	 * @return
+	 * @throws SQLException
+	 */
 	public static Question readQuestion(int questionID) throws SQLException {
 		Question ret = null;
 
@@ -869,23 +1034,40 @@ public final class Database {
 		return ret;
 	}
 
+	/**
+	 * Get all the Questions of a bar
+	 * @param barID
+	 * @return
+	 * @throws SQLException
+	 */
 	public static List<Question> getQuestionsForBar(int barID) throws SQLException {
-		Connection con = verbindung();
-		Statement st = con.createStatement();
-		String query = "SELECT questionID FROM questions WHERE barID = " + barID + ";";
-		ResultSet rs = st.executeQuery(query);
-		List<Question> ret = new ArrayList<>();
 
-		while (rs.next()) {
-			ret.add(readQuestion(rs.getInt("questionID")));
+		ResultSet rs = null;
+		List<Question> questions = new ArrayList<>();
+		String sql = "SELECT questionID FROM questions WHERE barID=?";
+		try (Connection con = verbindung(); PreparedStatement st = con.prepareStatement(sql);) {
+			st.setInt(1, barID);
+			rs = st.executeQuery();
+
+			while (rs.next()) {
+				questions.add(readQuestion(rs.getInt("questionID")));
+			}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
 		}
-		rs.close();
-		st.close();
-		con.close();
 
-		return ret;
+		return questions;
 	}
 
+	/**
+	 * Get an answer by it's ID
+	 * @param answerID
+	 * @return
+	 * @throws SQLException
+	 */
 	public static Answer readAnswer(int answerID) throws SQLException {
 		Answer ret = null;
 
@@ -911,6 +1093,11 @@ public final class Database {
 		return ret;
 	}
 
+	/**
+	 * Save an answer
+	 * @param answer
+	 * @throws SQLException
+	 */
 	public static void saveAnswer(Answer answer) throws SQLException {
 		Connection con = verbindung();
 		Statement st = con.createStatement();
@@ -921,6 +1108,12 @@ public final class Database {
 		con.close();
 	}
 
+	/**
+	 * Search a bar by a string
+	 * @param bar
+	 * @return
+	 * @throws SQLException
+	 */
 	public static List<Bar> searchForBar(String bar) throws SQLException {
 
 		Connection con = verbindung();
@@ -938,5 +1131,28 @@ public final class Database {
 		con.close();
 
 		return ret;
+	}
+
+	/**
+	 * Get all the Tags from a bar
+	 * @param tag
+	 * @return
+	 * @throws SQLException
+	 */
+	public static List<Bar> getBarsForTag(String tag) throws SQLException {
+		String sql = "SELECT barID FROM tags WHERE name=?";
+		List<Bar> bars = new ArrayList<>();
+
+		try (Connection con = verbindung(); PreparedStatement statement = con.prepareStatement(sql);) {
+			statement.setString(1, tag);
+
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				bars.add(readBar(rs.getInt(BAR_ID_STRING)));
+			}
+			rs.close();
+		}
+
+		return bars;
 	}
 }

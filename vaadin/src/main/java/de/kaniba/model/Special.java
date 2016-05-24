@@ -1,8 +1,16 @@
 package de.kaniba.model;
 
+import java.io.Serializable;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class Special {
+/**
+ * Class that represents a special of a bar.
+ * @author Philipp
+ *
+ */
+public class Special implements Serializable {
+	private static final long serialVersionUID = 1L;
 	public static final int UNKNOWNSPECIALID = -1;
 	private int specialID;
 	private int barID;
@@ -12,13 +20,25 @@ public class Special {
 	private Timestamp end;
 	private Timestamp created;
 	
+	/**
+	 * Initialize as invalid special
+	 */
 	public Special() {
 		this.specialID = UNKNOWNSPECIALID;
 	}
 	
-	public Special(int specialID) throws Exception {
+	/**
+	 * Read a special from the database
+	 * @param specialID
+	 * @throws Exception
+	 */
+	public Special(int specialID) throws SQLException {
 		//Das Special aus der Datenbank auslesen
 		Special t = Database.readSpecial(specialID);
+		
+		if(t == null) {
+			throw new IllegalArgumentException("Invalid special ID");
+		}
 		
 		//Die ausgelesenen Werte übernehmen
 		this.specialID = specialID;
@@ -55,27 +75,27 @@ public class Special {
 	}
 
 	public Timestamp getBegin() {
-		return begin;
+		return new Timestamp(begin.getTime());
 	}
 
 	public void setBegin(Timestamp begin) {
-		this.begin = begin;
+		this.begin = new Timestamp(begin.getTime());
 	}
 
 	public Timestamp getEnd() {
-		return end;
+		return new Timestamp(end.getTime());
 	}
 
 	public void setEnd(Timestamp end) {
-		this.end = end;
+		this.end = new Timestamp(end.getTime());
 	}
 
 	public Timestamp getCreated() {
-		return created;
+		return new Timestamp(created.getTime());
 	}
 
 	public void setCreated(Timestamp created) {
-		this.created = created;
+		this.created = new Timestamp(created.getTime());
 	}
 
 	public int getBarID() {
@@ -84,6 +104,5 @@ public class Special {
 
 	public void setBarID(int barID) {
 		this.barID=barID;
-		
 	}
 }

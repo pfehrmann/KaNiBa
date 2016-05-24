@@ -4,46 +4,48 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+
 import de.kaniba.components.SearchElement;
 import de.kaniba.components.SearchElementImpl;
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
-import de.kaniba.utils.Utils;
-import de.kaniba.view.SearchView;
+import de.kaniba.uiInterfaces.SearchPresenterInterface;
+import de.kaniba.uiInterfaces.SearchViewInterface;
+import de.kaniba.utils.LoggingUtils;
 
 /**
  * Logic for the search
  * @author Philipp
  *
  */
-public class SearchPresenter {
+public class SearchPresenter implements SearchPresenterInterface {
+	private static final long serialVersionUID = 1L;
 	
-	private SearchView view;
+	private SearchViewInterface view;
 
-	public SearchPresenter(SearchView view) {
+	/**
+	 * Initialize the presenter with the correct view
+	 * @param view
+	 */
+	public SearchPresenter(SearchViewInterface view) {
 		this.view = view;
-		view.registerPresenter(this);
+		view.setPresenter(this);
 	}
 	
-	public SearchView getView() {
+	public SearchViewInterface getView() {
 		return view;
 	}
 
-	/**
-	 * Searches the database
-	 * @param searchValue The string to search for
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.SearchInterface#updateSearchView(java.lang.String)
 	 */
+	@Override
 	public void updateSearchView(String searchValue) {
-
-		List<Bar> resultList = null;
-		try {
-			resultList = Database.searchForBar(searchValue);
-		} catch (SQLException e) {
-			Utils.exception(e);
-		}
+		List<Bar> resultList = getResultList(searchValue);
 		
 		if(resultList == null) {
-			Utils.log("Error while accesing database, will not show search results.");
+			LoggingUtils.log("Error while accesing database, will not show search results.");
 			return;
 		}
 		
@@ -55,6 +57,34 @@ public class SearchPresenter {
 		view.setSearchResults(searchElementList);
 		
 		view.displayBarsOnMap(resultList);
+	}
+
+	private List<Bar> getResultList(String searchValue) {
+		List<Bar> resultList = null;
 		
+		// Search for a tag?
+		if(searchValue.startsWith("tag=")) {
+			try {
+				resultList = Database.getBarsForTag(searchValue.replaceFirst("tag=\\s*", ""));
+				return resultList;
+			} catch (SQLException e) {
+				LoggingUtils.exception(e);
+			}
+		}
+		
+		try {
+			resultList = Database.searchForBar(searchValue);
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
+		}
+		return resultList;
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		String tag = event.getParameters();
+		if(tag != null && !"".equals(tag)) {
+			updateSearchView("tag=" + tag);
+		}
 	}	
 }

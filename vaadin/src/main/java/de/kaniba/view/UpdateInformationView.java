@@ -1,11 +1,7 @@
 package de.kaniba.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.server.UserError;
@@ -17,26 +13,25 @@ import com.vaadin.ui.Button.ClickEvent;
 import de.kaniba.designs.UpdateInformationDesign;
 import de.kaniba.model.Address;
 import de.kaniba.model.InternalUser;
-import de.kaniba.presenter.UpdateInformationPresenter;
+import de.kaniba.uiInterfaces.UpdateInformationPresenterInterface;
+import de.kaniba.uiInterfaces.UpdateInformationViewInterface;
 
 /**
  * The view for updating personal informations
  * @author Philipp
  *
  */
-public class UpdateInformationView extends UpdateInformationDesign implements View {
+public class UpdateInformationView extends UpdateInformationDesign implements UpdateInformationViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	public static final String NAME = "updateInformation";
 	
-	private List<UpdateInformationPresenter> presenters;
+	private UpdateInformationPresenterInterface presenter;
 	
 	/**
 	 * Setup the view.
 	 */
 	public UpdateInformationView() {
-		presenters = new ArrayList<>();
-		
 		repeatPasswordField.addTextChangeListener(new FieldEvents.TextChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -57,25 +52,39 @@ public class UpdateInformationView extends UpdateInformationDesign implements Vi
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				for (UpdateInformationPresenter presenter : presenters) {
-					presenter.updateClickListener(event);
-				}
+				presenter.updateClickListener(event);
 			}
 		});
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#getOldPasswordField()
+	 */
+	@Override
 	public PasswordField getOldPasswordField() {
 		return oldPasswordField;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#getPasswordField()
+	 */
+	@Override
 	public PasswordField getPasswordField() {
 		return passwordField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#getRepeatPasswordField()
+	 */
+	@Override
 	public PasswordField getRepeatPasswordField() {
 		return repeatPasswordField;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#getSubmit()
+	 */
+	@Override
 	public Button getSubmit() {
 		return submit;
 	}
@@ -85,12 +94,14 @@ public class UpdateInformationView extends UpdateInformationDesign implements Vi
 		Page.getCurrent().setTitle("Informationen aktualisieren");
 		
 		UI.getCurrent().getPage().setTitle("Informationen aktualisieren");
-		for(UpdateInformationPresenter presenter: presenters) {
-			presenter.enter();
-		}
+		presenter.enter();
 
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#getUser()
+	 */
+	@Override
 	public InternalUser getUser() {
 		InternalUser user = new InternalUser();
 		
@@ -108,6 +119,10 @@ public class UpdateInformationView extends UpdateInformationDesign implements Vi
 		return user;
 	}
 	
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#setUser(de.kaniba.model.InternalUser)
+	 */
+	@Override
 	public void setUser(InternalUser user) {
 		nameField.setValue(user.getName());
 		firstNameField.setValue(user.getFirstname());
@@ -118,12 +133,17 @@ public class UpdateInformationView extends UpdateInformationDesign implements Vi
 		zipField.setValue(user.getAddress().getZip());
 	}
 
-	/**
-	 * Add a presenter to the list of presenters
-	 * @param presenter
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.UpdateInformationViewInterface#setPresenter(de.kaniba.presenter.UpdateInformationPresenterInterface)
 	 */
-	public void addPresenter(UpdateInformationPresenter presenter) {
-		presenters.add(presenter);
+	@Override
+	public void setPresenter(UpdateInformationPresenterInterface presenter) {
+		this.presenter = presenter;
+	}
+
+	@Override
+	public boolean checkRights(String parameters) {
+		return presenter.checkRights(parameters);
 	}
 
 }

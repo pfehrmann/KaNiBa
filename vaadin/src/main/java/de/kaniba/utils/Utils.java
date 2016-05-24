@@ -8,29 +8,25 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.shared.Position;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
+import de.kaniba.components.BarAdminMenuImpl;
 import de.kaniba.components.ExternalMenuImpl;
+import de.kaniba.components.InternalMenuImpl;
 import de.kaniba.model.User;
 import de.kaniba.navigator.NavigatorUI;
 
 /**
  * Utility class for various purposes.
+ * 
  * @author Philipp
  *
  */
 public final class Utils {
-	private static final int DEFAULT_NOTIFICATION_DELAY = 2000;
-	private static final Logger LOGGER = Logger.getLogger("KaNiBa");
 
 	private Utils() {
 		// May not be instanciated
@@ -41,16 +37,17 @@ public final class Utils {
 	 * elements are still equal (listA.get(1) == listB.get(1)), but the lists
 	 * are not equal (listA != listB).
 	 * 
-	 * @param list The list to copy.
+	 * @param list
+	 *            The list to copy.
 	 * @return Returns a copy of the list.
 	 */
 	public static <T> List<T> copyList(List<T> list) {
 		List<T> copy = new ArrayList<>();
 
-		if(list == null) {
+		if (list == null) {
 			return copy;
 		}
-		
+
 		for (T element : list) {
 			copy.add(element);
 		}
@@ -59,58 +56,18 @@ public final class Utils {
 	}
 
 	/**
-	 * Loggs a message.
-	 * 
-	 * @param msg
-	 */
-	public static void log(String msg) {
-		LOGGER.info(msg);
-	}
-
-	/**
-	 * Logs an exception.
-	 * 
-	 * @param e
-	 */
-	public static void exception(Exception e) {
-		LOGGER.log(Level.WARNING, e.getMessage(), e);
-	}
-
-	/**
 	 * @return Returns the basepath of the vaadin app.
 	 */
 	public static String basepath() {
 		return VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 	}
-	
+
 	public static String getBarLogoBasePath() {
 		return basepath() + "/WEB-INF/images/";
 	}
 
 	public static VaadinSession getSession() {
 		return UI.getCurrent().getSession();
-	}
-
-	public static boolean isLoggedIn() {
-		VaadinSession session = getSession();
-		Object loggedInObj = session.getAttribute("loggedIn");
-		boolean loggedIn = false;
-		if (loggedInObj != null) {
-			loggedIn = (boolean) loggedInObj;
-		}
-
-		return loggedIn;
-	}
-	
-	public static boolean isAdmin() {
-		VaadinSession session = getSession();
-		Object adminObj = session.getAttribute("admin");
-		boolean admin = false;
-		if (adminObj != null) {
-			admin = true;
-		}
-
-		return admin && isLoggedIn();
 	}
 
 	/**
@@ -127,94 +84,29 @@ public final class Utils {
 		StringBuilder sb = new StringBuilder();
 		try (InputStream in = website.openStream(); BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
 			while (br.ready()) {
-				while (br.ready()) {
-					sb.append(br.readLine() + "\n");
-				}
+				sb.append(br.readLine() + "\n");
 			}
 		} catch (IOException e) {
-			exception(e);
+			LoggingUtils.exception(e);
 		}
 		return sb.toString();
 	}
 
 	/**
-	 * Navigates to a given state.
-	 * 
-	 * @param navigationState
+	 * Set the menu
 	 */
-	public static void navigateTo(String navigationState) {
-		UI.getCurrent().getNavigator().navigateTo(navigationState);
+	public static void updateMenu() {
+		((NavigatorUI) UI.getCurrent()).setMenu(getMenu());
 	}
 
-	/**
-	 * Shows a notification with the given message. The notification will be
-	 * visible for 2000ms.
-	 * 
-	 * @param message
-	 */
-	public static void showNotification(String message) {
-		showNotification(message, Type.HUMANIZED_MESSAGE);
-	}
+	private static Component getMenu() {
+		if (User.isAdmin()) {
+			return new BarAdminMenuImpl();
+		}
+		if (User.isLoggedIn()) {
+			return new InternalMenuImpl();
+		}
 
-	/**
-	 * Shows a notfication.
-	 * 
-	 * @param message
-	 * @param type
-	 */
-	public static void showNotification(String message, Type type) {
-		showNotification(message, type, DEFAULT_NOTIFICATION_DELAY);
-	}
-
-	/**
-	 * Shows a notification
-	 * 
-	 * @param message
-	 * @param type
-	 * @param durationMs
-	 */
-	public static void showNotification(String message, Type type, int durationMs) {
-		Notification note = new Notification(message, type);
-		note.setDelayMsec(durationMs);
-		note.setPosition(Position.MIDDLE_CENTER);
-		note.show(Page.getCurrent());
-	}
-
-	/**
-	 * Navigates to the previous page.
-	 */
-	public static void navigateBack() {
-		Page.getCurrent().getJavaScript().execute("window.history.back()");
-	}
-
-	/**
-	 * Navigates to the previous page and shows a message.
-	 * 
-	 * @param message
-	 */
-	public static void navigateBack(String message) {
-		navigateBack();
-		showNotification(message);
-	}
-
-	/**
-	 * Navigates back and shows a message of a specific type. Useful for error
-	 * messages.
-	 * 
-	 * @param message
-	 * @param type
-	 */
-	public static void navigateBack(String message, Type type) {
-		navigateBack();
-		showNotification(message, type);
-	}
-
-	public static void logout() {
-		VaadinSession session = getSession();
-		session.setAttribute("loggedIn", false);
-		session.setAttribute("model", new User());
-		session.setAttribute("admin", null);
-		((NavigatorUI) UI.getCurrent()).setMenu(new ExternalMenuImpl());
-		Notification.show("Erfolgreich ausgeloggt.");
+		return new ExternalMenuImpl();
 	}
 }

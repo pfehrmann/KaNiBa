@@ -1,13 +1,25 @@
 package de.kaniba.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.vaadin.server.VaadinSession;
 
+import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.Utils;
 
-public class InternalUser extends User {
+/**
+ * This class represents an InternalUser. A user becomes an InternalUser by
+ * logging in.
+ * 
+ * @author Philipp
+ *
+ */
+public class InternalUser extends User implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private String sessionID;
 	private int userID;
 	private Email email;
@@ -17,6 +29,9 @@ public class InternalUser extends User {
 	private Date birthdate;
 	private Address address;
 
+	/**
+	 * Initializes the user. All the fields have to be initialized with the setters.
+	 */
 	public InternalUser() {
 		super();
 	}
@@ -78,7 +93,7 @@ public class InternalUser extends User {
 		try {
 			return Database.getRating(userID, bar.getBarID()) != null;
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 			return false;
 		}
 	}
@@ -86,7 +101,7 @@ public class InternalUser extends User {
 	/**
 	 * Gibt das Rating, dass der User für eine Bar abgegeben hat.
 	 * 
-	 * @param bar
+	 * @param barID
 	 *            Die Bar, von der das Rating abgefragt wird
 	 * @return Gibt das Rating zurück, oder null falls die Bar noch nicht
 	 *         bewertet wurde.
@@ -129,11 +144,11 @@ public class InternalUser extends User {
 	}
 
 	public Date getBirthdate() {
-		return birthdate;
+		return new Date(birthdate.getTime());
 	}
 
 	public void setBirthdate(Date birthdate) {
-		this.birthdate = birthdate;
+		this.birthdate = new Date(birthdate.getTime());
 	}
 
 	public String getSessionID() {
@@ -148,6 +163,10 @@ public class InternalUser extends User {
 		return this.address;
 	}
 
+	/**
+	 * Save the user to the database
+	 * @throws SQLException
+	 */
 	public void saveUser() throws SQLException {
 		this.userID = Database.saveUser(this);
 	}
@@ -164,12 +183,16 @@ public class InternalUser extends User {
 		VaadinSession session = Utils.getSession();
 		Admin admin = session.getAttribute(Admin.class);
 		InternalUser internalUser = (InternalUser) session.getAttribute("user");
-		
+
 		if (admin != null) {
 			return new Admin(internalUser);
 		}
 
 		return internalUser;
+	}
+
+	public List<Bar> getSuggestions() throws SQLException {
+		return Database.getSuggestions(userID);
 	}
 
 }

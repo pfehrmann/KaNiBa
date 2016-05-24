@@ -1,49 +1,60 @@
 package de.kaniba.view;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import java.util.List;
 
-import de.kaniba.components.SearchElementImpl;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Component;
+
 import de.kaniba.designs.MyBarsDesign;
-import de.kaniba.model.Admin;
-import de.kaniba.model.Bar;
-import de.kaniba.model.InternalUser;
-import de.kaniba.utils.BarUtils;
-import de.kaniba.utils.Utils;
+import de.kaniba.uiInterfaces.MyBarsPresenterInterface;
+import de.kaniba.uiInterfaces.MyBarsViewInterface;
 
 /**
  * This view is used to display all the bars, one admin can administrate.
  * @author Philipp
  *
  */
-public class MyBarsView extends MyBarsDesign implements View {
+public class MyBarsView extends MyBarsDesign implements MyBarsViewInterface {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String NAME = "myBars";
-	private Admin admin;
+	private MyBarsPresenterInterface presenter;
 	
 	/**
-	 * Does nothig, setting the view up is done when entering is
+	 * Does nothing, setting the view up is done when entering is
 	 */
 	public MyBarsView() {
 		super();
 	}
+	
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.MBarsViewInterface#setPresenter(de.kaniba.presenter.MyBarsPresenterInterface)
+	 */
+	@Override
+	public void setPresenter(MyBarsPresenterInterface presenter) {
+		this.presenter = presenter;
+	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		if(!Utils.isAdmin()) {
-			Utils.navigateBack();
-			return;
-		}
-		
-		admin = (Admin) InternalUser.getUser();
-
+		presenter.enter(event);
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.kaniba.view.MBarsViewInterface#setResults(java.util.List)
+	 */
+	@Override
+	public void setResults(List<Component> components) {
 		barResultContainer.removeAllComponents();
-		for (Bar bar : admin.getOwnedBars()) {
-			SearchElementImpl result = new SearchElementImpl(bar.getName(), BarUtils.getOneLineAddress(bar),
-					EditBarView.NAME + "/" + bar.getBarID());
-			barResultContainer.addComponent(result);
+		
+		for(Component component : components) {
+			barResultContainer.addComponent(component);
 		}
+	}
+
+	@Override
+	public boolean checkRights(String parameters) {
+		return presenter.checkRights(parameters);
 	}
 
 }

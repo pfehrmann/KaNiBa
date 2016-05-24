@@ -1,10 +1,13 @@
 package de.kaniba.components;
 
+import com.vaadin.server.Page;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
+import de.kaniba.navigator.NavigatorUI;
+import de.kaniba.utils.NavigationUtils;
 import de.kaniba.view.SearchView;
 
 /**
@@ -13,6 +16,7 @@ import de.kaniba.view.SearchView;
  *
  */
 public class ExternalMenuImpl extends ExternalMenu {
+	// Default serial version id
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -20,23 +24,39 @@ public class ExternalMenuImpl extends ExternalMenu {
 	 */
 	public ExternalMenuImpl() {
 		loginButton.addClickListener(new ClickListener() {
-			
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
+				// Hide the menu
+				((NavigatorUI) UI.getCurrent()).setMenuVisibility(false);
+				
 				Window loginWindow = new Window("Login");
-				loginWindow.setContent(new LoginPopupImpl(loginWindow));
+				LoginPopupImpl popup = new LoginPopupImpl(loginWindow); 
+				loginWindow.setContent(popup);
 				loginWindow.setWidth("450px");
 				loginWindow.setResizable(false);
 				loginWindow.setModal(true);
 				loginWindow.setDraggable(false);
+				UI.getCurrent().getNavigator().addViewChangeListener(popup);
 				UI.getCurrent().addWindow(loginWindow);
 			}
 		});
 		searchButton.addClickListener(new ClickListener() {
-			
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
-				UI.getCurrent().getNavigator().navigateTo(SearchView.NAME);
+				NavigationUtils.navigateTo(SearchView.NAME);
+			}
+		});
+		
+		aboutButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Page.getCurrent().open("https://kanibablog.wordpress.com/", "KaNiBa - Blog");
 			}
 		});
 	}

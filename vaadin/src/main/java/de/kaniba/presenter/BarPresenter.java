@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
-import com.vaadin.ui.UI;
 
 import de.kaniba.model.Bar;
 import de.kaniba.model.Database;
@@ -13,66 +12,92 @@ import de.kaniba.model.DisplayRating;
 import de.kaniba.model.InternalUser;
 import de.kaniba.model.Message;
 import de.kaniba.model.Rating;
-import de.kaniba.utils.BarUtils;
-import de.kaniba.utils.Utils;
-import de.kaniba.view.BarView;
+import de.kaniba.model.User;
+import de.kaniba.uiInterfaces.BarPresenterInterface;
+import de.kaniba.uiInterfaces.BarViewInterface;
+import de.kaniba.utils.LoggingUtils;
+import de.kaniba.utils.NavigationUtils;
+import de.kaniba.utils.NotificationUtils;
 import de.kaniba.view.SurveyView;
 
-public class BarPresenter {
+/**
+ * This class is the presenter of the BarView
+ * @author Philipp
+ *
+ */
+public class BarPresenter implements BarPresenterInterface {
+	private static final long serialVersionUID = 1L;
+
 	private Bar bar;
-	private BarView view;
+	private BarViewInterface view;
 	private boolean settingUp;
 
-	public BarPresenter() {
-		view = new BarView();
+	/**
+	 * Initialize the Presenter with the correct view
+	 * @param view
+	 */
+	public BarPresenter(BarViewInterface view) {
+		this.view = view;
 		view.setPresenter(this);
 		settingUp = false;
 	}
 
-	public BarView getView() {
+	public BarViewInterface getView() {
 		return view;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.BarPresenterInterface#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
+	 */
+	@Override
 	public void enter(ViewChangeEvent event) {
 		settingUp = true;
 		
-		bar = BarUtils.getBarFromParams(event.getParameters());
+		bar = Bar.getBarFromParams(event.getParameters());
 		
 		if(bar == null) {
 			settingUp = false;
 			
-			//TODO: Show 404 - Bar not found page
+			NotificationUtils.showNotification("Wir konnten die Bar leider nicht finden... "
+					+ "Vielleicht ist sie ja später da :D", Type.ERROR_MESSAGE);
 			return;
 		}
-		view.setMapCoords(BarUtils.getLatLon(bar));
+		view.setMapCoords(bar.getLatLon());
 		view.setBarName(bar.getName());
-		view.setBarAddress(BarUtils.getOneLineAddress(bar));
+		view.setBarAddress(bar.getOneLineAddress());
 		view.setBarDescription(bar.getDescription());
 		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
 		view.setBarLogo(bar);
+		view.setTags(bar.getTags(), bar.getBarID());
 		
-		if (Utils.isLoggedIn()) {
+		DisplayRating rating = bar.getDisplayRating();
+		
+		if (User.isLoggedIn()) {
 			Rating userRating = null;
 			try {
 				userRating = Database.getRating(InternalUser.getUser().getUserID(), bar.getBarID());
 			} catch (SQLException e) {
-				Utils.exception(e);
+				LoggingUtils.exception(e);
 			}
-
-			if (userRating != null) {
-				view.setBarRating(new DisplayRating(userRating));
+			
+			if(userRating != null) {
+				rating = new DisplayRating(userRating);
 			}
-		} else {
-			view.setBarRating(bar.getDisplayRating());
 		}
+		
+		view.setBarRating(rating);
 		settingUp = false;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.BarPresenterInterface#saveRating(de.kaniba.model.Rating)
+	 */
+	@Override
 	public void saveRating(Rating rating) {
 		if (settingUp) {
 			return;
 		}
-		boolean loggedIn = Utils.isLoggedIn();
+		boolean loggedIn = User.isLoggedIn();
 		if (!loggedIn) {
 			Notification.show("Um abzustimmen muss du eingeloggt sein.", Type.WARNING_MESSAGE);
 			return;
@@ -85,7 +110,7 @@ public class BarPresenter {
 			
 			fromDatabase = Database.getRating(user.getUserID(), bar.getBarID());
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 		
 		if(fromDatabase == null) {
@@ -120,12 +145,16 @@ public class BarPresenter {
 		try {
 			Database.saveBarRating(rating);
 		} catch (SQLException e) {
-			Utils.exception(e);
+			LoggingUtils.exception(e);
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.BarPresenterInterface#sendMessage(java.lang.String)
+	 */
+	@Override
 	public void sendMessage(String message) {
-		if (!Utils.isLoggedIn()) {
+		if (!User.isLoggedIn()) {
 			Notification.show("Um eine Message zu senden muss du eingeloggt sein!");
 			return;
 		}
@@ -135,7 +164,16 @@ public class BarPresenter {
 		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
 	}
 
+	/* (non-Javadoc)
+	 * @see de.kaniba.presenter.BarPresenterInterface#clickedSurvey()
+	 */
+	@Override
 	public void clickedSurvey() {
-		UI.getCurrent().getNavigator().navigateTo(SurveyView.NAME + "/" + bar.getBarID());
+		NavigationUtils.navigateTo(SurveyView.NAME + "/" + bar.getBarID());
+	}
+
+	@Override
+	public void updateTagList() {
+		view.setTags(bar.getTags(), bar.getBarID());
 	}
 }

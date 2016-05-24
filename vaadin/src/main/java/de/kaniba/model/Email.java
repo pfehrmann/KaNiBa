@@ -1,8 +1,20 @@
 package de.kaniba.model;
 
-public class Email {
+import java.io.Serializable;
+
+/**
+ * This class represents an email of a user
+ * @author Philipp
+ *
+ */
+public class Email implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String mail;
 	
+	/**
+	 * Initialize the email with the string of the mail
+	 * @param mail
+	 */
 	public Email(String mail) {
 		this.mail = mail;
 	}

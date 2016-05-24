@@ -7,47 +7,38 @@ import java.sql.Date;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.vaadin.ui.PasswordField;
+
 import de.kaniba.model.Address;
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
+import de.kaniba.uiInterfaces.UpdateInformationViewInterface;
 import de.kaniba.view.UpdateInformationView;
 
 public class UpdateInformationViewTest {
-	private UpdateInformationView view;
+	private UpdateInformationViewInterface view;
 	
 	@Before
 	public void setUp() {
 		view = new UpdateInformationView();
 	}
-	
-	@Test
-	public void testUpdateInformationView() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	public void testGetOldPasswordField() {
-		fail("Not yet implemented");
+		PasswordField oldPasswordField = view.getOldPasswordField();
+		assertNotNull("No old password field", oldPasswordField);
 	}
 
 	@Test
 	public void testGetPasswordField() {
-		fail("Not yet implemented");
+		PasswordField passwordField = view.getPasswordField();
+		assertNotNull("No old password field", passwordField);
 	}
 
 	@Test
 	public void testGetRepeatPasswordField() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetSubmit() {
-		assertNotEquals("No submit button was created", null, view.getSubmit());
-	}
-
-	@Test
-	public void testEnter() {
-		fail("Not yet implemented");
+		PasswordField passwordField = view.getRepeatPasswordField();
+		assertNotNull("No old password field", passwordField);
 	}
 
 	@Test
@@ -76,11 +67,6 @@ public class UpdateInformationViewTest {
 		assertEquals("User not equal", user.getFirstname(), read.getFirstname());
 		assertEquals("User not equal", user.getName(), read.getName());
 		assertEquals("User not equal", user.getPassword(), read.getPassword());
-	}
-
-	@Test
-	public void testAddPresenter() {
-		fail("Not yet implemented");
 	}
 
 }

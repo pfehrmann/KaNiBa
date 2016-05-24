@@ -1,11 +1,13 @@
 package de.kaniba.components;
 
-import com.vaadin.ui.UI;
+import com.vaadin.server.Page;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
-import de.kaniba.utils.Utils;
+import de.kaniba.model.User;
+import de.kaniba.utils.NavigationUtils;
 import de.kaniba.view.SearchView;
+import de.kaniba.view.SuggestionsView;
 import de.kaniba.view.UpdateInformationView;
 
 /**
@@ -25,7 +27,7 @@ public class InternalMenuImpl extends InternalMenu {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				UI.getCurrent().getNavigator().navigateTo(SearchView.NAME);
+				NavigationUtils.navigateTo(SearchView.NAME);
 			}
 		});
 		
@@ -34,7 +36,7 @@ public class InternalMenuImpl extends InternalMenu {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				Utils.logout();
+				User.logout();
 			}
 		});
 		
@@ -43,7 +45,25 @@ public class InternalMenuImpl extends InternalMenu {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				UI.getCurrent().getNavigator().navigateTo(UpdateInformationView.NAME);
+				NavigationUtils.navigateTo(UpdateInformationView.NAME);
+			}
+		});
+		
+		aboutButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Page.getCurrent().open("https://kanibablog.wordpress.com/", "KaNiBa - Blog");
+			}
+		});
+		
+		suggestionsButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				NavigationUtils.navigateTo(SuggestionsView.NAME);
 			}
 		});
 	}

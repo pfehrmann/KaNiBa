@@ -22,6 +22,7 @@ public class InternalMenu extends CssLayout {
 	protected Button profilButton;
 	protected Button logoutButton;
 	protected Button aboutButton;
+	protected Button suggestionsButton;
 
 	public InternalMenu() {
 		Design.read(this);

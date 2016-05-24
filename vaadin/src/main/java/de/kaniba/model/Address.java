@@ -1,11 +1,26 @@
 package de.kaniba.model;
 
-public class Address {
+import java.io.Serializable;
+
+/**
+ * Class to represent a Address.
+ * @author Philipp
+ *
+ */
+public class Address implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String city;
 	private String street;
 	private String number;
 	private String zip;
 	
+	/**
+	 * Initialize the address with all the needed variables
+	 * @param city
+	 * @param street
+	 * @param number
+	 * @param zip
+	 */
 	public Address(String city, String street, String number, String zip) {
 		this.city = city;
 		this.street = street;
