@@ -52,12 +52,12 @@ public class Bar implements Serializable {
 	 * Writes the bar to the database. If the bar is already in the database, it
 	 * is just updated.
 	 * 
-	 * @return Returns true, if there were no problems writing to the database.
+	 * @return Returns the id of the bar. Returns -1 if the saving failed.
 	 * @throws SQLException
 	 *             Throws an Excepton, if the database could not be accessed, or
 	 *             other problemes related to the database occured.
 	 */
-	public boolean saveBar() throws SQLException {
+	public int saveBar() throws SQLException {
 		return Database.saveBar(this);
 	}
 
@@ -67,6 +67,23 @@ public class Bar implements Serializable {
 
 	public void setBarID(int barID) {
 		this.barID = barID;
+	}
+	
+	public static Bar getDefaultBar() {
+		Bar bar = new Bar();
+		bar.setAddress(new Address("", "", "", ""));
+		bar.setBarID(Bar.UNKNOWNBARID);
+		bar.setBarOwner(null);
+		bar.setCountRating(0);
+		bar.setDescription("Beschreibung der Bar...");
+		bar.setName("");
+		bar.setSumAtmosphereRating(0);
+		bar.setSumGeneralRating(0);
+		bar.setSumMusicRating(0);
+		bar.setSumPeopleRating(0);
+		bar.setSumPprRating(0);
+		
+		return bar;
 	}
 
 	public DisplayRating getDisplayRating() {

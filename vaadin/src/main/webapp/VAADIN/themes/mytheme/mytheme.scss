@@ -32,6 +32,10 @@
 @mixin mytheme {
   @include valo;
 	
+	.general-infos {
+		min-height: 90px;
+	}
+	
 	.bar-view[width-range~="0-800px"] {
 		.bar-view-main-content {
 			width:100% !important;
