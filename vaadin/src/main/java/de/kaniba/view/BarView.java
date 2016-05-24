@@ -19,7 +19,6 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 
-import de.kaniba.components.Map;
 import de.kaniba.designs.BarDesign;
 import de.kaniba.model.Bar;
 import de.kaniba.model.Coordinates;

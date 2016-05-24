@@ -33,7 +33,8 @@ public class MyBarsView extends MyBarsDesign implements MyBarsViewInterface {
 	public MyBarsView() {
 		super();
 		addNewBarButton.addClickListener(new ClickListener() {
-			
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				createNewBar();
