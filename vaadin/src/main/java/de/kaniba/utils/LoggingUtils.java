@@ -12,8 +12,6 @@ import java.util.logging.SimpleFormatter;
  *
  */
 public class LoggingUtils {
-	private static final int LOG_FILES = 10;
-	private static final int LOG_LINES = 200000;
 	private static final Logger LOGGER = Logger.getLogger("KaNiBa");
 	
 	static {
@@ -21,9 +19,8 @@ public class LoggingUtils {
 				"%1$td.%1$tm.%1$tY %1$tH:%1$tM:%1$tS.%1$tL %4$-11s %5$s%6$s%n");
 		SimpleFormatter formatter = new SimpleFormatter();
 		try {
-			String path = "kaniba_%u.log";
-			FileHandler handler = new FileHandler(path,
-					LOG_LINES, LOG_FILES, true);
+			String path = "kaniba%u.log";
+			FileHandler handler = new FileHandler(path, true);
 			handler.setFormatter(formatter);
 			LOGGER.addHandler(handler);
 		} catch (SecurityException | IOException e) {

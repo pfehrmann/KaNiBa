@@ -21,17 +21,25 @@ import de.kaniba.utils.NavigationUtils;
 
 /**
  * Class for abstraction of the map element
+ * 
  * @author Philipp
  *
  */
 public class Map extends CustomComponent {
+	private static final int DEFAULT_ZOOM = 12;
+	private static final int MAX_ZOOM = 18;
+	private static final int MIN_ZOOM = 4;
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private OLMap openMap;
 	private OLTileLayer baseLayer;
 	private OLVectorLayer vectorLayer;
 	private OLVectorSource source;
 
+	/**
+	 * Initialize the map. The center will not be set.
+	 */
 	public Map() {
 		openMap = new OLMap();
 		openMap.setView(createView());
@@ -49,12 +57,12 @@ public class Map extends CustomComponent {
 	private OLView createView() {
 		OLViewOptions options = new OLViewOptions();
 		options.setInputProjection(Projections.EPSG4326);
-		options.setMinZoom(4);
-		options.setMaxZoom(18);
-		
+		options.setMinZoom(MIN_ZOOM);
+		options.setMaxZoom(MAX_ZOOM);
+
 		OLView view = new OLView(options);
-		view.setZoom(12);
-		
+		view.setZoom(DEFAULT_ZOOM);
+
 		return view;
 	}
 
@@ -63,9 +71,9 @@ public class Map extends CustomComponent {
 	}
 
 	/**
-	 * Set senter of the map
-	 * @param lat
-	 * @param lon
+	 * Set center of the map
+	 * 
+	 * @param coords
 	 */
 	public void setCenter(Coordinates coords) {
 		openMap.getView().setCenter(coords.getLon(), coords.getLat());
@@ -73,21 +81,22 @@ public class Map extends CustomComponent {
 
 	/**
 	 * Add a marker to the map
-	 * @param lat
-	 * @param lon
+	 * 
+	 * @param coords
+	 *            The coordinates of the marker
 	 */
 	public void addMarker(Coordinates coords) {
 		OLFeature feature = new OLFeature();
 		feature.setGeometry(new OLPoint(coords.getLon(), coords.getLat()));
-		
+
 		source.addFeature(feature);
 	}
-	
+
 	/**
 	 * Add a marker to the map. The map will navigate to the provided state
+	 * 
 	 * @param state
-	 * @param lat
-	 * @param lon
+	 * @param coords
 	 */
 	public void addMarker(final String state, Coordinates coords) {
 		final String id = state + new OLFeature().hashCode();
@@ -96,27 +105,33 @@ public class Map extends CustomComponent {
 		feature.setId(id);
 
 		source.addFeature(feature);
-		
+
 		openMap.addClickListener(new ClickListener() {
-			
+
 			@Override
 			public void onClick(OLClickEvent clickEvent) {
-				if(clickEvent.getFeatureIds().contains(id)) {
+				if (clickEvent.getFeatureIds().contains(id)) {
 					NavigationUtils.navigateTo(state);
 				}
 			}
 		});
 	}
-	
+
 	/**
 	 * Removes all the markers from the map
 	 */
 	public void removeAllMarkers() {
-		while(!source.getFeatures().isEmpty()) {
+		while (!source.getFeatures().isEmpty()) {
 			source.removeFeatureById(source.getFeatures().get(0).getId());
 		}
 	}
 
+	/**
+	 * Set the zoom to the specified value. The maximum zoom is 18, the minimum
+	 * is 4.
+	 * 
+	 * @param zoom
+	 */
 	public void setZoom(int zoom) {
 		openMap.getView().setZoom(zoom);
 	}

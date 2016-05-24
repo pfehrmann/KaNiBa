@@ -14,6 +14,13 @@ public class Address implements Serializable {
 	private String number;
 	private String zip;
 	
+	/**
+	 * Initialize the address with all the needed variables
+	 * @param city
+	 * @param street
+	 * @param number
+	 * @param zip
+	 */
 	public Address(String city, String street, String number, String zip) {
 		this.city = city;
 		this.street = street;

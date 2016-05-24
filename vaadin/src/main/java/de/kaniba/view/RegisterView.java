@@ -14,6 +14,7 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Button.ClickEvent;
 
+import de.kaniba.designs.RegisterDesign;
 import de.kaniba.model.Address;
 import de.kaniba.model.Email;
 import de.kaniba.model.InternalUser;
@@ -25,48 +26,17 @@ import de.kaniba.uiInterfaces.RegisterViewInterface;
  * @author Philipp
  *
  */
-public class RegisterView extends CustomComponent implements RegisterViewInterface {
+public class RegisterView extends RegisterDesign implements RegisterViewInterface {
 	private static final long serialVersionUID = 1L;
 
 	public static final String NAME = "register";
 	
 	private RegisterPresenterInterface presenter;
-	private Panel mainPanel;
-	private TextField nameField;
-	private TextField firstNameField;
-	private TextField emailField;
-	private PasswordField passwordField;
-	private PasswordField repeatPasswordField;
-	private DateField birthdateField;
-	private TextField cityField;
-	private TextField streetField;
-	private TextField numberField;
-	private TextField zipField;
-	private Button submit;
 	
 	/**
 	 * Set the view up.
 	 */
 	public RegisterView() {		
-		mainPanel = new Panel();
-		mainPanel.addStyleName("login-panel");
-		mainPanel.setWidth("100%");
-		
-		FormLayout form = new FormLayout();
-		
-		nameField = new TextField("Nachname");
-		form.addComponent(nameField);
-
-		firstNameField = new TextField("Vorname");
-		form.addComponent(firstNameField);
-
-		emailField = new TextField("E-Mail");
-		form.addComponent(emailField);
-
-		passwordField = new PasswordField("Passwort");
-		form.addComponent(passwordField);
-
-		repeatPasswordField = new PasswordField("Passwort wiederholen");
 		repeatPasswordField.addTextChangeListener(new FieldEvents.TextChangeListener() {
 			private static final long serialVersionUID = 1L;
 
@@ -81,25 +51,8 @@ public class RegisterView extends CustomComponent implements RegisterViewInterfa
 				}
 			}
 		});
-		form.addComponent(repeatPasswordField);
-
-		birthdateField = new DateField("Geburtsdatum");
-		form.addComponent(birthdateField);
-
-		cityField = new TextField("Stadt");
-		form.addComponent(cityField);
-
-		zipField = new TextField("PLZ");
-		form.addComponent(zipField);
-
-		streetField = new TextField("Straße");
-		form.addComponent(streetField);
-
-		numberField = new TextField("Hausnummer");
-		form.addComponent(numberField);
-
-		submit = new Button("Registrieren");
-		submit.addClickListener(new Button.ClickListener() {
+		
+		submitButton.addClickListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -107,14 +60,6 @@ public class RegisterView extends CustomComponent implements RegisterViewInterfa
 				presenter.registerClick();
 			}
 		});
-		form.addComponent(submit);
-
-		for(int i = 0; i < form.getComponentCount(); i++) {
-			form.getComponent(i).setWidth("100%");
-		}
-		
-		mainPanel.setContent(form);
-		setCompositionRoot(mainPanel);
 	}
 
 	/* (non-Javadoc)
@@ -201,8 +146,8 @@ public class RegisterView extends CustomComponent implements RegisterViewInterfa
 	 * @see de.kaniba.view.RegisterViewInterface#getSubmit()
 	 */
 	@Override
-	public Button getSubmit() {
-		return submit;
+	public Button getSubmitButton() {
+		return submitButton;
 	}
 
 	@Override

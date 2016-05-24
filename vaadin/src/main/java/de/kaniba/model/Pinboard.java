@@ -5,6 +5,11 @@ import java.util.List;
 
 import de.kaniba.utils.Utils;
 
+/**
+ * This class represents the pinboard
+ * @author Philipp
+ *
+ */
 public class Pinboard implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private List<Message> messages;
