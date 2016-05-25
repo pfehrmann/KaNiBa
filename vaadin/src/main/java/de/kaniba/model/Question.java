@@ -3,6 +3,11 @@ package de.kaniba.model;
 import java.io.Serializable;
 import java.sql.SQLException;
 
+/**
+ * This class represents a question from a survey
+ * @author Philipp
+ *
+ */
 public class Question implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int questionID;
@@ -12,8 +17,13 @@ public class Question implements Serializable {
 	
 	public Question() {
 		// nothing to do here
-	};
+	}
 	
+	/**
+	 * Read the question from the database
+	 * @param questionID
+	 * @throws SQLException
+	 */
 	public Question(int questionID) throws SQLException{
 		Question temp = Database.readQuestion(questionID);
 		this.questionID = temp.getQuestionID();
@@ -53,6 +63,4 @@ public class Question implements Serializable {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
-	
 }

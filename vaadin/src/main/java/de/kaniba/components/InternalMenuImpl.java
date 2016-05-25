@@ -7,6 +7,7 @@ import com.vaadin.ui.Button.ClickListener;
 import de.kaniba.model.User;
 import de.kaniba.utils.NavigationUtils;
 import de.kaniba.view.SearchView;
+import de.kaniba.view.SuggestionsView;
 import de.kaniba.view.UpdateInformationView;
 
 /**
@@ -54,6 +55,15 @@ public class InternalMenuImpl extends InternalMenu {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				Page.getCurrent().open("https://kanibablog.wordpress.com/", "KaNiBa - Blog");
+			}
+		});
+		
+		suggestionsButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				NavigationUtils.navigateTo(SuggestionsView.NAME);
 			}
 		});
 	}

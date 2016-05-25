@@ -12,6 +12,16 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+<<<<<<< HEAD
+=======
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Date;
+
+import de.kaniba.utils.LoggingUtils;
+>>>>>>> refs/remotes/origin/master
 
 /**
  * Eine Klasse, die Zugriff auf die Datenbak abstrahiert. Die Zugriffe sind alle
@@ -163,13 +173,19 @@ public final class Database {
 		return ret;
 	}
 
+	/**
+	 * Get the suggestions for a user
+	 * @param userID The user ID
+	 * @return 
+	 * @throws SQLException
+	 */
 	public static List<Bar> getSuggestions(int userID) throws SQLException {
 		List<Bar> bars = new ArrayList<>();
 
 		ResultSet rs = null;
-		String sql = "SELECT barID, SUM(generalRating) " + "FROM RATINGS WHERE userID IN "
+		String sql = "SELECT barID, SUM(generalRating) " + "FROM ratings WHERE userID IN "
 				+ "(SELECT userID FROM ratings WHERE barID IN "
-				+ "(SELECT barID FROM ratings WHERE userID = ?) AND userID != ?) "
+				+ "(SELECT barID FROM ratings WHERE userID = ? AND generalRating > 3) AND userID != ?) "
 				+ "GROUP BY barID ORDER BY SUM(generalRating) DESC LIMIT 5";
 
 		try (Connection con = verbindung(); PreparedStatement statement = con.prepareStatement(sql);) {
@@ -177,7 +193,7 @@ public final class Database {
 			statement.setInt(2, userID);
 			rs = statement.executeQuery();
 			while (rs.next()) {
-				int barID = rs.getInt("barID");
+				int barID = rs.getInt(BAR_ID_STRING);
 				bars.add(readBar(barID));
 			}
 		} finally {
@@ -277,7 +293,7 @@ public final class Database {
 	/**
 	 * Nimmt eine UserID und gibt den entsprechenden User zurück
 	 * 
-	 * @param UserID
+	 * @param userID
 	 *            Die UserID
 	 * @return Gibt den User zurück.
 	 */
@@ -369,10 +385,10 @@ public final class Database {
 	 * 
 	 * @param bar
 	 *            Die zu speichernde Bar
-	 * @return Gibt true zurück, wenn die Bar problemlos gespeichert wurde.
+	 * @return Returns the id of the bar. Returns -1 if the saving failed.
 	 * @throws SQLException
 	 */
-	public static boolean saveBar(Bar bar) throws SQLException {
+	public static int saveBar(Bar bar) throws SQLException {
 
 		if (bar.getBarID() != Bar.UNKNOWNBARID) {
 			String sql = "UPDATE bars SET city=?, street=?, number=?, zip=?, description=?, name=?, lastUpdated=? WHERE barID=?";
@@ -387,7 +403,7 @@ public final class Database {
 				statement.setInt(8, bar.getBarID());
 				statement.executeUpdate();
 			}
-			return true;
+			return bar.getBarID();
 		}
 		try (Connection con = verbindung(); Statement st = con.createStatement();) {
 			Address address = bar.getAddress();
@@ -399,9 +415,18 @@ public final class Database {
 					+ address.getNumber() + "','" + address.getZip() + "','" + bar.getSumGeneralRating() + "','"
 					+ bar.getSumPprRating() + "','" + bar.getSumMusicRating() + "','" + bar.getSumPeopleRating() + "','"
 					+ bar.getSumAtmosphereRating() + "','" + bar.getCountRating() + "','" + lastUpdated + "', '"
-					+ bar.getDescription() + "', '" + bar.getName() + "');");
+					+ bar.getDescription() + "', '" + bar.getName() + "');", Statement.RETURN_GENERATED_KEYS);
+			
+			ResultSet keys = st.getGeneratedKeys();
+			
+			if(keys.next()) {
+				int returnValue = keys.getInt(1);
+				keys.close();
+				return returnValue;
+			}
+			keys.close();
 		}
-		return true;
+		return -1;
 	}
 
 	/**
@@ -452,8 +477,6 @@ public final class Database {
 	/**
 	 * Methode, um ein Rating zu speichern
 	 * 
-	 * @param bar
-	 *            Die Bar, der bewertet werden soll.
 	 * @param rating
 	 *            Das abgebenene Rating
 	 * @return Gibt true zurück, wenn es beim Speichern keine Probleme gab.
@@ -799,6 +822,12 @@ public final class Database {
 
 	}
 
+	/**
+	 * Get all the bars that an admin may administrate
+	 * @param userID
+	 * @return
+	 * @throws SQLException
+	 */
 	public static List<Bar> getBarsOfAdmin(int userID) throws SQLException {
 		List<Bar> bars = new ArrayList<>();
 
@@ -894,7 +923,7 @@ public final class Database {
 	/**
 	 * Methode, um einen User zu speichern
 	 * 
-	 * @param User
+	 * @param user
 	 *            Der User, der erstellt oder geändert werden soll.
 	 * 
 	 * @return Gibt die UserID zurück
@@ -943,7 +972,7 @@ public final class Database {
 	/**
 	 * Methode, um eine Email zu ändern
 	 * 
-	 * @param User
+	 * @param user
 	 *            Der User, dessen Email geändert werden soll.
 	 * 
 	 * @param email
@@ -1008,6 +1037,12 @@ public final class Database {
 		return message;
 	}
 
+	/**
+	 * Get a question by it's ID
+	 * @param questionID The ID of the question to read
+	 * @return
+	 * @throws SQLException
+	 */
 	public static Question readQuestion(int questionID) throws SQLException {
 		Question ret = null;
 
@@ -1031,6 +1066,12 @@ public final class Database {
 		return ret;
 	}
 
+	/**
+	 * Get all the Questions of a bar
+	 * @param barID
+	 * @return
+	 * @throws SQLException
+	 */
 	public static List<Question> getQuestionsForBar(int barID) throws SQLException {
 
 		ResultSet rs = null;
@@ -1053,6 +1094,12 @@ public final class Database {
 		return questions;
 	}
 
+	/**
+	 * Get an answer by it's ID
+	 * @param answerID
+	 * @return
+	 * @throws SQLException
+	 */
 	public static Answer readAnswer(int answerID) throws SQLException {
 		Answer ret = null;
 
@@ -1078,6 +1125,11 @@ public final class Database {
 		return ret;
 	}
 
+	/**
+	 * Save an answer
+	 * @param answer
+	 * @throws SQLException
+	 */
 	public static void saveAnswer(Answer answer) throws SQLException {
 		Connection con = verbindung();
 		Statement st = con.createStatement();
@@ -1088,6 +1140,12 @@ public final class Database {
 		con.close();
 	}
 
+	/**
+	 * Search a bar by a string
+	 * @param bar
+	 * @return
+	 * @throws SQLException
+	 */
 	public static List<Bar> searchForBar(String bar) throws SQLException {
 
 		Connection con = verbindung();
@@ -1107,6 +1165,12 @@ public final class Database {
 		return ret;
 	}
 
+	/**
+	 * Get all the Tags from a bar
+	 * @param tag
+	 * @return
+	 * @throws SQLException
+	 */
 	public static List<Bar> getBarsForTag(String tag) throws SQLException {
 		String sql = "SELECT barID FROM tags WHERE name=?";
 		List<Bar> bars = new ArrayList<>();

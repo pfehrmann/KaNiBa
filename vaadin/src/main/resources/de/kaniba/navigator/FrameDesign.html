@@ -1,32 +1,30 @@
 <!doctype html>
 <html>
- <head>
-  <style>
-#responsive-application-template.valo-menu-responsive .valo-menu-part .valo-menu-item span.v-icon {
-	opacity: 1.0;
-}
- </style>    
-  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src&quot;,&quot;THEME&quot;:&quot;mytheme&quot;}">
-  <meta charset="UTF-8" name="package-mapping" content="components:de.kaniba.components">
-  <meta charset="UTF-8" name="package-mapping" content="com_example_designertest:com.example.designertest">
-  <meta charset="UTF-8" name="package-mapping" content="com_vaadin_tapio_googlemaps:com.vaadin.tapio.googlemaps">
- </head> 
- <body> 
-  <vaadin-horizontal-layout style-name="valo-menu-responsive" responsive id="responsive-application-template" size-full> 
-   <vaadin-css-layout style-name="valo-menu" responsive> 
-    <vaadin-css-layout style-name="valo-menu-part" responsive> 
-     <vaadin-horizontal-layout style-name="valo-menu-title" width-full _id="menuTitle"> 
-      <vaadin-image source="http://kaniba.de/APP/connector/0/20/source/logo.png" id="logo" width="110px" height="110px" _id="logo"></vaadin-image> 
-     </vaadin-horizontal-layout> 
-     <vaadin-button icon="fonticon://FontAwesome/f03a" style-name="primary small valo-menu-toggle" plain-text _id="menuToggle">
-       Menu 
-     </vaadin-button> 
-     <vaadin-css-layout _id="menuContainer">
-      <components-external-menu-impl></components-external-menu-impl> 
-     </vaadin-css-layout>
-    </vaadin-css-layout> 
-   </vaadin-css-layout> 
-   <vaadin-vertical-layout id="view-container" size-full _id="content" :expand></vaadin-vertical-layout> 
-  </vaadin-horizontal-layout>  
- </body>
+	<head>
+		<style>
+			#responsive-application-template.valo-menu-responsive .valo-menu-part .valo-menu-item span.v-icon {opacity: 1.0;}
+		</style>    
+		<meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src&quot;,&quot;THEME&quot;:&quot;mytheme&quot;}">
+		<meta charset="UTF-8" name="package-mapping" content="components:de.kaniba.components">
+		<meta charset="UTF-8" name="package-mapping" content="com_example_designertest:com.example.designertest">
+		<meta charset="UTF-8" name="package-mapping" content="com_vaadin_tapio_googlemaps:com.vaadin.tapio.googlemaps">
+	</head>
+	<body>
+		<vaadin-horizontal-layout style-name="valo-menu-responsive" responsive id="responsive-application-template" size-full>
+			<vaadin-css-layout style-name="valo-menu">
+				<vaadin-css-layout style-name="valo-menu-part" _id="menuPart">
+					<vaadin-horizontal-layout style-name="valo-menu-title" width-full _id="menuTitle">
+						<vaadin-image source="http://kaniba.de/APP/connector/0/20/source/logo.png" id="logo" style-name="logo-style" _id="logo"></vaadin-image>
+					</vaadin-horizontal-layout>
+					<vaadin-button icon="fonticon://FontAwesome/f03a" style-name="primary small valo-menu-toggle" plain-text _id="menuToggle">
+						Menu
+					</vaadin-button>
+					<vaadin-css-layout style-name="valo-menuitems" _id="menuContainer">
+						<components-external-menu-impl></components-external-menu-impl>
+					</vaadin-css-layout>
+				</vaadin-css-layout>
+			</vaadin-css-layout>
+			<vaadin-vertical-layout id="view-container" size-full _id="content" :expand></vaadin-vertical-layout>
+		</vaadin-horizontal-layout>
+</body>
 </html>

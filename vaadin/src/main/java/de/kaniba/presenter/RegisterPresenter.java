@@ -15,6 +15,11 @@ import de.kaniba.uiInterfaces.RegisterViewInterface;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.NavigationUtils;
 
+/**
+ * The presenter for the registerView
+ * @author Philipp
+ *
+ */
 public class RegisterPresenter implements RegisterPresenterInterface {
 	private static final long serialVersionUID = 1L;
 	private RegisterViewInterface view;
@@ -42,7 +47,7 @@ public class RegisterPresenter implements RegisterPresenterInterface {
 		User user = view.getUser();
 		try {
 			((InternalUser) user).saveUser();
-			view.getSubmit().setComponentError(null);
+			view.getSubmitButton().setComponentError(null);
 			
 			NavigationUtils.navigateTo("", "Erfolgreich registriert");
 			
@@ -58,17 +63,14 @@ public class RegisterPresenter implements RegisterPresenterInterface {
 			UI.getCurrent().addWindow(loginWindow);
 			
 		} catch (SQLException e) {
-			view.getSubmit().setComponentError(new UserError("Fehler beim speichern"));
+			view.getSubmitButton().setComponentError(new UserError("Fehler beim speichern"));
 			LoggingUtils.exception(e);
 		}
 	}
 
 	@Override
 	public boolean checkRights(String parameters) {
-		if(User.isLoggedIn()) {
-			return false;
-		}
-		return true;
+		return !User.isLoggedIn();
 	}
 
 }

@@ -24,6 +24,10 @@ public class SearchPresenter implements SearchPresenterInterface {
 	
 	private SearchViewInterface view;
 
+	/**
+	 * Initialize the presenter with the correct view
+	 * @param view
+	 */
 	public SearchPresenter(SearchViewInterface view) {
 		this.view = view;
 		view.setPresenter(this);

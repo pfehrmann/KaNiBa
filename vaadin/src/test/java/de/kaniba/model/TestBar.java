@@ -39,6 +39,7 @@ public class TestBar {
 	@Test
 	public void testGetBarAttributes() throws SQLException {
 		Bar bar = Database.readBar(1);
+		assertEquals("Wrong bar read", 1, bar.getBarID());
 	}
 
 	@Test
