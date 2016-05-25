@@ -9,6 +9,7 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FileResource;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.tapio.googlemaps.GoogleMap;
@@ -333,6 +334,7 @@ public class BarView extends BarDesign implements BarViewInterface {
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
+		Page.getCurrent().setTitle(barNameLabel.getCaption());
 		removeComponent(map);
 		map = new GoogleMap("apiKey", null, "german");
 		map.setSizeFull();

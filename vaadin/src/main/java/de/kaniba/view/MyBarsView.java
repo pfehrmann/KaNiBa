@@ -3,6 +3,7 @@ package de.kaniba.view;
 import java.util.List;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Page;
 import com.vaadin.ui.Component;
 
 import de.kaniba.designs.MyBarsDesign;
@@ -37,6 +38,7 @@ public class MyBarsView extends MyBarsDesign implements MyBarsViewInterface {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		Page.getCurrent().setTitle("My Bars");
 		presenter.enter(event);
 	}
 	
