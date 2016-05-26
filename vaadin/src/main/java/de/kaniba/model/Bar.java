@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +69,7 @@ public class Bar implements Serializable {
 	public void setBarID(int barID) {
 		this.barID = barID;
 	}
-	
+
 	public static Bar getDefaultBar() {
 		Bar bar = new Bar();
 		bar.setAddress(new Address("", "", "", ""));
@@ -82,7 +83,7 @@ public class Bar implements Serializable {
 		bar.setSumMusicRating(0);
 		bar.setSumPeopleRating(0);
 		bar.setSumPprRating(0);
-		
+
 		return bar;
 	}
 
@@ -140,29 +141,12 @@ public class Bar implements Serializable {
 	}
 
 	/**
-	 * Returns the pinboard. The pinboard is read only once from the database.
-	 * 
-	 * @return Returns the pinboard. This pinboard might be outdated.
-	 */
-	public Pinboard getPinboard() {
-		if (pinboard == null) {
-			try {
-				pinboard = Database.givePinboard(barID);
-			} catch (SQLException e) {
-				LoggingUtils.exception(e);
-			}
-		}
-		return pinboard;
-	}
-
-	/**
 	 * Returns the pinboard. This methods reads the pinboard from the database,
-	 * while the getPinboard method only reads the pinboards once and then just
-	 * returns the local copy of it, which might not reflect changes made.
+	 * not using any lazy evaluations or caching
 	 * 
 	 * @return Returns the pindoard. This is always the latetst pinboard.
 	 */
-	public Pinboard forceGetPinboard() {
+	public Pinboard getPinboard() {
 		try {
 			pinboard = Database.givePinboard(barID);
 		} catch (SQLException e) {
@@ -311,9 +295,9 @@ public class Bar implements Serializable {
 		String onleLineAddress = "";
 
 		onleLineAddress += getAddress().getStreet();
-		onleLineAddress += " " + getAddress().getNumber();
+		onleLineAddress += ' ' + getAddress().getNumber();
 		onleLineAddress += ", " + getAddress().getZip();
-		onleLineAddress += " " + getAddress().getCity();
+		onleLineAddress += ' ' + getAddress().getCity();
 
 		return onleLineAddress;
 	}
@@ -328,20 +312,20 @@ public class Bar implements Serializable {
 	public Coordinates getLatLon() {
 		String jsonString;
 		String url = "http://nominatim.openstreetmap.org/search?" + prepareQueryForGeocoding();
-		
+
 		try {
 			jsonString = Utils.downloadURL(url);
 		} catch (MalformedURLException e) {
 			jsonString = "";
 			LoggingUtils.exception(e);
 		}
-		
+
 		try {
 			JSONArray array = new JSONArray(jsonString);
 			JSONObject index0 = (JSONObject) array.get(0);
 			double lon = index0.getDouble("lon");
 			double lat = index0.getDouble("lat");
-			
+
 			return new Coordinates(lat, lon);
 		} catch (JSONException e) {
 			LoggingUtils.exception(e);
@@ -360,15 +344,15 @@ public class Bar implements Serializable {
 
 		return preparedAddress;
 	}
-	
+
 	private String encodeString(String string) {
 		String encoded = "";
 		try {
-			encoded = URLEncoder.encode(string, "UTF-8");
+			encoded = URLEncoder.encode(string, StandardCharsets.UTF_8.name());
 		} catch (UnsupportedEncodingException e) {
 			LoggingUtils.exception(e);
 		}
-		
+
 		return encoded;
 	}
 

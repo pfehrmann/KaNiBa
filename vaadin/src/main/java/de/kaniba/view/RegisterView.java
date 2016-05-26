@@ -1,14 +1,9 @@
 package de.kaniba.view;
 
-import com.vaadin.event.FieldEvents;
-import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.data.Validator;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
-import com.vaadin.server.UserError;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.DateField;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.Button.ClickEvent;
 
 import de.kaniba.designs.RegisterDesign;
@@ -34,20 +29,9 @@ public class RegisterView extends RegisterDesign implements RegisterViewInterfac
 	 * Set the view up.
 	 */
 	public RegisterView() {		
-		repeatPasswordField.addTextChangeListener(new FieldEvents.TextChangeListener() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void textChange(TextChangeEvent event) {
-				if (passwordField.getValue().equals(repeatPasswordField.getValue())) {
-					repeatPasswordField.setComponentError(null);
-					passwordField.setComponentError(null);
-				} else {
-					repeatPasswordField.setComponentError(new UserError("Die beiden Passwörter müssen gleich sein!"));
-					passwordField.setComponentError(new UserError("Die beiden Passwörter müssen gleich sein!"));
-				}
-			}
-		});
+		Validator passwordValidator = new RepeatPasswordValidator(passwordField, repeatPasswordField);
+		
+		repeatPasswordField.addValidator(passwordValidator);
 		
 		submitButton.addClickListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 1L;
@@ -57,86 +41,6 @@ public class RegisterView extends RegisterDesign implements RegisterViewInterfac
 				presenter.registerClick();
 			}
 		});
-	}
-
-	/* (non-Javadoc)
-	 * @see de.kaniba.view.RegisterViewInterface#getNameField()
-	 */
-	@Override
-	public TextField getNameField() {
-		return nameField;
-	}
-
-	/* (non-Javadoc)
-	 * @see de.kaniba.view.RegisterViewInterface#getFirstNameField()
-	 */
-	@Override
-	public TextField getFirstNameField() {
-		return firstNameField;
-	}
-
-	/* (non-Javadoc)
-	 * @see de.kaniba.view.RegisterViewInterface#getEmailField()
-	 */
-	@Override
-	public TextField getEmailField() {
-		return emailField;
-	}
-
-	/* (non-Javadoc)
-	 * @see de.kaniba.view.RegisterViewInterface#getPasswordField()
-	 */
-	@Override
-	public PasswordField getPasswordField() {
-		return passwordField;
-	}
-
-	/* (non-Javadoc)
-	 * @see de.kaniba.view.RegisterViewInterface#getRepeatPasswordField()
-	 */
-	@Override
-	public PasswordField getRepeatPasswordField() {
-		return repeatPasswordField;
-	}
-
-	/* (non-Javadoc)
-	 * @see de.kaniba.view.RegisterViewInterface#getBirthdateField()
-	 */
-	@Override
-	public DateField getBirthdateField() {
-		return birthdateField;
-	}
-
-	/* (non-Javadoc)
-	 * @see de.kaniba.view.RegisterViewInterface#getCityField()
-	 */
-	@Override
-	public TextField getCityField() {
-		return cityField;
-	}
-
-	/* (non-Javadoc)
-	 * @see de.kaniba.view.RegisterViewInterface#getStreetField()
-	 */
-	@Override
-	public TextField getStreetField() {
-		return streetField;
-	}
-
-	/* (non-Javadoc)
-	 * @see de.kaniba.view.RegisterViewInterface#getNumberField()
-	 */
-	@Override
-	public TextField getNumberField() {
-		return numberField;
-	}
-
-	/* (non-Javadoc)
-	 * @see de.kaniba.view.RegisterViewInterface#getZipField()
-	 */
-	@Override
-	public TextField getZipField() {
-		return zipField;
 	}
 
 	/* (non-Javadoc)
