@@ -32,6 +32,54 @@
 @mixin mytheme {
   @include valo;
 	
+	.general-infos {
+		min-height: 90px;
+	}
+	
+	.bar-view[width-range~="0-800px"] {
+		.bar-view-main-content {
+			width:100% !important;
+		}
+		
+		.bar-view-side-bar {
+			width:100% !important;
+		}
+	}
+	
+	.bar-view[width-range~="801px-"] {
+		.bar-view-main-content {
+			min-width: 500px !important;
+			float: left !important;
+			width:80% !important;
+		}
+		
+		.bar-view-side-bar {
+			float: right !important;
+			width:20% !important;
+			height: 100% !important;
+		}
+		height: 100%;
+	}
+	
+	#messagePanel[width-range~="0-800px"] {
+		max-height: 200px;
+	}
+	
+	.bar-view-side-bar {
+		display: flex;
+		flex-direction:column;
+		height:100%
+	}
+	
+	.mapLayout {
+		flex: 1;
+		min-height: 100px;
+	}
+	
+	.ratingLayout {
+		flex: none;
+	}
+	
 	.searchField-Button {
 		border-bottom-left-radius: 0 !important;
 		border-top-left-radius: 0 !important;

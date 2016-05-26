@@ -1,115 +1,56 @@
 <!doctype html>
 <html>
- <head>  
-  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src&quot;,&quot;THEME&quot;:&quot;designertest&quot;}">
-  <meta charset="UTF-8" name="package-mapping" content="org_vaadin_teemu_ratingstars:org.vaadin.teemu.ratingstars">
-  <meta charset="UTF-8" name="package-mapping" content="com_vaadin_tapio_googlemaps:com.vaadin.tapio.googlemaps">
- </head> 
- <body> 
-  <vaadin-grid-layout id="main-grid" size-full> 
-   <row expand="1"> 
-    <column expand="1"> 
-     <vaadin-grid-layout id="left-grid" size-full _id="leftGrid"> 
-      <row> 
-       <column rowspan=2> 
-        <vaadin-image id="bar-image" width="90px" height="90px" _id="barImage" :middlecenter></vaadin-image> 
-       </column> 
-       <column expand="1"> 
-        <vaadin-label style-name="huge" id="bar-name-label" size-auto plain-text _id="barNameLabel">
-          Barname 
-        </vaadin-label> 
-       </column> 
-      </row> 
-      <row> 
-       <column expand="1"> 
-        <vaadin-label size-auto plain-text _id="barAddressLabel" id="bar-address-label">
-          Anschrift der Bar 
-        </vaadin-label> 
-       </column> 
-      </row> 
-      <row>
-       <column colspan=2>
-        <vaadin-css-layout style-name="tag" id="tag-layout" _id="tagLayout">
-        </vaadin-css-layout>
-       </column>
-      </row>
-      <row expand="1"> 
-       <column colspan=2> 
-        <vaadin-panel id="info-panel" size-full _id="infoPanel"></vaadin-panel> 
-       </column> 
-      </row> 
-      <row> 
-       <column colspan=2> 
-        <vaadin-grid-layout width-full height="200px" _id="messageAreaGrid"> 
-         <row expand="1"> 
-          <column expand="1" colspan=2> 
-           <vaadin-panel size-full _id="messagePanel"></vaadin-panel> 
-          </column> 
-         </row> 
-         <row> 
-          <column> 
-           <vaadin-text-field width-full id="message-text-field" _id="messageTextField"></vaadin-text-field> 
-          </column> 
-          <column> 
-           <vaadin-button plain-text _id="sendMessageButton">
-             Senden 
-           </vaadin-button> 
-          </column> 
-         </row> 
-        </vaadin-grid-layout> 
-       </column> 
-      </row> 
-     </vaadin-grid-layout> 
-    </column> 
-    <column></column>
-   </row> 
-   <row> 
-    <column></column> 
-    <column> 
-     <vaadin-grid-layout width="250px" _id="ratingLayout"> 
-      <row> 
-       <column> 
-        <org_vaadin_teemu_ratingstars-rating-stars style-name="ratingstar" caption="Gesamt" width-full immediate _id="starTotal"></org_vaadin_teemu_ratingstars-rating-stars> 
-       </column> 
-      </row> 
-      <row> 
-       <column> 
-        <org_vaadin_teemu_ratingstars-rating-stars style-name="ratingstar" caption="Atmosphäre" width-full immediate _id="starAtmosphere"></org_vaadin_teemu_ratingstars-rating-stars> 
-       </column> 
-      </row> 
-      <row> 
-       <column> 
-        <org_vaadin_teemu_ratingstars-rating-stars style-name="ratingstar" caption="Musik" width-full immediate _id="starMusic"></org_vaadin_teemu_ratingstars-rating-stars> 
-       </column> 
-      </row> 
-      <row> 
-       <column> 
-        <org_vaadin_teemu_ratingstars-rating-stars style-name="ratingstar" caption="Preise" width-full immediate _id="starPrice"></org_vaadin_teemu_ratingstars-rating-stars> 
-       </column> 
-      </row> 
-      <row> 
-       <column> 
-        <org_vaadin_teemu_ratingstars-rating-stars style-name="ratingstar" caption="Leute" width-full immediate _id="starPeople"></org_vaadin_teemu_ratingstars-rating-stars> 
-       </column> 
-      </row> 
-      <row> 
-       <column> 
-        <vaadin-button width-full plain-text _id="rateButton">
-          Bewerten 
-        </vaadin-button> 
-       </column> 
-      </row> 
-      <row>
-       <column>
-        <vaadin-button width-full plain-text _id="surveyButton" id="survey-button">
-          An Umfrage teilnehmen
-        </vaadin-button>
-       </column>
-      </row>
-     </vaadin-grid-layout> 
-    </column> 
-   </row> 
-   <row></row> 
-  </vaadin-grid-layout>  
- </body>
+
+<head>
+	<meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src&quot;,&quot;THEME&quot;:&quot;designertest&quot;}">
+	<meta charset="UTF-8" name="package-mapping" content="org_vaadin_teemu_ratingstars:org.vaadin.teemu.ratingstars">
+	<meta charset="UTF-8" name="package-mapping" content="components:de.kaniba.components">
+</head>
+
+<body>
+	<vaadin-panel style-name="v-scrollable" size-full id="barDesign">
+		<v-css-layout style-name="bar-view" width-full responsive>
+			<v-css-layout id="main-content" width-full style-name="bar-view-main-content">
+				<vaadin-horizontal-layout style-name="general-infos" _id="generalInfos" width-full>
+					<vaadin-image id="bar-image" width="90px" height="90px" _id="barImage"></vaadin-image>
+					<v-vertical-layout height-full :expand>
+						<vaadin-label style-name="huge" id="bar-name-label" size-auto plain-text _id="barNameLabel" :middle>Barname</vaadin-label>
+						<vaadin-label size-auto plain-text _id="barAddressLabel" id="bar-address-label" :middle>Anschrift der Bar</vaadin-label>
+						<vaadin-css-layout style-name="tag" id="tag-layout" _id="tagLayout"></vaadin-css-layout>
+					</v-vertical-layout>
+				</vaadin-horizontal-layout>
+				
+				<vaadin-panel id="info-panel" width-full _id="infoPanel"></vaadin-panel>
+
+				<v-vertical-layout width-full id="message-layout">
+					<vaadin-panel size-full style-name="messagePanel" _id="messagePanel"></vaadin-panel>
+					<v-horizontal-layout width-full>
+						<vaadin-text-field width-full id="message-text-field" _id="messageTextField" :expand></vaadin-text-field>
+						<vaadin-button plain-text _id="sendMessageButton">
+							Senden 
+						</vaadin-button>
+					</v-horizontal-layout>
+				</v-vertical-layout>
+			</v-css-layout>
+			
+			<v-css-layout _id="sideBar" id="side-bar" width-full style-name="bar-view-side-bar">
+				<v-css-layout width-full primary-style-name="mapLayout" _id="mapLayout">
+					<components-map width-full _id="map"></components-map>
+				</v-css-layout>
+				<vaadin-vertical-layout width-full primary-style-name="ratingLayout" _id="ratingLayout">
+					<org_vaadin_teemu_ratingstars-rating-stars style-name="ratingstar" caption="Gesamt" width-full immediate _id="starTotal"></org_vaadin_teemu_ratingstars-rating-stars>
+					<org_vaadin_teemu_ratingstars-rating-stars style-name="ratingstar" caption="Atmosphäre" width-full immediate _id="starAtmosphere"></org_vaadin_teemu_ratingstars-rating-stars>
+					<org_vaadin_teemu_ratingstars-rating-stars style-name="ratingstar" caption="Musik" width-full immediate _id="starMusic"></org_vaadin_teemu_ratingstars-rating-stars>
+					<org_vaadin_teemu_ratingstars-rating-stars style-name="ratingstar" caption="Preise" width-full immediate _id="starPrice"></org_vaadin_teemu_ratingstars-rating-stars>
+					<org_vaadin_teemu_ratingstars-rating-stars style-name="ratingstar" caption="Leute" width-full immediate _id="starPeople"></org_vaadin_teemu_ratingstars-rating-stars>
+					<vaadin-button width-full plain-text _id="rateButton"> Bewerten </vaadin-button>
+					<vaadin-button width-full plain-text _id="surveyButton" id="survey-button">
+						An Umfrage teilnehmen </vaadin-button>
+				</vaadin-vertical-layout>
+			</v-css-layout>
+
+		</v-css-layout>
+	</vaadin-panel>
+</body>
+
 </html>

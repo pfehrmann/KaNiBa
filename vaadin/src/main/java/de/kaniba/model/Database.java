@@ -371,10 +371,10 @@ public final class Database {
 	 * 
 	 * @param bar
 	 *            Die zu speichernde Bar
-	 * @return Gibt true zurück, wenn die Bar problemlos gespeichert wurde.
+	 * @return Returns the id of the bar. Returns -1 if the saving failed.
 	 * @throws SQLException
 	 */
-	public static boolean saveBar(Bar bar) throws SQLException {
+	public static int saveBar(Bar bar) throws SQLException {
 
 		if (bar.getBarID() != Bar.UNKNOWNBARID) {
 			String sql = "UPDATE bars SET city=?, street=?, number=?, zip=?, description=?, name=?, lastUpdated=? WHERE barID=?";
@@ -389,7 +389,7 @@ public final class Database {
 				statement.setInt(8, bar.getBarID());
 				statement.executeUpdate();
 			}
-			return true;
+			return bar.getBarID();
 		}
 		try (Connection con = verbindung(); Statement st = con.createStatement();) {
 			Address address = bar.getAddress();
@@ -401,9 +401,18 @@ public final class Database {
 					+ address.getNumber() + "','" + address.getZip() + "','" + bar.getSumGeneralRating() + "','"
 					+ bar.getSumPprRating() + "','" + bar.getSumMusicRating() + "','" + bar.getSumPeopleRating() + "','"
 					+ bar.getSumAtmosphereRating() + "','" + bar.getCountRating() + "','" + lastUpdated + "', '"
-					+ bar.getDescription() + "', '" + bar.getName() + "');");
+					+ bar.getDescription() + "', '" + bar.getName() + "');", Statement.RETURN_GENERATED_KEYS);
+			
+			ResultSet keys = st.getGeneratedKeys();
+			
+			if(keys.next()) {
+				int returnValue = keys.getInt(1);
+				keys.close();
+				return returnValue;
+			}
+			keys.close();
 		}
-		return true;
+		return -1;
 	}
 
 	/**

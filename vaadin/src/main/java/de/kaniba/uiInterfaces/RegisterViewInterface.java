@@ -29,7 +29,7 @@ public interface RegisterViewInterface extends SecuredView {
 
 	TextField getZipField();
 
-	Button getSubmit();
+	Button getSubmitButton();
 
 	InternalUser getUser();
 
