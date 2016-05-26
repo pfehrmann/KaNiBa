@@ -17,7 +17,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
 
 import de.kaniba.designs.BarDesign;
 import de.kaniba.model.Bar;
@@ -36,6 +35,7 @@ import de.kaniba.utils.Utils;
 
 /**
  * The view of a bar.
+ * 
  * @author Philipp
  *
  */
@@ -45,20 +45,20 @@ public class BarView extends BarDesign implements BarViewInterface {
 	public static final String NAME = "bar";
 
 	private static final int DEFAULT_ZOOM = 14;
-	
+
 	private BarPresenterInterface presenter;
 
 	/**
 	 * Sets up the basic layout and tries to fix it.
 	 */
 	public BarView() {
-		
+
 		// Make sure, that at least something is shown...
 		infoPanel.setContent(new Label("Keine Beschreibung verfügbar", ContentMode.HTML));
-		
+
 		// Setup the map
 		map.setZoom(DEFAULT_ZOOM);
-		
+
 		// Find the path to the bar image
 		String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 		FileResource resource = new FileResource(new File(basepath + "/WEB-INF/images/stoevchen.png"));
@@ -78,7 +78,7 @@ public class BarView extends BarDesign implements BarViewInterface {
 		// add listeners to all stars
 		starTotal.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				generalRatingStarClick();
@@ -87,7 +87,7 @@ public class BarView extends BarDesign implements BarViewInterface {
 
 		starPeople.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				peopleRatingStarClick();
@@ -96,7 +96,7 @@ public class BarView extends BarDesign implements BarViewInterface {
 
 		starAtmosphere.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				atmosphereRatingStarClick();
@@ -105,7 +105,7 @@ public class BarView extends BarDesign implements BarViewInterface {
 
 		starMusic.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				musicRatingStarClick();
@@ -114,25 +114,25 @@ public class BarView extends BarDesign implements BarViewInterface {
 
 		starPrice.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				priceRatingStarClick();
 			}
 		});
-		
+
 		sendMessageButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.sendMessage(messageTextField.getValue());
 			}
 		});
-		
+
 		surveyButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				presenter.clickedSurvey();
@@ -179,71 +179,79 @@ public class BarView extends BarDesign implements BarViewInterface {
 		rating.setMusicRating(starMusic.getValue().intValue());
 		presenter.saveRating(rating);
 	}
-	
-	/* (non-Javadoc)
-	 * @see de.kaniba.view.BarViewInterface#setPresenter(de.kaniba.presenter.BarPresenterInterface)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.kaniba.view.BarViewInterface#setPresenter(de.kaniba.presenter.
+	 * BarPresenterInterface)
 	 */
 	@Override
 	public void setPresenter(BarPresenterInterface presenter) {
 		this.presenter = presenter;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.kaniba.view.BarViewInterface#setBarMessageBoard(java.util.List)
 	 */
 	@Override
 	public void setBarMessageBoard(List<Message> messages) {
-		if(messages == null) {
+		if (messages == null) {
 			return;
 		}
-		
+
 		final List<Component> components = new ArrayList<>();
-		for(Message element : messages) {
+		for (Message element : messages) {
 			InternalUser user = null;
 			try {
 				user = Database.giveUser(element.getUserID());
 			} catch (SQLException e) {
 				LoggingUtils.exception(e);
 			}
-			
+
 			// only display a message that has a user
-			if(user != null) {
-				
+			if (user != null) {
+
 				// format the message
 				StringBuilder text = new StringBuilder();
-				
+
 				// append the date
-				text.append(element.getTime().getDate() + "." + element.getTime().getMonth() + "." + (element.getTime().getYear()+1900) + "");
-				
+				text.append(element.getTime().getDate() + '.' + element.getTime().getMonth() + "."
+						+ (element.getTime().getYear() + 1900) + "");
+
 				// append the username
-				text.append(" <b>" + user.getFirstname() + " " + user.getName().substring(0, 1) + "." + "</b>: ");
+				text.append(" <b>" + user.getFirstname() + ' ' + user.getName().substring(0, 1) + '.' + "</b>: ");
 				text.append(element.getMessageText());
-				CssLayout layout = new CssLayout();
+
+				// Create a label and add it to the list of comments
 				Label component = new Label(text.toString(), ContentMode.HTML);
-				layout.addComponent(component);
-				layout.setWidth("100%");
 				components.add(component);
 			}
 		}
-		
-		for(int i = 0; i < components.size(); i++) {
-			if(i % 2 == 1) {
+
+		for (int i = 0; i < components.size(); i++) {
+			if (i % 2 == 1) {
 				components.get(i).addStyleName("message-odd");
 			} else {
 				components.get(i).addStyleName("message-even");
 			}
 		}
-		
+
 		VerticalLayout layout = new VerticalLayout();
-		for(Component e : components) {
+		for (Component e : components) {
 			layout.addComponent(e);
 		}
-		
+
 		messagePanel.setContent(layout);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.kaniba.view.BarViewInterface#setBarRating(de.kaniba.model.DisplayRating)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.kaniba.view.BarViewInterface#setBarRating(de.kaniba.model.
+	 * DisplayRating)
 	 */
 	@Override
 	public void setBarRating(DisplayRating rating) {
@@ -254,23 +262,29 @@ public class BarView extends BarDesign implements BarViewInterface {
 		starPrice.setValue(rating.getPriceRating());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.kaniba.view.BarViewInterface#setBarLogo(de.kaniba.model.Bar)
 	 */
 	@Override
 	public void setBarLogo(Bar bar) {
 		File image = new File(Utils.getBarLogoBasePath() + bar.getBarID() + ".png");
-		
-		if(!image.exists()) {
+
+		if (!image.exists()) {
 			image = new File(Utils.getBarLogoBasePath() + "logo.png");
 		}
-		
+
 		FileResource resource = new FileResource(image);
 		barImage.setSource(resource);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.kaniba.view.BarViewInterface#setMapCoords(com.vaadin.tapio.googlemaps.client.LatLon)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.kaniba.view.BarViewInterface#setMapCoords(com.vaadin.tapio.googlemaps.
+	 * client.LatLon)
 	 */
 	@Override
 	public void setMapCoords(Coordinates coords) {
@@ -278,7 +292,9 @@ public class BarView extends BarDesign implements BarViewInterface {
 		map.addMarker(coords);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.kaniba.view.BarViewInterface#setBarName(java.lang.String)
 	 */
 	@Override
@@ -286,7 +302,9 @@ public class BarView extends BarDesign implements BarViewInterface {
 		barNameLabel.setValue(name);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.kaniba.view.BarViewInterface#setBarAddress(java.lang.String)
 	 */
 	@Override
@@ -294,21 +312,25 @@ public class BarView extends BarDesign implements BarViewInterface {
 		barAddressLabel.setValue(address);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.kaniba.view.BarViewInterface#setBarDescription(java.lang.String)
 	 */
 	@Override
 	public void setBarDescription(String description) {
 		infoPanel.setContent(new Label(description, ContentMode.HTML));
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.kaniba.view.BarViewInterface#setTags(java.util.List, int)
 	 */
 	@Override
 	public void setTags(List<Tag> tags, final int barID) {
 		tagLayout.removeAllComponents();
-		for(Tag tag : tags) {
+		for (Tag tag : tags) {
 			tagLayout.addComponent(tag.getComponent());
 		}
 		Button button = new Button("+");
@@ -318,7 +340,7 @@ public class BarView extends BarDesign implements BarViewInterface {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				Tag.createNewTag(barID, new Callback() {
-					
+
 					@Override
 					public void success() {
 						presenter.updateTagList();
@@ -328,12 +350,12 @@ public class BarView extends BarDesign implements BarViewInterface {
 		});
 		tagLayout.addComponent(button);
 	}
-	
+
 	@Override
 	public void enter(ViewChangeEvent event) {
 		map.setZoom(DEFAULT_ZOOM);
 		map.removeAllMarkers();
-		
+
 		presenter.enter(event);
 	}
 }

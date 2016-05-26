@@ -1,10 +1,8 @@
 package de.kaniba.view;
 
-import com.vaadin.event.FieldEvents;
-import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.data.Validator;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
-import com.vaadin.server.UserError;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.UI;
@@ -32,21 +30,9 @@ public class UpdateInformationView extends UpdateInformationDesign implements Up
 	 * Setup the view.
 	 */
 	public UpdateInformationView() {
-		repeatPasswordField.addTextChangeListener(new FieldEvents.TextChangeListener() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void textChange(TextChangeEvent event) {
-				if (passwordField.getValue().equals(repeatPasswordField.getValue())) {
-					repeatPasswordField.setComponentError(null);
-					passwordField.setComponentError(null);
-				} else {
-					repeatPasswordField.setComponentError(new UserError("Die beiden Passwörter müssen gleich sein!"));
-					passwordField.setComponentError(new UserError("Die beiden Passwörter müssen gleich sein!"));
-				}
-			}
-		});
-		
+		Validator passwordValidator = new RepeatPasswordValidator(passwordField, repeatPasswordField);
+		repeatPasswordField.addValidator(passwordValidator);
+				
 		submit.addClickListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 1L;
 
