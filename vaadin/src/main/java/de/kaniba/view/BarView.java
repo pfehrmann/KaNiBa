@@ -332,13 +332,6 @@ public class BarView extends BarDesign implements BarViewInterface {
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
-<<<<<<< HEAD
-		Page.getCurrent().setTitle(barNameLabel.getCaption());
-		removeComponent(map);
-		map = new GoogleMap("apiKey", null, "german");
-		map.setSizeFull();
-=======
->>>>>>> refs/remotes/origin/master
 		map.setZoom(DEFAULT_ZOOM);
 		map.removeAllMarkers();
 		
