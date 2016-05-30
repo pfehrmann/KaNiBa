@@ -63,7 +63,7 @@ public final class Database {
 	
 	public static void main(String [ ] args) throws SQLException
 	{
-		System.out.println(readBar(1));
+		System.out.println(readAllSpecials(1).size());
 	}
 	/**
 	 * 
@@ -1139,7 +1139,7 @@ public final class Database {
 	public static List<Bar> searchForBar(String bar) throws SQLException {
 
 		Connection con = verbindung();
-		String query = "SELECT barID FROM bars WHERE name LIKE ? and name NOT '' ";
+		String query = "SELECT barID FROM bars WHERE name LIKE ?";
 		PreparedStatement prepareStatement = con.prepareStatement(query);
 		prepareStatement.setString(1, "%" + bar + "%");
 		ResultSet rs = prepareStatement.executeQuery();

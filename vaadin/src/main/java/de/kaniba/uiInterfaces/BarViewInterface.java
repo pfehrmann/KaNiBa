@@ -30,4 +30,6 @@ public interface BarViewInterface extends View {
 
 	void setTags(List<Tag> tags, int barID);
 
+	void notRatedYet();
+
 }

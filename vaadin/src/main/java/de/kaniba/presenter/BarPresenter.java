@@ -3,6 +3,7 @@ package de.kaniba.presenter;
 import java.sql.SQLException;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Page;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 
@@ -76,7 +77,8 @@ public class BarPresenter implements BarPresenterInterface {
 		view.setBarMessageBoard(bar.getPinboard().getMessages());
 		view.setBarLogo(bar);
 		view.setTags(bar.getTags(), bar.getBarID());
-
+		
+		Page.getCurrent().setTitle(bar.getName());		
 		DisplayRating rating = bar.getDisplayRating();
 
 		if (User.isLoggedIn()) {
