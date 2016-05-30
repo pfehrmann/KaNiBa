@@ -22,6 +22,7 @@ import de.kaniba.view.SurveyView;
 
 /**
  * This class is the presenter of the BarView
+ * 
  * @author Philipp
  *
  */
@@ -34,6 +35,7 @@ public class BarPresenter implements BarPresenterInterface {
 
 	/**
 	 * Initialize the Presenter with the correct view
+	 * 
 	 * @param view
 	 */
 	public BarPresenter(BarViewInterface view) {
@@ -46,32 +48,37 @@ public class BarPresenter implements BarPresenterInterface {
 		return view;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.kaniba.presenter.BarPresenterInterface#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.kaniba.presenter.BarPresenterInterface#enter(com.vaadin.navigator.
+	 * ViewChangeListener.ViewChangeEvent)
 	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
 		settingUp = true;
-		
+
 		bar = Bar.getBarFromParams(event.getParameters());
-		
-		if(bar == null) {
+
+		if (bar == null) {
 			settingUp = false;
-			
-			NotificationUtils.showNotification("Wir konnten die Bar leider nicht finden... "
-					+ "Vielleicht ist sie ja später da :D", Type.ERROR_MESSAGE);
+
+			NotificationUtils.showNotification(
+					"Wir konnten die Bar leider nicht finden... " + "Vielleicht ist sie ja später da :D",
+					Type.ERROR_MESSAGE);
 			return;
 		}
 		view.setMapCoords(bar.getLatLon());
 		view.setBarName(bar.getName());
 		view.setBarAddress(bar.getOneLineAddress());
 		view.setBarDescription(bar.getDescription());
-		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
+		view.setBarMessageBoard(bar.getPinboard().getMessages());
 		view.setBarLogo(bar);
 		view.setTags(bar.getTags(), bar.getBarID());
-		
+
 		DisplayRating rating = bar.getDisplayRating();
-		
+
 		if (User.isLoggedIn()) {
 			Rating userRating = null;
 			try {
@@ -79,18 +86,22 @@ public class BarPresenter implements BarPresenterInterface {
 			} catch (SQLException e) {
 				LoggingUtils.exception(e);
 			}
-			
-			if(userRating != null) {
+
+			if (userRating != null) {
 				rating = new DisplayRating(userRating);
 			}
 		}
-		
+
 		view.setBarRating(rating);
 		settingUp = false;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.kaniba.presenter.BarPresenterInterface#saveRating(de.kaniba.model.Rating)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.kaniba.presenter.BarPresenterInterface#saveRating(de.kaniba.model.
+	 * Rating)
 	 */
 	@Override
 	public void saveRating(Rating rating) {
@@ -105,23 +116,32 @@ public class BarPresenter implements BarPresenterInterface {
 
 		InternalUser user = InternalUser.getUser();
 
-		Rating fromDatabase = null;
-		try {
-			
-			fromDatabase = Database.getRating(user.getUserID(), bar.getBarID());
-		} catch (SQLException e) {
-			LoggingUtils.exception(e);
-		}
-		
-		if(fromDatabase == null) {
-			fromDatabase = new Rating(-1, InternalUser.getUser().getUserID(), bar.getBarID(), 0, 0, 0, 0, 0, null);
-		}
+		Rating fromDatabase = getRatingFromDatabase(user);
 
 		rating.setUserID(user.getUserID());
 		rating.setBarID(bar.getBarID());
 
 		// Check if a value is 0. If so, replace that value with the last rating
 		// of the user. If no former rating exists, set all to 0.
+		checkChanges(rating, fromDatabase);
+
+		try {
+			Database.saveBarRating(rating);
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
+		}
+	}
+
+	/**
+	 * Check if the rating has changed. If a value has not changed, set it to
+	 * something else than 0
+	 * 
+	 * @param rating
+	 *            The new and possibly changed rating
+	 * @param fromDatabase
+	 *            The rating from the database
+	 */
+	private void checkChanges(Rating rating, Rating fromDatabase) {
 		if (rating.getAtmosphereRating() == 0) {
 			rating.setAtmosphereRating(fromDatabase.getAtmosphereRating());
 		}
@@ -141,16 +161,35 @@ public class BarPresenter implements BarPresenterInterface {
 		if (rating.getMusicRating() == 0) {
 			rating.setMusicRating(fromDatabase.getMusicRating());
 		}
+	}
 
+	/**
+	 * Read a rating from the database using the users id and this bars id. If
+	 * no rating was found, a new one will be created.
+	 * 
+	 * @param user
+	 * @return
+	 */
+	private Rating getRatingFromDatabase(InternalUser user) {
+		Rating fromDatabase = null;
 		try {
-			Database.saveBarRating(rating);
+
+			fromDatabase = Database.getRating(user.getUserID(), bar.getBarID());
 		} catch (SQLException e) {
 			LoggingUtils.exception(e);
 		}
+
+		if (fromDatabase == null) {
+			fromDatabase = new Rating(-1, InternalUser.getUser().getUserID(), bar.getBarID(), 0, 0, 0, 0, 0, null);
+		}
+		return fromDatabase;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.kaniba.presenter.BarPresenterInterface#sendMessage(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.kaniba.presenter.BarPresenterInterface#sendMessage(java.lang.String)
 	 */
 	@Override
 	public void sendMessage(String message) {
@@ -161,10 +200,12 @@ public class BarPresenter implements BarPresenterInterface {
 		InternalUser user = InternalUser.getUser();
 		Message dbMessage = new Message(user.getUserID(), bar.getBarID(), message);
 		dbMessage.save();
-		view.setBarMessageBoard(bar.forceGetPinboard().getMessages());
+		view.setBarMessageBoard(bar.getPinboard().getMessages());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.kaniba.presenter.BarPresenterInterface#clickedSurvey()
 	 */
 	@Override
