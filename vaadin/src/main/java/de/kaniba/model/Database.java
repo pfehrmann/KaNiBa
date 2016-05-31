@@ -1,17 +1,17 @@
 package de.kaniba.model;
 
+import de.kaniba.utils.LoggingUtils;
+
+import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Date;
-
-import de.kaniba.utils.LoggingUtils;
 
 /**
  * Eine Klasse, die Zugriff auf die Datenbak abstrahiert. Die Zugriffe sind alle
@@ -60,7 +60,11 @@ public final class Database {
 	private Database() {
 		// May not be instanciated
 	}
-
+	
+	public static void main(String [ ] args) throws SQLException
+	{
+		System.out.println(readAllSpecials(1).size());
+	}
 	/**
 	 * 
 	 * Startet Treiber und öffnet eine Verbindung zur Datenbank
@@ -615,35 +619,39 @@ public final class Database {
 		Timestamp created;
 
 		ArrayList<Special> list = new ArrayList<>();
-		Connection con = verbindung();
-		Statement st = con.createStatement();
 
-		ResultSet rs = st.executeQuery("SELECT * FROM specials WHERE barID = " + barID + ";");
+		String sql = "SELECT * FROM specials WHERE barID =?";
+		try (Connection con = verbindung(); PreparedStatement st = con.prepareStatement(sql);) {
+			st.setInt(1, barID);
 
-		while (rs.next()) {
-			userID = rs.getInt(USER_ID_STRING);
-			message = rs.getString(MESSAGE_STRING);
-			begin = rs.getTimestamp(BEGIN_STRING);
-			end = rs.getTimestamp("end");
-			created = rs.getTimestamp(CREATED_STRING);
-			java.util.Date date = new java.util.Date();
+			ResultSet rs = st.executeQuery();
 
-			if (date.after(end) && end.before(date)) {
-				Special special = new Special();
-				special.setBegin(begin);
-				special.setCreated(created);
-				special.setEnd(end);
-				special.setMessage(message);
-				special.setUserID(userID);
-				special.setBarID(barID);
+			while (rs.next()) {
+				userID = rs.getInt(USER_ID_STRING);
+				message = rs.getString(MESSAGE_STRING);
+				begin = rs.getTimestamp(BEGIN_STRING);
+				end = rs.getTimestamp("end");
+				created = rs.getTimestamp(CREATED_STRING);
+				java.util.Date date = new java.util.Date();
 
-				list.add(special);
+				if (date.after(end) && end.before(date)) {
+					Special special = new Special();
+					special.setBegin(begin);
+					special.setCreated(created);
+					special.setEnd(end);
+					special.setMessage(message);
+					special.setUserID(userID);
+					special.setBarID(barID);
+
+					list.add(special);
+				}
 			}
+			rs.close();
+			con.close();
+			st.close();
+			// FIX
 		}
-		rs.close();
-		con.close();
-		st.close();
-		return new ArrayList<>();
+		return list;
 	}
 
 	/**
@@ -656,33 +664,35 @@ public final class Database {
 	 */
 	public static List<Special> readAllSpecials(int barID) throws SQLException {
 		ArrayList<Special> list = new ArrayList<>();
-		Connection con = verbindung();
-		Statement st = con.createStatement();
 
-		ResultSet rs = st.executeQuery("SELECT * FROM specials WHERE barID = " + barID + ";");
+		String sql = "SELECT * FROM specials WHERE barID =?";
+		try (Connection con = verbindung(); PreparedStatement st = con.prepareStatement(sql);) {
+			st.setInt(1, barID);
 
-		while (rs.next()) {
-			int userID = rs.getInt(USER_ID_STRING);
-			String message = rs.getString(MESSAGE_STRING);
-			Timestamp begin = rs.getTimestamp(BEGIN_STRING);
-			Timestamp end = rs.getTimestamp("end");
-			Timestamp created = rs.getTimestamp(CREATED_STRING);
+			ResultSet rs = st.executeQuery();
 
-			Special special = new Special();
-			special.setBegin(begin);
-			special.setCreated(created);
-			special.setEnd(end);
-			special.setMessage(message);
-			special.setUserID(userID);
-			special.setBarID(barID);
+			while (rs.next()) {
+				int userID = rs.getInt(USER_ID_STRING);
+				String message = rs.getString(MESSAGE_STRING);
+				Timestamp begin = rs.getTimestamp(BEGIN_STRING);
+				Timestamp end = rs.getTimestamp("end");
+				Timestamp created = rs.getTimestamp(CREATED_STRING);
 
-			list.add(special);
+				Special special = new Special();
+				special.setBegin(begin);
+				special.setCreated(created);
+				special.setEnd(end);
+				special.setMessage(message);
+				special.setUserID(userID);
+				special.setBarID(barID);
+
+				list.add(special);
+			}
+			rs.close();
+			st.close();
+			con.close();
 		}
-		rs.close();
-		st.close();
-		con.close();
-
-		return new ArrayList<>();
+		return list;
 	}
 
 	/**
@@ -703,33 +713,36 @@ public final class Database {
 		Timestamp begin;
 		Timestamp end;
 		Timestamp created;
-		Connection con = verbindung();
-		Statement st = con.createStatement();
 
-		ResultSet rs = st.executeQuery("SELECT * FROM specials WHERE specialID=" + specialID);
-		while (rs.next()) {
-			userID = rs.getInt(USER_ID_STRING);
-			message = rs.getString(MESSAGE_STRING);
-			begin = rs.getTimestamp(BEGIN_STRING);
-			end = rs.getTimestamp("end");
-			created = rs.getTimestamp(CREATED_STRING);
+		String sql = "SELECT * FROM specials WHERE specialID=?";
+		try (Connection con = verbindung(); PreparedStatement st = con.prepareStatement(sql);) {
+			st.setInt(1, specialID);
 
-			Special special = new Special();
-			special.setBegin(begin);
-			special.setCreated(created);
-			special.setEnd(end);
-			special.setMessage(message);
-			special.setUserID(userID);
-			special.setBarID(barID);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				userID = rs.getInt(USER_ID_STRING);
+				message = rs.getString(MESSAGE_STRING);
+				begin = rs.getTimestamp(BEGIN_STRING);
+				end = rs.getTimestamp("end");
+				created = rs.getTimestamp(CREATED_STRING);
+
+				Special special = new Special();
+				special.setBegin(begin);
+				special.setCreated(created);
+				special.setEnd(end);
+				special.setMessage(message);
+				special.setUserID(userID);
+				special.setBarID(barID);
+				rs.close();
+				st.close();
+				con.close();
+				return special;
+
+			}
 			rs.close();
 			st.close();
-			con.close();
-			return special;
-
 		}
-		rs.close();
-		st.close();
-
 		return null;
 	}
 
@@ -958,7 +971,7 @@ public final class Database {
 	 * @return true: geändert, false: user nicht vorhanden
 	 * @throws SQLException
 	 */
-	public static boolean changeEmail(InternalUser user, String email) throws SQLException {
+	public static boolean changeEmail(String email) throws SQLException {
 		// TODO: fix this method!!!
 		int userID = 0;
 		int update = 0;

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Page;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -66,6 +67,7 @@ public class MyBarsView extends MyBarsDesign implements MyBarsViewInterface {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		Page.getCurrent().setTitle("My Bars");
 		presenter.enter(event);
 	}
 	

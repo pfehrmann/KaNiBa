@@ -9,6 +9,7 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FileResource;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
@@ -350,7 +351,24 @@ public class BarView extends BarDesign implements BarViewInterface {
 		});
 		tagLayout.addComponent(button);
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.kaniba.view.BarViewInterface#notRatedYet()
+	 */
+	@Override
+	public void notRatedYet()
+	{
+		Page.getCurrent().getStyles().add(".ratingstar{height:10000px;background-colour:grey;}");
+		//starAtmosphere.setStyleName("ratingstar-notRated");
+		/*starTotal.set);
+		starAtmosphere.setValue(rating.getAtmosphereRating());
+		starMusic.setValue(rating.getMusicRating());
+		starPeople.setValue(rating.getPeopleRating());
+		starPrice.setValue(rating.getPriceRating());*/
+	}
+	
 	@Override
 	public void enter(ViewChangeEvent event) {
 		map.setZoom(DEFAULT_ZOOM);

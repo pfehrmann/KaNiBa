@@ -41,6 +41,18 @@ public class TestDatabase {
 	}
 	
 	@Test
+	public void testReadAllSpecials() throws SQLException {
+
+		assertEquals(1, Database.readAllSpecials(1).size());
+	}
+	
+	@Test
+	public void testGivePinboard() throws SQLException {
+		Pinboard pinboard = Database.givePinboard(1);
+		assertEquals(12, pinboard.getMessages().size());
+	}
+	
+	@Test
 	public void testGetSuggestions() throws SQLException {
 		List<Bar> actualResult = Database.getSuggestions(11);
 		

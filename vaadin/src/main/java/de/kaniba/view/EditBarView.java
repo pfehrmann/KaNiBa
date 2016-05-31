@@ -103,6 +103,7 @@ public class EditBarView extends EditBarDesign implements EditBarViewInterface {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		Page.getCurrent().setTitle(nameField.getCaption());
 		presenter.enter(event);
 	}
 

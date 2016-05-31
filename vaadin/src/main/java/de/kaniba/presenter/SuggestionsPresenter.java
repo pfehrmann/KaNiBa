@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Page;
 import com.vaadin.ui.Component;
 
 import de.kaniba.components.SearchElementImpl;
@@ -57,7 +58,7 @@ public class SuggestionsPresenter implements SuggestionsPresenterInterface {
 					BarView.NAME + "/" + bar.getBarID());
 			components.add(result);
 		}
-		
+		Page.getCurrent().setTitle("Vorschläge");	
 		view.setResults(components);
 	}
 
