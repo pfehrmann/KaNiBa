@@ -4,7 +4,10 @@ import java.sql.Date;
 import java.time.Instant;
 import java.util.Iterator;
 
+import javax.activation.FileDataSource;
+
 import com.vaadin.data.Validator;
+import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -50,6 +53,7 @@ public class RegisterView extends RegisterDesign implements RegisterViewInterfac
 	 */
 	public RegisterView() {
 		emailField.addValidator(new EmailValidator("Du musst eine gültige Email Addresse eingeben."));
+		emailField.addValidator(new UsedEmailValidator());
 
 		Validator passwordValidator = new RepeatPasswordValidator(passwordField, repeatPasswordField);
 		repeatPasswordField.addValidator(passwordValidator);
@@ -116,7 +120,7 @@ public class RegisterView extends RegisterDesign implements RegisterViewInterfac
 	}
 
 	/**
-	 * @return
+	 * @return Returns true if all fields are filled out
 	 */
 	private boolean checkFields() {
 		Iterator<Component> iterator = registerLayout.iterator();
@@ -127,7 +131,7 @@ public class RegisterView extends RegisterDesign implements RegisterViewInterfac
 			if (component instanceof AbstractField) {
 				@SuppressWarnings("rawtypes") //NOSONAR
 				AbstractField field = (AbstractField) component;
-
+				
 				if (!field.isValid()) {
 					return false;
 				}

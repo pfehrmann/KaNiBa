@@ -6,6 +6,11 @@ import org.vaadin.addon.vol3.OLViewOptions;
 import org.vaadin.addon.vol3.OLMap.ClickListener;
 import org.vaadin.addon.vol3.OLMap.OLClickEvent;
 import org.vaadin.addon.vol3.client.Projections;
+import org.vaadin.addon.vol3.client.style.OLCircleStyle;
+import org.vaadin.addon.vol3.client.style.OLFillStyle;
+import org.vaadin.addon.vol3.client.style.OLIconStyle;
+import org.vaadin.addon.vol3.client.style.OLStrokeStyle;
+import org.vaadin.addon.vol3.client.style.OLStyle;
 import org.vaadin.addon.vol3.feature.OLFeature;
 import org.vaadin.addon.vol3.feature.OLPoint;
 import org.vaadin.addon.vol3.layer.OLTileLayer;
@@ -13,6 +18,7 @@ import org.vaadin.addon.vol3.layer.OLVectorLayer;
 import org.vaadin.addon.vol3.source.OLOSMSource;
 import org.vaadin.addon.vol3.source.OLSource;
 import org.vaadin.addon.vol3.source.OLVectorSource;
+import org.vaadin.addon.vol3.util.StyleUtils;
 
 import com.vaadin.ui.CustomComponent;
 
@@ -76,6 +82,10 @@ public class Map extends CustomComponent {
 	 * @param coords
 	 */
 	public void setCenter(Coordinates coords) {
+		if(coords == null) {
+			return;
+		}
+		
 		openMap.getView().setCenter(coords.getLon(), coords.getLat());
 	}
 
@@ -86,9 +96,21 @@ public class Map extends CustomComponent {
 	 *            The coordinates of the marker
 	 */
 	public void addMarker(Coordinates coords) {
+		if(coords == null) {
+			return;
+		}
 		OLFeature feature = new OLFeature();
 		feature.setGeometry(new OLPoint(coords.getLon(), coords.getLat()));
-
+		
+		for(OLStyle style : feature.getStyles()) {
+			System.out.println(style);
+		}
+		
+		OLStyle style= StyleUtils.createDefaultStyle();
+        style.circleStyle.fill=new OLFillStyle("magenta");
+        style.circleStyle.stroke.color="green";
+		feature.setStyle(style);
+		
 		source.addFeature(feature);
 	}
 
@@ -99,6 +121,10 @@ public class Map extends CustomComponent {
 	 * @param coords
 	 */
 	public void addMarker(final String state, Coordinates coords) {
+		if(coords == null) {
+			return;
+		}
+		
 		final String id = state + new OLFeature().hashCode();
 		final OLFeature feature = new OLFeature(id);
 		feature.setGeometry(new OLPoint(coords.getLon(), coords.getLat()));

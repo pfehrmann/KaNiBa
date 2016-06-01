@@ -37,7 +37,7 @@ public class Email implements Serializable {
 	 */
 	public static boolean validateEmail(String mail) {
 		try {
-			return Database.exitsEmail(mail);
+			return !Database.exitsEmail(mail);
 		} catch (SQLException e) {
 			LoggingUtils.exception(e);
 		}
