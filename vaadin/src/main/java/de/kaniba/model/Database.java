@@ -62,15 +62,11 @@ public final class Database {
 	private Database() {
 		// May not be instanciated
 	}
-<<<<<<< Upstream, based on origin/master
-	
-=======
 
 	public static void main(String[] args) throws SQLException {
 		System.out.println(readAllSpecials(1).size());
 	}
 
->>>>>>> 3a2c439 Added error messages
 	/**
 	 * 
 	 * Startet Treiber und öffnet eine Verbindung zur Datenbank
@@ -1204,7 +1200,7 @@ public final class Database {
 	 */
 	public static boolean exitsEmail(String email) throws SQLException {
 		ResultSet resultSet = null;
-		String sql = "SELECT userID FROM user WHERE email = ?";
+		String sql = "SELECT id FROM users WHERE email = ?";
 		try (Connection con = verbindung(); PreparedStatement statement = con.prepareStatement(sql);) {
 			statement.setString(1, email);
 			resultSet = statement.executeQuery();
