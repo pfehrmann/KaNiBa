@@ -3,9 +3,9 @@
 <head></head>
 <body>
   <v-panel size-full>
-    <v-form-layout>
+    <v-form-layout _id="editFormLayout">
       <v-label style-name="h1">Bar bearbeiten</v-label>
-      <v-text-field width-full caption="Name der Bar" _id="nameField" id="bar-name-field"></v-text-field>
+      <v-text-field width-full caption="Name der Bar" _id="nameField" id="bar-name-field" required requiredError="Der Bar Name darf nicht leer sein."></v-text-field>
       <v-text-field width-full caption="Stra&szlig;e" _id="streetField" id="street-field"></v-text-field>
       <v-text-field width-full caption="Nummer" _id="numberField" id="number-field"></v-text-field>
       <v-text-field width-full caption="PLZ" _id="zipField" id="zip-field"></v-text-field>

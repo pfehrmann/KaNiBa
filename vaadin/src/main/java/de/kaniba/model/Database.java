@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.mysql.jdbc.MysqlDataTruncation;
+
 /**
  * Eine Klasse, die Zugriff auf die Datenbak abstrahiert. Die Zugriffe sind alle
  * thread safe.
@@ -60,7 +62,15 @@ public final class Database {
 	private Database() {
 		// May not be instanciated
 	}
+<<<<<<< Upstream, based on origin/master
 	
+=======
+
+	public static void main(String[] args) throws SQLException {
+		System.out.println(readAllSpecials(1).size());
+	}
+
+>>>>>>> 3a2c439 Added error messages
 	/**
 	 * 
 	 * Startet Treiber und öffnet eine Verbindung zur Datenbank
@@ -161,8 +171,10 @@ public final class Database {
 
 	/**
 	 * Get the suggestions for a user
-	 * @param userID The user ID
-	 * @return 
+	 * 
+	 * @param userID
+	 *            The user ID
+	 * @return
 	 * @throws SQLException
 	 */
 	public static List<Bar> getSuggestions(int userID) throws SQLException {
@@ -240,10 +252,10 @@ public final class Database {
 	/**
 	 * @param tag
 	 */
-	public static void saveTag(Tag tag) {
+	public static boolean saveTag(Tag tag) {
 		if (tag.getTagID() != Tag.INVALID_TAG_ID) {
 			updateTag(tag);
-			return;
+			return false;
 		}
 
 		String sql = "INSERT INTO tags SET userID=?, barID=?, name=?";
@@ -253,9 +265,13 @@ public final class Database {
 			prepareStatement.setInt(2, tag.getBarID());
 			prepareStatement.setString(3, tag.getName());
 			prepareStatement.executeUpdate();
+			return true;
+		} catch (MysqlDataTruncation e) {
+			return false;
 		} catch (SQLException e) {
 			LoggingUtils.exception(e);
 		}
+		return false;
 	}
 
 	/**
@@ -402,10 +418,10 @@ public final class Database {
 					+ bar.getSumPprRating() + "','" + bar.getSumMusicRating() + "','" + bar.getSumPeopleRating() + "','"
 					+ bar.getSumAtmosphereRating() + "','" + bar.getCountRating() + "','" + lastUpdated + "', '"
 					+ bar.getDescription() + "', '" + bar.getName() + "');", Statement.RETURN_GENERATED_KEYS);
-			
+
 			ResultSet keys = st.getGeneratedKeys();
-			
-			if(keys.next()) {
+
+			if (keys.next()) {
 				int returnValue = keys.getInt(1);
 				keys.close();
 				return returnValue;
@@ -810,6 +826,7 @@ public final class Database {
 
 	/**
 	 * Get all the bars that an admin may administrate
+	 * 
 	 * @param userID
 	 * @return
 	 * @throws SQLException
@@ -1025,7 +1042,9 @@ public final class Database {
 
 	/**
 	 * Get a question by it's ID
-	 * @param questionID The ID of the question to read
+	 * 
+	 * @param questionID
+	 *            The ID of the question to read
 	 * @return
 	 * @throws SQLException
 	 */
@@ -1054,6 +1073,7 @@ public final class Database {
 
 	/**
 	 * Get all the Questions of a bar
+	 * 
 	 * @param barID
 	 * @return
 	 * @throws SQLException
@@ -1082,6 +1102,7 @@ public final class Database {
 
 	/**
 	 * Get an answer by it's ID
+	 * 
 	 * @param answerID
 	 * @return
 	 * @throws SQLException
@@ -1113,6 +1134,7 @@ public final class Database {
 
 	/**
 	 * Save an answer
+	 * 
 	 * @param answer
 	 * @throws SQLException
 	 */
@@ -1128,6 +1150,7 @@ public final class Database {
 
 	/**
 	 * Search a bar by a string
+	 * 
 	 * @param bar
 	 * @return
 	 * @throws SQLException
@@ -1153,6 +1176,7 @@ public final class Database {
 
 	/**
 	 * Get all the Tags from a bar
+	 * 
 	 * @param tag
 	 * @return
 	 * @throws SQLException
@@ -1172,5 +1196,25 @@ public final class Database {
 		}
 
 		return bars;
+	}
+
+	/**
+	 * @return
+	 * @throws SQLException
+	 */
+	public static boolean exitsEmail(String email) throws SQLException {
+		ResultSet resultSet = null;
+		String sql = "SELECT id FROM users WHERE email = ?";
+		try (Connection con = verbindung(); PreparedStatement statement = con.prepareStatement(sql);) {
+			statement.setString(1, email);
+			resultSet = statement.executeQuery();
+			boolean returnValue = resultSet.next();
+			resultSet.close();
+			return returnValue;
+		} finally {
+			if (resultSet != null) {
+				resultSet.close();
+			}
+		}
 	}
 }

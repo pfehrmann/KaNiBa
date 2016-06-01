@@ -1,6 +1,7 @@
 package de.kaniba.view;
 
 import com.vaadin.data.Validator;
+import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
@@ -29,8 +30,9 @@ public class RegisterView extends RegisterDesign implements RegisterViewInterfac
 	 * Set the view up.
 	 */
 	public RegisterView() {		
-		Validator passwordValidator = new RepeatPasswordValidator(passwordField, repeatPasswordField);
+		emailField.addValidator(new EmailValidator("Du musst eine gültige Email Addresse eingeben."));
 		
+		Validator passwordValidator = new RepeatPasswordValidator(passwordField, repeatPasswordField);
 		repeatPasswordField.addValidator(passwordValidator);
 		
 		submitButton.addClickListener(new Button.ClickListener() {

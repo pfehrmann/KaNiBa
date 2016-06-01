@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
+import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
 import com.vaadin.ui.Notification;
@@ -75,6 +76,7 @@ public class EditBarView extends EditBarDesign implements EditBarViewInterface {
 		}
 
 		nameField.setValue(bar.getName());
+		nameField.addValidator(new RegexpValidator("...*", "Der Name der Bar muss mindestens zwei Zeichen enthalten."));
 		streetField.setValue(bar.getAddress().getStreet());
 		numberField.setValue(bar.getAddress().getNumber());
 		zipField.setValue(bar.getAddress().getZip());
