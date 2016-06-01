@@ -43,13 +43,13 @@ public class TestDatabase {
 	@Test
 	public void testReadAllSpecials() throws SQLException {
 
-		assertEquals(1, Database.readAllSpecials(1).size());
+		assertEquals("wrong amount of specials",1, Database.readAllSpecials(1).size());
 	}
 	
 	@Test
 	public void testGivePinboard() throws SQLException {
 		Pinboard pinboard = Database.givePinboard(1);
-		assertEquals(12, pinboard.getMessages().size());
+		assertEquals("Pinboardmessages wrong",12, pinboard.getMessages().size());
 	}
 	
 	@Test

@@ -61,10 +61,6 @@ public final class Database {
 		// May not be instanciated
 	}
 	
-	public static void main(String [ ] args) throws SQLException
-	{
-		System.out.println(readAllSpecials(1).size());
-	}
 	/**
 	 * 
 	 * Startet Treiber und öffnet eine Verbindung zur Datenbank

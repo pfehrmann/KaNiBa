@@ -361,12 +361,6 @@ public class BarView extends BarDesign implements BarViewInterface {
 	public void notRatedYet()
 	{
 		Page.getCurrent().getStyles().add(".ratingstar{height:10000px;background-colour:grey;}");
-		//starAtmosphere.setStyleName("ratingstar-notRated");
-		/*starTotal.set);
-		starAtmosphere.setValue(rating.getAtmosphereRating());
-		starMusic.setValue(rating.getMusicRating());
-		starPeople.setValue(rating.getPeopleRating());
-		starPrice.setValue(rating.getPriceRating());*/
 	}
 	
 	@Override
