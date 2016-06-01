@@ -1,18 +1,11 @@
 package de.kaniba.view;
 
-import java.sql.Date;
-import java.time.Instant;
 import java.util.Iterator;
 
-import javax.activation.FileDataSource;
-
 import com.vaadin.data.Validator;
-import com.vaadin.data.Validator.InvalidValueException;
-import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Page;
-import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -32,16 +25,6 @@ import de.kaniba.uiInterfaces.RegisterViewInterface;
  *
  */
 public class RegisterView extends RegisterDesign implements RegisterViewInterface {
-	/**
-	 * 
-	 */
-	private static final long SECONDS_PER_YEAR = (long) 3600 * 24 * 365;
-
-	/**
-	 * 
-	 */
-	private static final int MINIMUM_AGE = 12;
-
 	private static final long serialVersionUID = 1L;
 
 	public static final String NAME = "register";
@@ -66,14 +49,6 @@ public class RegisterView extends RegisterDesign implements RegisterViewInterfac
 				presenter.registerClick();
 			}
 		});
-		java.util.Date maximumAge = Date.valueOf("1900-1-1");
-		java.util.Date minimumAge = Date.from(Instant.now().minusSeconds(MINIMUM_AGE * SECONDS_PER_YEAR));
-
-		birthdateField.addValidator(
-				new DateRangeValidator("Du bist entweder zu alt für diesen Scheiß, oder aus der Zukunft...", maximumAge,
-						minimumAge, Resolution.DAY));
-		birthdateField.setRangeStart(maximumAge);
-		birthdateField.setRangeEnd(minimumAge);
 	}
 
 	/*
