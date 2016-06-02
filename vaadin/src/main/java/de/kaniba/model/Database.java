@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.google.gwt.thirdparty.javascript.rhino.head.tools.debugger.Main;
+
 /**
  * Eine Klasse, die Zugriff auf die Datenbak abstrahiert. Die Zugriffe sind alle
  * thread safe.
@@ -57,6 +59,7 @@ public final class Database {
 
 	private static ConnectionCreater connectionCreater = new DefaultDatabaseConnectionCreater();
 
+	
 	private Database() {
 		// May not be instanciated
 	}
@@ -1031,12 +1034,13 @@ public final class Database {
 	 */
 	public static Question readQuestion(int questionID) throws SQLException {
 		Question ret = null;
-
-		Connection con = verbindung();
-		Statement st = con.createStatement();
-		String query = "SELECT * FROM questions WHERE questionID = " + questionID + ";";
-		ResultSet rs = st.executeQuery(query);
-
+		String query = "SELECT * FROM questions WHERE questionID = ?;";
+		ResultSet rs = null;
+		
+		try (Connection con = verbindung(); PreparedStatement st = con.prepareStatement(query);) {
+			st.setInt(1, questionID);
+			rs = st.executeQuery();
+		
 		while (rs.next()) {
 			ret = new Question();
 			ret.setBarID(rs.getInt(BAR_ID_STRING));
@@ -1048,7 +1052,7 @@ public final class Database {
 		rs.close();
 		st.close();
 		con.close();
-
+		}
 		return ret;
 	}
 
@@ -1089,11 +1093,11 @@ public final class Database {
 	public static Answer readAnswer(int answerID) throws SQLException {
 		Answer ret = null;
 
-		Connection con = verbindung();
-		Statement st = con.createStatement();
-		String query = "SELECT * FROM answers WHERE answerID = " + answerID + ";";
-		ResultSet rs = st.executeQuery(query);
-
+		ResultSet rs = null;
+		String sql = "SELECT * FROM answers WHERE answerID=?";
+		try (Connection con = verbindung(); PreparedStatement st = con.prepareStatement(sql);) {
+			st.setInt(1, answerID);
+			rs = st.executeQuery();
 		while (rs.next()) {
 			ret = new Answer();
 			ret.setAnswerID(rs.getInt("answerID"));
@@ -1107,7 +1111,7 @@ public final class Database {
 		rs.close();
 		st.close();
 		con.close();
-
+		}
 		return ret;
 	}
 
