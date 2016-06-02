@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import com.vaadin.navigator.View;
 import com.vaadin.server.UserError;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
@@ -14,6 +15,7 @@ import de.kaniba.uiInterfaces.RegisterPresenterInterface;
 import de.kaniba.uiInterfaces.RegisterViewInterface;
 import de.kaniba.utils.LoggingUtils;
 import de.kaniba.utils.NavigationUtils;
+import de.kaniba.utils.NotificationUtils;
 
 /**
  * The presenter for the registerView
@@ -45,6 +47,10 @@ public class RegisterPresenter implements RegisterPresenterInterface {
 	@Override
 	public void registerClick() {
 		User user = view.getUser();
+		if(user == null) {
+			NotificationUtils.showNotification("Nicht alle Felder wurden korrekt ausgefüllt.", Type.WARNING_MESSAGE);
+			return;
+		}
 		try {
 			((InternalUser) user).saveUser();
 			view.getSubmitButton().setComponentError(null);
