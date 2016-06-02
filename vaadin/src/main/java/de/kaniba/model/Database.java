@@ -20,7 +20,7 @@ import com.mysql.jdbc.MysqlDataTruncation;
  * Eine Klasse, die Zugriff auf die Datenbak abstrahiert. Die Zugriffe sind alle
  * thread safe.
  * 
- * @author philipp, heavily extended by roman
+ * @author philipp, roman
  *
  *         Methoden: 1. Connection verbindung(): stellt die Verbindung zur
  *         Datenbank her. 2. Bar readBar(int barID): liest eine Bar aus der DB
