@@ -51,6 +51,20 @@ public class TestDatabase {
 		Pinboard pinboard = Database.givePinboard(1);
 		assertEquals("Pinboardmessages wrong",12, pinboard.getMessages().size());
 	}
+	@Test
+	public void testReadQuestion() throws SQLException {
+		Question question = Database.readQuestion(1);
+		assertEquals("Question wrong","Magst du das Stövchen?", question.getMessage());
+	}
+	
+	@Test
+	public void testGetQuestionsForBar() throws SQLException {
+		assertEquals("Amount of Questions wrong",2, Database.getQuestionsForBar(1).size());
+	}
+	@Test
+	public void testReadAnswer() throws SQLException {
+		assertEquals("Wrong Answer","Nichts, alles ist klasse :D", Database.readAnswer(1).getAnswerString());
+	}
 	
 	@Test
 	public void testGetSuggestions() throws SQLException {
