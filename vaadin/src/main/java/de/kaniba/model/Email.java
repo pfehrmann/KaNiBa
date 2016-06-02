@@ -1,6 +1,9 @@
 package de.kaniba.model;
 
 import java.io.Serializable;
+import java.sql.SQLException;
+
+import de.kaniba.utils.LoggingUtils;
 
 /**
  * This class represents an email of a user
@@ -33,7 +36,12 @@ public class Email implements Serializable {
 	 * @return Gibt true zurück, wenn die Email eine valide ist.
 	 */
 	public static boolean validateEmail(String mail) {
-		return true;
+		try {
+			return !Database.exitsEmail(mail);
+		} catch (SQLException e) {
+			LoggingUtils.exception(e);
+		}
+		return false;
 	}
 	
 	@Override

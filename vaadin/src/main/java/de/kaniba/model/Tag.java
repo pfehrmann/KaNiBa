@@ -7,6 +7,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Link;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
@@ -82,7 +83,9 @@ public class Tag {
 	 * Save the tag to the database.
 	 */
 	public void saveTag() {
-		Database.saveTag(this);
+		if(!Database.saveTag(this)) {
+			NotificationUtils.showNotification("Fehler beim Speichern vom Tag. Vielleicht war er zu lang?", Type.ERROR_MESSAGE);
+		}
 	}
 
 	public Component getComponent() {
