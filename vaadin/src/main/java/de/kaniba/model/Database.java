@@ -1,4 +1,4 @@
-﻿package de.kaniba.model;
+package de.kaniba.model;
 
 import de.kaniba.utils.LoggingUtils;
 
