@@ -16,6 +16,7 @@ import java.util.List;
 import com.mysql.jdbc.MysqlDataTruncation;
 
 
+
 /**
  * Eine Klasse, die Zugriff auf die Datenbak abstrahiert. Die Zugriffe sind alle
  * thread safe.
@@ -1095,7 +1096,6 @@ public final class Database {
 				rs.close();
 			}
 		}
-
 		return questions;
 	}
 
