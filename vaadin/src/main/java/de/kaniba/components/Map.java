@@ -5,7 +5,6 @@ import org.vaadin.addon.vol3.OLView;
 import org.vaadin.addon.vol3.OLViewOptions;
 import org.vaadin.addon.vol3.OLMap.ClickListener;
 import org.vaadin.addon.vol3.OLMap.OLClickEvent;
-import org.vaadin.addon.vol3.OLObject;
 import org.vaadin.addon.vol3.client.Projections;
 import org.vaadin.addon.vol3.client.style.OLFillStyle;
 import org.vaadin.addon.vol3.client.style.OLIconStyle;

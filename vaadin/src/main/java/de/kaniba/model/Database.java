@@ -1164,7 +1164,11 @@ public final class Database {
 		List<Bar> ret = new ArrayList<>();
 
 		while (rs.next()) {
-			ret.add(readBar(rs.getInt(BAR_ID_STRING)));
+			Bar hit = readBar(rs.getInt(BAR_ID_STRING));
+			if(!hit.getName().trim().isEmpty())
+			{
+				ret.add(hit);
+			}			
 		}
 		rs.close();
 		prepareStatement.close();
