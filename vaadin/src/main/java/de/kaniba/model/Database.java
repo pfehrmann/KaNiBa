@@ -1207,7 +1207,7 @@ public final class Database {
 	 */
 	public static boolean exitsEmail(String email) throws SQLException {
 		ResultSet resultSet = null;
-		String sql = "SELECT id FROM user WHERE email = ?";
+		String sql = "SELECT " + USER_ID_STRING + " FROM user WHERE email = ?";
 		try (Connection con = verbindung(); PreparedStatement statement = con.prepareStatement(sql);) {
 			statement.setString(1, email);
 			resultSet = statement.executeQuery();
