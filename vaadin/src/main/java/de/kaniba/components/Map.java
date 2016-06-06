@@ -5,13 +5,14 @@ import org.vaadin.addon.vol3.OLView;
 import org.vaadin.addon.vol3.OLViewOptions;
 import org.vaadin.addon.vol3.OLMap.ClickListener;
 import org.vaadin.addon.vol3.OLMap.OLClickEvent;
+import org.vaadin.addon.vol3.OLObject;
 import org.vaadin.addon.vol3.client.Projections;
-import org.vaadin.addon.vol3.client.style.OLCircleStyle;
 import org.vaadin.addon.vol3.client.style.OLFillStyle;
 import org.vaadin.addon.vol3.client.style.OLIconStyle;
-import org.vaadin.addon.vol3.client.style.OLStrokeStyle;
 import org.vaadin.addon.vol3.client.style.OLStyle;
+import org.vaadin.addon.vol3.client.style.OLTextStyle;
 import org.vaadin.addon.vol3.feature.OLFeature;
+import org.vaadin.addon.vol3.feature.OLGeometry;
 import org.vaadin.addon.vol3.feature.OLPoint;
 import org.vaadin.addon.vol3.layer.OLTileLayer;
 import org.vaadin.addon.vol3.layer.OLVectorLayer;
@@ -20,6 +21,7 @@ import org.vaadin.addon.vol3.source.OLSource;
 import org.vaadin.addon.vol3.source.OLVectorSource;
 import org.vaadin.addon.vol3.util.StyleUtils;
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.CustomComponent;
 
 import de.kaniba.model.Coordinates;
@@ -35,6 +37,15 @@ public class Map extends CustomComponent {
 	private static final int DEFAULT_ZOOM = 12;
 	private static final int MAX_ZOOM = 18;
 	private static final int MIN_ZOOM = 4;
+	private static final OLStyle style;
+	
+	static {
+		style= StyleUtils.createDefaultStyle();
+        style.circleStyle.fill=new OLFillStyle("red");
+        style.circleStyle.stroke.color="blue";
+        style.circleStyle.radius = 5.0;
+        style.textStyle = new OLTextStyle();
+	}
 
 	private static final long serialVersionUID = 1L;
 
@@ -101,14 +112,6 @@ public class Map extends CustomComponent {
 		}
 		OLFeature feature = new OLFeature();
 		feature.setGeometry(new OLPoint(coords.getLon(), coords.getLat()));
-		
-		for(OLStyle style : feature.getStyles()) {
-			System.out.println(style);
-		}
-		
-		OLStyle style= StyleUtils.createDefaultStyle();
-        style.circleStyle.fill=new OLFillStyle("magenta");
-        style.circleStyle.stroke.color="green";
 		feature.setStyle(style);
 		
 		source.addFeature(feature);
@@ -129,6 +132,7 @@ public class Map extends CustomComponent {
 		final OLFeature feature = new OLFeature(id);
 		feature.setGeometry(new OLPoint(coords.getLon(), coords.getLat()));
 		feature.setId(id);
+		feature.setStyle(style);
 
 		source.addFeature(feature);
 

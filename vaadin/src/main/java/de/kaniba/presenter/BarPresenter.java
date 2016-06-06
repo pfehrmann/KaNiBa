@@ -90,8 +90,14 @@ public class BarPresenter implements BarPresenterInterface {
 			}
 
 			if (userRating != null) {
+				view.setRated(true);
 				rating = new DisplayRating(userRating);
+			} else {
+				view.setRated(false);
+				
 			}
+		} else {
+			view.setRated(false);
 		}
 
 		view.setBarRating(rating);

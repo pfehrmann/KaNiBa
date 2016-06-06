@@ -71,4 +71,11 @@ public final class NavigationUtils {
 		NotificationUtils.showNotification(message);
 	}
 
+	/**
+	 * 
+	 */
+	public static void reEnterView() {
+		navigateTo(UI.getCurrent().getNavigator().getState());
+	}
+
 }

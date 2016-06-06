@@ -113,28 +113,10 @@
 		margin-bottom: 5px;
 		border-style: none;
 	}
-		
-	// für die sterne
-	.desaturate:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background: inherit;
-         /*grayscale for background image*/
-        -webkit-filter: $unquote("grayscale(1);"); 
-        -webkit-filter: $unquote("grayscale(100%);"); 
-        -moz-filter: $unquote("grayscale(100%);");
-        filter: gray; 
-        // filter: grayscale(100%);
-        /* Not correctly interpreted... */
-        /*filter: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' height='0'><filter id='greyscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0' /></filter></svg>#greyscale");*/
-    }
     
-	.ratingstar-notRated{
-		background-colour:grey;
+	.ratingstar-notRated .v-ratingstars-bar{
+		background-color: #d0d0d0;
+		background-image: none;
 	}
 	
 	.bar-info-panel {

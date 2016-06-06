@@ -358,9 +358,21 @@ public class BarView extends BarDesign implements BarViewInterface {
 	 * @see de.kaniba.view.BarViewInterface#notRatedYet()
 	 */
 	@Override
-	public void notRatedYet()
+	public void setRated(boolean rated)
 	{
-		Page.getCurrent().getStyles().add(".ratingstar{height:10000px;background-colour:grey;}");
+		if(rated) {
+			starTotal.removeStyleName("ratingstar-notRated");
+			starAtmosphere.removeStyleName("ratingstar-notRated");
+			starMusic.removeStyleName("ratingstar-notRated");
+			starPeople.removeStyleName("ratingstar-notRated");
+			starPrice.removeStyleName("ratingstar-notRated");
+		} else {
+			starTotal.addStyleName("ratingstar-notRated");
+			starAtmosphere.addStyleName("ratingstar-notRated");
+			starMusic.addStyleName("ratingstar-notRated");
+			starPeople.addStyleName("ratingstar-notRated");
+			starPrice.addStyleName("ratingstar-notRated");
+		}
 	}
 	
 	@Override
