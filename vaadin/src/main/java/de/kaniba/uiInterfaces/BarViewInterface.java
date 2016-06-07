@@ -32,4 +32,6 @@ public interface BarViewInterface extends View {
 
 	void setRated(boolean b);
 
+	void clearMessageField();
+
 }

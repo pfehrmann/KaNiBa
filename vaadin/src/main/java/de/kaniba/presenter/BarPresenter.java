@@ -209,6 +209,7 @@ public class BarPresenter implements BarPresenterInterface {
 		Message dbMessage = new Message(user.getUserID(), bar.getBarID(), message);
 		dbMessage.save();
 		view.setBarMessageBoard(bar.getPinboard().getMessages());
+		view.clearMessageField();
 	}
 
 	/*

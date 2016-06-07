@@ -141,6 +141,11 @@ public class BarView extends BarDesign implements BarViewInterface {
 			}
 		});
 	}
+	
+	@Override
+	public void clearMessageField() {
+		messageTextField.setValue("");
+	}
 
 	private void priceRatingStarClick() {
 		Rating rating = new Rating(-1, -1, -1, 0, 0, 0, 0, 0, null);
