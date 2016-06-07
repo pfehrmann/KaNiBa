@@ -2,6 +2,8 @@ package de.kaniba.view;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,6 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FileResource;
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
@@ -219,8 +220,8 @@ public class BarView extends BarDesign implements BarViewInterface {
 				StringBuilder text = new StringBuilder();
 
 				// append the date
-				text.append(element.getTime().getDate() + '.' + element.getTime().getMonth() + "."
-						+ (element.getTime().getYear() + 1900) + "");
+				DateFormat dfmt = new SimpleDateFormat("dd.MM.yyyy");
+				text.append(dfmt.format(element.getTime()));
 
 				// append the username
 				text.append(" <b>" + user.getFirstname() + ' ' + user.getName().substring(0, 1) + '.' + "</b>: ");
@@ -351,16 +352,15 @@ public class BarView extends BarDesign implements BarViewInterface {
 		});
 		tagLayout.addComponent(button);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see de.kaniba.view.BarViewInterface#notRatedYet()
 	 */
 	@Override
-	public void setRated(boolean rated)
-	{
-		if(rated) {
+	public void setRated(boolean rated) {
+		if (rated) {
 			starTotal.removeStyleName("ratingstar-notRated");
 			starAtmosphere.removeStyleName("ratingstar-notRated");
 			starMusic.removeStyleName("ratingstar-notRated");
@@ -374,7 +374,7 @@ public class BarView extends BarDesign implements BarViewInterface {
 			starPrice.addStyleName("ratingstar-notRated");
 		}
 	}
-	
+
 	@Override
 	public void enter(ViewChangeEvent event) {
 		map.setZoom(DEFAULT_ZOOM);
